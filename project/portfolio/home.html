@@ -1,46 +1,343 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Alok | Portfolio</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Alok Patel | Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background: #f4f1ee;
+            color: #222;
+        }
+        nav {
+            background: #1e1f2f;
+            padding: 20px 0;
+        }
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 40px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .about {
+            max-width: 1100px;
+            margin: 80px auto;
+            display: flex;
+            align-items: center;
+            gap: 120px;
+            padding: 0 20px;
+        }
+
+        .about-img img {
+            width: 320px;
+            border-radius: 14px;
+        }
+
+        .about-text p.small {
+            font-size: 16px;
+            color: #444;
+        }
+
+        .about-text h1 {
+            font-size: 56px;
+            color: #4f46e5;
+            margin: 12px 0;
+        }
+
+        .about-text p.main {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .about-text p.sub {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .about-text a {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+
+        }
+        
+        section {
+            max-width: 900px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        section h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+
+        .skills h2 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            list-style: none;
+        }
+
+        .skill-item {
+            background: white;
+            padding: 25px 15px;
+            text-align: center;
+            border-radius: 10px;
+           
+        }
+
+     
+
+        .skill-icon {
+            width: 60px;
+            height: 60px;
+            background: #eef2ff;
+            color: #4f46e5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .skill-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+
+    
+        .project {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #ccc;
+            padding: 20px 0;
+        }
+
+        .project h3 {
+            margin-bottom: 6px;
+        }
+
+        .project p {
+            font-size: 14px;
+            color: #444;
+        }
+
+        .project a {
+            align-self: center;
+            text-decoration: none;
+            border: 1px solid #000;
+            padding: 8px 14px;
+            color: #000;
+        }
+
+        .project a:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        .social {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 20px;
+        }
+
+        .social h3 {
+            font-size: 24px;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-links a {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #333;
+            font-size: 22px;
+            
+        }
+
+ 
+        .social-links a.github:hover {
+            background: #333;
+            color: white;
+            
+        }
+
+        .social-links a.linkedin:hover {
+            background: #0077b5;
+            color: white;
+            
+        }
+
+        .social-links a.email:hover {
+            background: #ea4335;
+            color: white;
+            
+        }
+
+    </style>
 </head>
 <body>
-<div class="navbar">
-<nav class="navbar">
-  <a href="home.html">Home</a>
-  <a href="about.html">About</a>
-  <a href="projects.htm">Projects</a>
-  <a href="contact.html">Contact</a>
+
+<nav>
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
 </nav>
+
+<div class="about">
+    <div class="about-img" id="about">
+        <img src="../../Daily_task/myimg.jpg" alt="Alok">
+    </div>
+    <div class="about-text">
+        <p class="small">Hi, my name is</p>
+        <h1>Alok Patel.</h1>
+        <p class="main">I ship code from <span style="color:#4f46e5;">development</span> to <span style="color:#4f46e5;">production.</span></p>
+        <p class="sub">Based in Ahmedabad, I am a web developer intern.</p>
+        <a href = "mailto:alokp8494@gmail.com">EMAIL ME</a>
+    </div>
 </div>
 
-<div class="body">
-    <section class="body">
-  <div class="body-text">
-    <p class="intro">Hi, my name is</p>
 
-    <h1>
-      <span class="highlight">Alok Patel</span>.
-    </h1>
-
-   <p class="description">
-  I ship code from <span class="highlight">development</span> to
-  <span class="highlight">production</span>.
-    </p>
-
-    <p class="location">
-      Based in Ahmedabad, I am a web developer intern.
-    </p>
-
-    <button class="body-btn">
-        <a href="mailto:alokp8494@gmail.com" target="_blank">EMAIL ME</a>
-    </button>
-  </div>
-
-  <div class="body-img">
-    <img src="../../Daily_task/myimg.jpg" alt="Profile Image">
-  </div>
+<section class="skills" id="skills">
+    <h2>Skills</h2>
+    
+    <ul class="skills-grid">
+        <li class="skill-item">
+            <div class="skill-icon">H</div>
+            <p class="skill-name">HTML</p>
+        </li>
+        
+        <li class="skill-item">
+            <div class="skill-icon">C</div>
+            <p class="skill-name">CSS</p>
+        </li>
+        
+        <li class="skill-item">
+            <div class="skill-icon">JS</div>
+            <p class="skill-name">JavaScript</p>
+        </li>
+        
+        <li class="skill-item">
+            <div class="skill-icon">R</div>
+            <p class="skill-name">React</p>
+        </li>
+        
+        <li class="skill-item">
+            <div class="skill-icon">N</div>
+            <p class="skill-name">Node.js</p>
+        </li>
+        
+        <li class="skill-item">
+            <div class="skill-icon">M</div>
+            <p class="skill-name">MongoDB</p>
+        </li>
+        
+        <li class="skill-item">
+            <div class="skill-icon">Py</div>
+            <p class="skill-name">Python</p>
+        </li>
+        
+        <li class="skill-item">
+            <div class="skill-icon">ML</div>
+            <p class="skill-name">Machine Learning</p>
+        </li>
+    </ul>
 </section>
+
+
+<section>
+    <h2>Projects</h2>
+
+    <div class="project" id="projects">
+        <div>
+            <h3>CampusCommute</h3>
+            <p>College transportation system with bus pass, payments and tracking.</p>
+        </div>
+        <a href="https://github.com/Alok8138/campusCommute.git">GitHub</a>
+    </div>
+
+    <div class="project">
+        <div>
+            <h3>Movie Recommendation System</h3>
+            <p>ML based movie recommender using TF-IDF and cosine similarity.</p>
+        </div>
+        <a href="https://github.com/Alok8138/CampusEvent.git">GitHub</a>
+    </div>
+
+    <div class="project">
+        <div>
+            <h3>Event Management</h3>
+            <p>College Event Management system with Referal Program, payments and Admin Penal.</p>
+        </div>
+        <a href="https://github.com/Alok8138/CampusEvent.git">GitHub</a>
+    </div>
+
+    <div class="project">
+        <div>
+            <h3>House Price Prediction</h3>
+            <p>ML based House Price recommandation model.</p>
+        </div>
+        <a href="https://github.com/Alok8138/CampusEvent.git">GitHub</a>
+    </div>
+</section>
+
+
+<div class="social" id="contact">
+    <h3>Connect With Me</h3>
+    <div class="social-links">
+        <a href="https://github.com/Alok8138" class="github">
+            <i class="fab fa-github"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/alok-patel7878/" class="linkedin">
+            <i class="fab fa-linkedin-in"></i>
+        </a>
+        <a href="mailto:alok@email.com" class="email">
+            <i class="fas fa-envelope"></i>
+        </a>
+    </div>
 </div>
 
 </body>
