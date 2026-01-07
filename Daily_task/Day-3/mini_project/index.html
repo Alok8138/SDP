@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>List Based Navbar</title>
+
+  <style>
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+    }
+
+    .navbar {
+      background-color: #222;
+      color: white;
+      padding: 10px 20px;
+    }
+
+    .navbar ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar strong {
+      font-size: 20px;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+    }
+
+    .profile img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .profile span {
+      font-size: 14px;
+    }
+
+
+    .sidebar {
+      width: 200px;
+      height: 100vh;
+      background-color: #f4f4f4;
+      position: fixed;
+      padding-top: 20px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar li {
+      padding: 12px 20px;
+    }
+
+    .sidebar a {
+      text-decoration: none;
+      color: #333;
+      display: block;
+    }
+
+    .sidebar a:hover {
+      background-color: #ddd;
+    }
+
+
+    .content {
+      margin-left: 220px;
+      padding: 20px;
+    }
+
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+    }
+
+    th, td {
+      border: 1px solid #333;
+      padding: 12px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    td ul {
+      text-align: left;
+      padding-left: 20px;
+    }
+
+    img {
+      width: 180px;
+      border-radius: 10px;
+    }
+
+  
+    .qty-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .qty-box button {
+      width: 30px;
+      height: 30px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .qty-box input {
+      width: 40px;
+      text-align: center;
+      font-size: 16px;
+    }
+    .pay-box {
+      display:flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn button{
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+  </style>
+</head>
+
+<body>
+
+  
+  <nav class="navbar">
+    <ul>
+      <li><strong>My App</strong></li>
+      <li class="profile">
+        <img src="../../myimg.jpg" alt="Profile">
+        <span>Welcome, Alok</span>
+      </li>
+    </ul>
+  </nav>
+
+  
+  <div class="sidebar">
+    <ul>
+      <li><a href="#">Dashboard</a></li>
+      <li><a href="#">Profile</a></li>
+      <li><a href="#">Product</a></li>
+      <li><a href="#">Setting</a></li>
+      <li><a href="#">Contact Us</a></li>
+      <li><a href="#">Logout</a></li>
+    </ul>
+  </div>
+
+
+  <div class="content">
+    <table>
+      <thead>
+        <tr>
+          <th>Product Image</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Quantity</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td><img src="laptop.jpg" alt="Laptop"></td>
+          <td>
+            <strong>Laptop</strong>
+            <ul>
+              <li>Intel i5 / Ryzen 5 processor</li>
+              <li>16GB RAM and 512GB SSD</li>
+              <li>15.6-inch Full HD display</li>
+              <li>Fast charging with long battery life</li>
+            </ul>
+          </td>
+          <td>₹79,999</td>
+          <td>
+            <div class="qty-box">
+              <button>-</button>
+              <input type="text" value="1" readonly>
+              <button>+</button>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td><img src="mouse.jpg" alt="Mouse"></td>
+          <td>
+            <strong>Mouse</strong>
+            <ul>
+              <li>Wireless connectivity</li>
+              <li>1600 DPI optical sensor</li>
+              <li>Ergonomic design</li>
+              <li>Multi-OS support</li>
+            </ul>
+          </td>
+          <td>₹2,499</td>
+          <td>
+            <div class="qty-box">
+              <button>-</button>
+              <input type="text" value="1" readonly>
+              <button>+</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><img src="phone.jpg" alt="Phone"></td>
+          <td>
+            <strong>Phone</strong>
+            <ul>
+              <li>Wireless connectivity</li>
+              <li>1600 DPI optical sensor</li>
+              <li>Ergonomic design</li>
+              <li>Multi-OS support</li>
+            </ul>
+          </td>
+          <td>₹2,499</td>
+          <td>
+            <div class="qty-box">
+              <button>-</button>
+              <input type="text" value="1" readonly>
+              <button>+</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2"><strong>Total Bill:</strong></td>
+          <td>
+            <strong>Products</strong>
+            <ul>
+              <li>1-phone</li>
+              <li>1-laptop</li>
+              <li>1:mouse</li>
+              
+            </ul>
+          </td>
+          <td>
+            <div class="Pay-box">
+            <strong></strong>
+            <a href="https://stripe.com/in" class="btn" target="_self"><button>₹90,000 Pay-Now</button></a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>

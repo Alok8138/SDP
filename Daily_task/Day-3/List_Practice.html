@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>List Based Navbar</title>
+
+  <style>
+    body {
+      margin: 0px;
+      font-family: Arial, sans-serif;
+    }
+
+    
+    .navbar {
+      background-color: #222;
+      color: white;
+      padding: 10px 20px;
+    }
+
+    .navbar ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .navbar span {
+      color:white;
+
+    }
+
+    .navbar li {
+      display: flex;
+      align-items: center;
+    }
+
+    .profile img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      width: 200px;
+      height: 100vh;
+      background-color: #f4f4f4;
+      padding-top: 20px;
+      position: fixed;
+    
+    }
+
+    .sidebar ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .sidebar li {
+      padding: 12px 20px;
+    }
+
+    .sidebar a {
+      text-decoration: none;
+      color: #333;
+      display: block;
+    }
+
+    .sidebar a:hover {
+      background-color: #ddd;
+    }
+
+    /* ===== CONTENT ===== */
+    .content {
+      margin-left: 220px;
+      padding: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+
+<nav class="navbar">
+    <ul>
+        <li><strong>My App</strong></li>
+        <li class="profile">
+            <div class="profile">
+                <img src="myimg.jpg" alt="Profile Picture">
+                <span>Welcome, Alok</span>
+            </div>
+        </li>
+    </ul>
+</nav>
+<div class="sidebar">
+    <ul>
+        <li><a href="#">Dashboard</a></li>
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">Project </a></li>
+        <li><a href="#">setting</a></li>
+        <li><a href="#">Messages</a></li>
+        <li><a href="#">Logout</a></li>
+    </ul>
+</div>
+
+<div class="content">
+  <h1>Welcome</h1>
+  <p>This layout is built using HTML lists.</p>
+</div> 
+
+</body>
+</html>
