@@ -1,0 +1,48 @@
+*{
+    margin: 10px 20px;
+    padding: 0;
+    box-sizing: border-box;
+    background: #edeaeaef;
+}
+
+/* container */
+
+.container{
+    max-width:700px;
+    margin: auto;
+    padding: 100px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+    background: white;
+    border-radius: 10px;
+}
+
+/* header section */
+
+.header{
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin: auto;
+    gap: 20px;
+}
+
+
+
+
+/* button styling  */
+
+.btn-section{
+    text-align: center;
+    margin: auto;
+}
+.btn{
+    padding: 10px 20px;
+    font-size: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.btn:hover{
+    background: #000000;
+    color: white;
+}
+
