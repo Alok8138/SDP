@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Employee Task Board</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<h1>Employee Task Board</h1>
+
+<div class="controls">
+  <input id="taskInput" placeholder="Task title">
+  <input id="employeeInput" placeholder="Employee name">
+  <button id="addTaskBtn">Add Task</button>
+</div>
+
+<p class="count">Total Tasks: <span id="taskCount">0</span></p>
+
+<div class="board">
+  <div class="column" data-status="pending">
+    <h3>Pending</h3>
+  </div>
+
+  <div class="column" data-status="progress">
+    <h3>In Progress</h3>
+  </div>
+
+  <div class="column" data-status="done">
+    <h3>Done</h3>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

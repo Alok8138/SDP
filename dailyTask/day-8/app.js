@@ -1,18 +1,3 @@
-/************************************************************
- * Day 9 – JavaScript
- * Topic: Arrays, Array Methods, Objects, Iteration
- * Focus: Data Storage and Data Display
- *
- * NOTE:
- * This file is written as an INTERNSHIP-LEVEL REFERENCE.
- * Every concept is explained clearly with examples.
- ************************************************************/
-
-/*==========================================================
-  1. DATA STORAGE BASICS
-==========================================================*/
-
-// Primitive data storage
 let name = "Alok";
 let age = 21;
 let isIntern = true;
@@ -63,7 +48,7 @@ console.log(numbers.includes(20));
 let slicedArray = numbers.slice(1, 3);
 
 // splice() – add/remove (MODIFIES original)
-numbers.splice(1, 1, 25);
+numbers.splice(1, 1, 25,26,27); // at index 1, remove 1 item, add 25,26,27
 
 // concat() – merge arrays
 let moreNumbers = [60, 70];
@@ -117,6 +102,7 @@ let student = {
   skills: ["JS", "React"],
   isActive: true
 };
+let b = student.keys();
 
 // Accessing object values
 console.log(student.name);
