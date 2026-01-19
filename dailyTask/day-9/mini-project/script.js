@@ -34,7 +34,7 @@ addTaskBtn.addEventListener("click", () => {
   employeeInput.value = "";
 });
 
-// Event delegation for task actions
+// Event for task actions
 document.addEventListener("click", (e) => {
     const action = e.target.dataset.action;
     console.log(action);
@@ -58,6 +58,7 @@ document.addEventListener("click", (e) => {
   updateCount();
 });
 
+// Move task to next column
 function moveTask(task) {
   const currentStatus = task.dataset.status;
 
@@ -73,6 +74,7 @@ function moveTask(task) {
   }
 }
 
+// Update task count
 function updateCount() {
   taskCount.innerText = totalTasks;
 }
