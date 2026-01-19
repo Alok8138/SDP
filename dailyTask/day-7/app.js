@@ -14,7 +14,6 @@ TOPICS COVERED:
    - do-while
    - for...of
    - for...in
-   - forEach
 6. Reusable functions
 7. Loop + function combinations
 8. IIFE (Immediately Invoked Function Expression)

@@ -1,28 +1,27 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Chat App</title>
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Chat App</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="chat-container">
+      <header class="chat-header">
+        <span id="currentUser"></span>
+        <button id="logoutBtn">Logout</button>
+      </header>
 
-  <div class="chat-container">
-    <header class="chat-header">
-      <span id="currentUser"></span>
-      <button id="logoutBtn">Logout</button>
-    </header>
+      <div class="chat-messages" id="messages"></div>
 
-    <div class="chat-messages" id="messages"></div>
-
-    <div class="chat-input">
-      <input type="text" id="messageInput" placeholder="Type a message..." />
-      <button id="sendBtn">Send</button>
+      <div class="chat-input">
+        <input type="text" id="messageInput" placeholder="Type a message..." />
+        <button id="sendBtn">Send</button>
+      </div>
     </div>
-  </div>
 
-  <script src="js/state.js"></script>
-  <script src="js/storage.js"></script>
-  <script src="js/chat.js"></script>
-</body>
+    <script src="js/state.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/chat.js"></script>
+  </body>
 </html>

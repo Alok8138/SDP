@@ -130,7 +130,7 @@ console.log(Object.values(student));
 // Object.entries()
 console.log(Object.entries(student));
 
-// for...in loop (BEST for objects)
+// for...in loop to iterate object properties
 for (let key in student) {
   console.log(key, ":", student[key]);
 }
@@ -211,9 +211,3 @@ console.log("Stored Data:", storedData);
     console.log(`${p.name} costs ${p.price}`);
   });
 })();
-
-/************************************************************
- * END OF FILE
- * If you understand EVERYTHING in this file,
- * you are READY for INTERNSHIP JavaScript tasks.
- ************************************************************/

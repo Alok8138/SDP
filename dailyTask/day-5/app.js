@@ -19,8 +19,7 @@ interactive. It can:
 - Handle user actions
 - Manipulate HTML & CSS
 - Communicate with servers
-
-This file demonstrates basic JavaScript concepts.
+.
 */
 
 // JavaScript is executed line by line
@@ -159,12 +158,3 @@ console.log("Program 4: Division =", x / y);
 let userName = "Alok";
 console.log("Program 5: Hello " + userName);
 
-/*
-============================================================
-End of Day 6 JavaScript File
-============================================================
-Practice Tip:
-- Modify values
-- Add new console logs
-- Create your own programs
-*/
