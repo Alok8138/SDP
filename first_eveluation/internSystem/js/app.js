@@ -76,6 +76,27 @@ const App = {
         // Add login button listeners
         const hrBtn = document.getElementById('hr-login-btn');
         const internBtn = document.getElementById('intern-login-btn');
+        const toggleButtons = modal.querySelectorAll('.login-toggle-btn');
+        const panels = modal.querySelectorAll('.login-panel');
+
+        const setActivePanel = (panelId) => {
+            panels.forEach(panel => {
+                panel.classList.toggle('active', panel.id === panelId);
+            });
+            toggleButtons.forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-target') === panelId);
+            });
+        };
+
+        if (toggleButtons.length) {
+            toggleButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const target = btn.getAttribute('data-target');
+                    if (target) setActivePanel(target);
+                });
+            });
+            setActivePanel('hr-login-panel');
+        }
 
         if (hrBtn) {
             hrBtn.addEventListener('click', () => this.loginAsHR());
@@ -161,12 +182,9 @@ const App = {
         const confirmed = confirm('Are you sure you want to logout?');
         if (!confirmed) return;
         
-        // Clear role and intern ID
+        // Clear role and intern ID (but keep data like interns/tasks in localStorage)
         StateManager.setRole(null);
         globalState.currentInternId = null;
-        
-        // Clear localStorage
-        localStorage.removeItem('internOpsState');
         
         // Show logout message
         Renderer.showSuccess('Logged out successfully');
@@ -934,6 +952,15 @@ const App = {
     async updateTaskStatus(taskId, newStatus) {
         const task = StateManager.getTaskById(taskId);
         if (!task) return;
+
+        // If logged in as INTERN, only allow status changes on their own tasks
+        if (globalState.currentRole === 'INTERN') {
+            const currentIntern = StateManager.getCurrentIntern();
+            if (!currentIntern || task.assignedTo !== currentIntern.id) {
+                Renderer.showError('You can only update status for tasks assigned to you');
+                return;
+            }
+        }
         
         // Check business rules
         const ruleCheck = RulesEngine.canChangeTaskStatus(taskId, newStatus);
@@ -955,7 +982,12 @@ const App = {
             
             // Refresh views
             if (globalState.currentView === 'tasks') {
-                Renderer.renderTasksList();
+                if (globalState.currentRole === 'INTERN') {
+                    // Intern should only ever see their own tasks
+                    Renderer.renderInternTasksView();
+                } else {
+                    Renderer.renderTasksList();
+                }
                 Renderer.renderTaskDetails(taskId);
             } else if (globalState.currentView === 'assignments') {
                 Renderer.renderAssignmentsView();

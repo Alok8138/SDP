@@ -364,6 +364,51 @@ const Renderer = {
             return depTask ? { id: depId, title: depTask.title, status: depTask.status } : null;
         }).filter(Boolean);
         
+        const currentRole = globalState.currentRole || 'HR';
+        const isIntern = currentRole === 'INTERN';
+        const currentIntern = isIntern ? StateManager.getCurrentIntern() : null;
+        const isOwnTask = isIntern && currentIntern && task.assignedTo === currentIntern.id;
+
+        // Build action buttons based on role
+        let actionButtonsHtml = '';
+
+        if (!isIntern) {
+            // HR – full controls
+            actionButtonsHtml = `
+                ${task.assignedTo ? `
+                    <button class="secondary-btn unassign-btn" data-task-id="${task.id}">
+                        <i class="fas fa-unlink"></i> Unassign
+                    </button>
+                ` : ''}
+                
+                ${task.status !== 'DONE' ? `
+                    <button class="primary-btn update-status-btn" data-task-id="${task.id}" data-new-status="${this.getNextStatus(task.status)}">
+                        <i class="fas fa-arrow-right"></i> Mark as ${this.getNextStatus(task.status)}
+                    </button>
+                ` : ''}
+                
+                <button class="secondary-btn assign-modal-btn" data-task-id="${task.id}">
+                    <i class="fas fa-user-plus"></i> Assign
+                </button>
+            `;
+        } else if (isOwnTask) {
+            // Intern – can only progress their own task
+            actionButtonsHtml = `
+                ${task.status !== 'DONE' ? `
+                    <button class="primary-btn update-status-btn" data-task-id="${task.id}" data-new-status="${this.getNextStatus(task.status)}">
+                        <i class="fas fa-arrow-right"></i> Mark as ${this.getNextStatus(task.status)}
+                    </button>
+                ` : `
+                    <span class="status-disabled">Task is already completed</span>
+                `}
+            `;
+        } else {
+            // Intern viewing a task not assigned to them (should not normally happen)
+            actionButtonsHtml = `
+                <span class="status-disabled">You can only update tasks assigned to you.</span>
+            `;
+        }
+
         container.innerHTML = `
             <div class="task-details-view">
                 <div class="detail-row">
@@ -430,21 +475,7 @@ const Renderer = {
                 </div>
                 
                 <div class="action-buttons">
-                    ${task.assignedTo ? `
-                        <button class="secondary-btn unassign-btn" data-task-id="${task.id}">
-                            <i class="fas fa-unlink"></i> Unassign
-                        </button>
-                    ` : ''}
-                    
-                    ${task.status !== 'DONE' ? `
-                        <button class="primary-btn update-status-btn" data-task-id="${task.id}" data-new-status="${this.getNextStatus(task.status)}">
-                            <i class="fas fa-arrow-right"></i> Mark as ${this.getNextStatus(task.status)}
-                        </button>
-                    ` : ''}
-                    
-                    <button class="secondary-btn assign-modal-btn" data-task-id="${task.id}">
-                        <i class="fas fa-user-plus"></i> Assign
-                    </button>
+                    ${actionButtonsHtml}
                 </div>
             </div>
         `;

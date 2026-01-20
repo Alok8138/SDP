@@ -450,10 +450,25 @@
           <h3><i class="fas fa-sign-in-alt"></i> Login to Intern Operations</h3>
         </div>
         <div class="modal-body">
-          <div class="login-options">
-            <div class="login-option">
-              <h4><i class="fas fa-user-tie"></i> HR Login</h4>
-              <p>Full access to all features</p>
+          <div class="login-toggle">
+            <button class="login-toggle-btn active" data-target="hr-login-panel">
+              <i class="fas fa-user-tie"></i> HR Login
+            </button>
+            <button class="login-toggle-btn" data-target="intern-login-panel">
+              <i class="fas fa-user-graduate"></i> Intern Login
+            </button>
+          </div>
+
+          <div class="login-panels">
+            <div class="login-panel active" id="hr-login-panel">
+              <div class="login-panel-header">
+                <div>
+                  <p class="eyebrow">Full platform access</p>
+                  <h4><i class="fas fa-user-tie"></i> Sign in as HR</h4>
+                </div>
+                <span class="role-chip role-chip-hr">Admin</span>
+              </div>
+              <p class="muted-text">Manage interns, tasks, and assignments.</p>
               <div class="form-group">
                 <label for="hr-id">HR ID</label>
                 <input
@@ -470,14 +485,22 @@
                   placeholder="Enter HR password"
                 />
               </div>
-              <button class="primary-btn" id="hr-login-btn">
+              <button class="primary-btn full-width" id="hr-login-btn">
                 <i class="fas fa-sign-in-alt"></i> Login as HR
               </button>
             </div>
 
-            <div class="login-option">
-              <h4><i class="fas fa-user-graduate"></i> Intern Login</h4>
-              <p>Access only to your assigned tasks</p>
+            <div class="login-panel" id="intern-login-panel">
+              <div class="login-panel-header">
+                <div>
+                  <p class="eyebrow">Task-focused access</p>
+                  <h4><i class="fas fa-user-graduate"></i> Sign in as Intern</h4>
+                </div>
+                <span class="role-chip role-chip-intern">Member</span>
+              </div>
+              <p class="muted-text">
+                View and update only the tasks assigned to you.
+              </p>
               <div class="form-group">
                 <label for="intern-id">Intern ID</label>
                 <input
@@ -494,7 +517,7 @@
                   placeholder="Choose or enter your password"
                 />
               </div>
-              <button class="secondary-btn" id="intern-login-btn">
+              <button class="secondary-btn full-width" id="intern-login-btn">
                 <i class="fas fa-sign-in-alt"></i> Login as Intern
               </button>
             </div>
