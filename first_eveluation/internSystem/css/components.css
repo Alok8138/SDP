@@ -1,0 +1,697 @@
+/* Button Styles */
+.primary-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.primary-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.secondary-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s;
+}
+
+.secondary-btn:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+}
+
+.action-btn {
+    background: white;
+    border: 2px solid #667eea;
+    color: #667eea;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s;
+}
+
+.action-btn:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 5px;
+    min-height: 20px;
+}
+
+/* Skills Checkbox */
+.skills-checkbox {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.skills-checkbox label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.skills-checkbox input[type="checkbox"] {
+    width: auto;
+}
+
+/* Filter Section */
+.filters-section {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+}
+
+.filter-group select[multiple] {
+    height: 120px;
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.status-ONBOARDING {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-ACTIVE {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-EXITED {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Task Cards */
+.task-card {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.task-card:hover {
+    border-color: #667eea;
+    transform: translateX(5px);
+}
+
+.task-card.selected {
+    border-color: #667eea;
+    background: #f8f9ff;
+}
+
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.task-title {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.task-status {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.task-status-PENDING {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.task-status-ASSIGNED {
+    background: #cce5ff;
+    color: #004085;
+}
+
+.task-status-IN_PROGRESS {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.task-status-DONE {
+    background: #d4edda;
+    color: #155724;
+}
+
+.task-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 10px 0;
+}
+
+.skill-tag {
+    background: #e9ecef;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+}
+
+.task-details-view {
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+}
+
+.detail-row {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.detail-value {
+    color: #495057;
+}
+
+/* Assignment Cards */
+.assignment-card {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.assignment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.assignment-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.assignment-actions {
+    display: flex;
+    gap: 5px;
+}
+
+/* Log Items */
+.log-item {
+    padding: 10px;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 0.875rem;
+}
+
+.log-timestamp {
+    color: #6c757d;
+    font-size: 0.75rem;
+}
+
+.log-action {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.log-details {
+    color: #495057;
+}
+
+/* Quick Actions */
+.quick-actions {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.quick-actions h3 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* Placeholder Text */
+.placeholder-text {
+    color: #6c757d;
+    font-style: italic;
+    text-align: center;
+    padding: 40px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 2px dashed #dee2e6;
+}
+
+/* Assignment Controls */
+.assignment-controls {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.control-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.control-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+}
+
+/* Eligibility Info */
+.eligibility-info {
+    background: #e8f4fd;
+    border: 1px solid #b3d9ff;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 30px;
+}
+
+.eligibility-info h3 {
+    color: #0066cc;
+    margin-bottom: 15px;
+}
+
+.eligibility-info ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.eligibility-info li {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Recent Activity */
+.recent-activity {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.recent-activity h3 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Add to components.css */
+.full-width {
+    width: 100%;
+}
+
+.action-buttons-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.small-btn {
+    padding: 5px 10px;
+    font-size: 0.875rem;
+}
+
+.form-group select[multiple] {
+    min-height: 100px;
+}
+
+/* Modal improvements */
+.modal {
+    z-index: 1000;
+}
+
+.modal-content {
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Better error display */
+.error-message {
+    background: #fee;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.success-message {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+/* Skill tags in forms */
+.skill-tag-form {
+    display: inline-block;
+    background: #e9ecef;
+    padding: 4px 8px;
+    margin: 2px;
+    border-radius: 12px;
+    font-size: 0.875rem;
+}
+
+
+
+
+/* Intern action buttons */
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 120px;
+}
+
+.status-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: all 0.2s;
+}
+
+.activate-btn {
+    background: #28a745;
+    color: white;
+}
+
+.activate-btn:hover {
+    background: #218838;
+    transform: translateY(-1px);
+}
+
+.exit-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.exit-btn:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+}
+
+.view-tasks-btn {
+    background: #6c757d;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.view-tasks-btn:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+}
+
+.status-disabled {
+    color: #6c757d;
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+/* Make sure table cells have enough space */
+.data-table td:last-child {
+    min-width: 140px;
+}
+
+
+
+
+/* Login Modal Styles */
+.login-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.login-option {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+}
+
+.login-option h4 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.login-option p {
+    color: #6c757d;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+.login-info {
+    background: #e8f4fd;
+    border: 1px solid #b3d9ff;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 20px;
+    font-size: 0.9rem;
+}
+
+.login-info p {
+    margin-bottom: 5px;
+}
+
+/* Role-specific styles */
+.role-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.role-hr {
+    background: #007bff;
+    color: white;
+}
+
+.role-intern {
+    background: #28a745;
+    color: white;
+}
+
+/* Intern-specific task view */
+.task-card.intern-task {
+    border-left: 4px solid #28a745;
+}
+
+.task-card.available-task {
+    border-left: 4px solid #ffc107;
+}
+
+/* Hide elements for interns */
+.hidden-for-intern {
+    display: none !important;
+}
