@@ -51,9 +51,10 @@ document.addEventListener("click", (e) => {
     totalTasks--;
   }
 
-  if (action === "next") {
+  else if (action === "next") {
     moveTask(task);
   }
+  
 
   updateCount();
 });

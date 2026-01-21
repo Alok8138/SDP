@@ -716,21 +716,6 @@
 
 
 /* Login Modal Styles */
-#login-modal {
-    background-color: #f4f7f6; /* Solid background covering entire app */
-    z-index: 9999; /* Ensure it's on top of everything */
-}
-
-/* Specific error message style for login forms */
-.login-error-message {
-    color: #dc3545;
-    font-size: 0.875rem;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    min-height: 20px;
-    font-weight: 500;
-    text-align: center;
-}
 .login-toggle {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

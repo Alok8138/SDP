@@ -19,7 +19,8 @@ userNameSpan.textContent = `Logged in as: ${state.user.name}`;
 // Render messages
 function renderMessages() {
   messagesDiv.innerHTML = "";
-
+  console.log(state);
+  
   state.messages.forEach(msg => {
     const msgDiv = document.createElement("div");
     msgDiv.className = msg.sender === state.user.name ? "message own" : "message";
@@ -36,6 +37,8 @@ function renderMessages() {
 
 // Send message
 sendBtn.addEventListener("click", sendMessage);
+
+
 messageInput.addEventListener("keypress", e => {
   if (e.key === "Enter") sendMessage();
 });
@@ -68,6 +71,7 @@ function sendMessage() {
 renderMessages();
 
 channel.onmessage = (event) => {
+  console.log("Received message:", event);
   const incomingMsg = event.data;
 
   const exists = state.messages.some(msg => msg.id === incomingMsg.id);
