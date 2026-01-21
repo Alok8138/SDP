@@ -407,18 +407,6 @@ th {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 /* ===== Product Page Layout ===== */
 
 .plp-layout {
@@ -463,9 +451,10 @@ th {
 
 .product-section h2 {
     margin-bottom: 15px;
+    margin-top: 0px;
 }
 
-/* Grid refinement (optional but clean) */
+/* Grid refinement*/
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -474,17 +463,17 @@ th {
 
 
 
-/* ===== Alignment Fix ===== */
+/* ===== Alignment===== */
 
 .plp-layout {
     align-items: flex-start;
-    /* force same top alignment */
+    
 }
 
-/* Remove extra top margin from product heading */
+/* Remove extra top margin from product heading
 .product-section h2 {
     margin-top: 0;
-}
+} */
 
 /* Push filter content slightly down to match cards */
 .filter-box {
@@ -547,4 +536,119 @@ th {
     text-align: center;
     padding: 15px;
     color: #888;
+}
+
+
+/* ===== Checkout Page Improvements ===== */
+
+.checkout-container {
+    max-width: 800px;
+    margin: 40px auto;
+}
+
+.checkout-title {
+    margin-bottom: 25px;
+}
+
+.checkout-box {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+/* Radio options */
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 12px 0;
+    font-size: 15px;
+}
+
+.radio-option span {
+    color: #666;
+}
+
+/* Order summary table */
+.summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.summary-table th,
+.summary-table td {
+    border: 1px solid #ddd;
+    padding: 14px;
+    text-align: left;
+}
+
+.summary-table th {
+    background: #f5f5f5;
+}
+
+.total-row td {
+    font-weight: bold;
+    background: #fafafa;
+}
+
+/* Checkout button */
+.primary-btn {
+    margin-top: 20px;
+    padding: 12px 25px;
+    background: #000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.primary-btn:hover {
+    background: #333;
+}
+
+
+
+/* ===== Quantity Selector ===== */
+
+.quantity-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 20px 0;
+    
+}
+
+.qty-label {
+    font-weight: bold;
+}
+
+.quantity-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    
+}
+
+.quantity-box button {
+    padding: 10px 14px;
+    border: none;
+    background: #f5f5f5;
+    cursor: pointer;
+    font-size: 18px;
+    color: #333;
+    margin-top: -0;
+ 
+}
+
+.quantity-box button:hover {
+    background: #e0e0e0;
+}
+
+.qty-value {
+    padding: 6px 16px;
+    min-width: 30px;
+    text-align: center;
+    font-weight: bold;
+    color: #000;
 }

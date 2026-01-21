@@ -73,8 +73,8 @@ All data used in this project is **static and hardcoded** directly into HTML fil
 - Black & white theme
 - Clean and minimal UI
 - No inline CSS
-- No external CSS frameworks (Bootstrap, Tailwind, etc.)
-- Fully responsive using CSS Grid and Flexbox
+- No external CSS frameworks 
+- responsive using CSS 
 
 ---
 
@@ -88,11 +88,5 @@ All data used in this project is **static and hardcoded** directly into HTML fil
 ---
 
 ## 🚧 Upcoming Improvements
-
-> 🔔 **By today**, the following improvements will be added:
-
-- Quantity increment/decrement (`+ / -`) buttons on the Cart page
-- UI refinements based on feedback
-- Minor layout and spacing improvements
 
 All necessary changes and enhancements will be **updated accordingly** in the project.
