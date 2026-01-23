@@ -64,8 +64,76 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <section class="container pdp">
   <div class="pdp-layout">
 
-    <div class="pdp-image">
-      <img src="<?= $product['image'] ?>" alt="<?= $product['name'] ?>">
+    <div class="pdp-image" id="pdpImageContainer">
+      <?php
+      // Prepare images array: favour gallery if available, otherwise fallback to single image
+      $sliderImages = !empty($product['gallery']) ? $product['gallery'] : [$product['image']];
+      $hasMultipleImages = count($sliderImages) > 1;
+      ?>
+      
+      <img src="<?= $sliderImages[0] ?>" alt="<?= $product['name'] ?>" id="mainImage">
+      
+      <?php if ($hasMultipleImages): ?>
+        <button class="slider-btn prev-btn" id="prevBtn" aria-label="Previous image">&#10094;</button>
+        <button class="slider-btn next-btn" id="nextBtn" aria-label="Next image">&#10095;</button>
+        
+        <div class="slider-dots" id="sliderDots">
+          <?php foreach ($sliderImages as $index => $img): ?>
+            <span class="dot <?= $index === 0 ? 'active' : '' ?>" data-index="<?= $index ?>"></span>
+          <?php endforeach; ?>
+        </div>
+      <?php endif; ?>
+
+      <script>
+        (function() {
+          const images = <?= json_encode($sliderImages) ?>;
+          const mainImage = document.getElementById('mainImage');
+          const prevBtn = document.getElementById('prevBtn');
+          const nextBtn = document.getElementById('nextBtn');
+          const dots = document.querySelectorAll('.dot');
+          
+          let currentIndex = 0;
+          
+          function showImage(index) {
+            // Loop navigation
+            if (index < 0) {
+              currentIndex = images.length - 1;
+            } else if (index >= images.length) {
+              currentIndex = 0;
+            } else {
+              currentIndex = index;
+            }
+            
+            // Update image source
+            mainImage.src = images[currentIndex];
+            
+            // Update dots
+            dots.forEach(dot => dot.classList.remove('active'));
+            if (dots[currentIndex]) {
+              dots[currentIndex].classList.add('active');
+            }
+          }
+          
+          if (prevBtn) {
+            prevBtn.addEventListener('click', function() {
+              showImage(currentIndex - 1);
+            });
+          }
+          
+          if (nextBtn) {
+            nextBtn.addEventListener('click', function() {
+              showImage(currentIndex + 1);
+            });
+          }
+          
+          dots.forEach(dot => {
+            dot.addEventListener('click', function() {
+              const index = parseInt(this.getAttribute('data-index'));
+              showImage(index);
+            });
+          });
+        })();
+      </script>
     </div>
 
     <div class="pdp-details">

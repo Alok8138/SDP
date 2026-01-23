@@ -1,92 +1,65 @@
-# EasyCart – Phase 1 🛒
+# EasyCart
 
-EasyCart is a **static e-commerce website** built as part of a frontend intern evaluation.  
-Phase 1 focuses on layout, UI structure, and clean HTML/CSS implementation without any backend or frameworks.
+EasyCart is a lightweight, file-based PHP e-commerce application designed to demonstrate core shopping functionalities without the need for a complex database backend. It uses PHP files to store arrays of data for products, brands, and categories.
 
----
+## Features
 
-## 📌 Project Overview
+- **Product Browsing**:
+  - **Home Page**: Features highlighted products, categories, and brands.
+  - **Product Listing Page (PLP)**: Browse all products with sidebar filters for **Brand** and **Price**.
+  - **Product Detail Page (PDP)**: View detailed information, pricing, and features for individual products.
+- **Shopping Cart**:
+  - Add items to the cart from the PLP or PDP.
+  - View cart summary and manage item quantities.
+  - Session-based cart persistence.
+- **Checkout**: A checkout page to review orders (frontend implementation).
+- **Responsive Design**: Mobile-friendly layout using custom CSS.
 
-- **Project Name:** EasyCart
-- **Phase:** Phase 1 (Static Website)
-- **Technology Used:**
-  - HTML5
-  - CSS3 (No frameworks)
-- **JavaScript:** Not used in this phase
-- **Backend:** None
-- **Database:** None
+## Project Structure
 
-All data used in this project is **static and hardcoded** directly into HTML files.
+```
+easyCart/
+├── data/           # Data files (products.php, brands.php, categories.php)
+├── images/         # Product images and icons
+├── includes/       # Shared partials (header.php, footer.php, init.php)
+├── pages/          # Application pages
+│   ├── index.php   # Homepage
+│   ├── plp.php     # Product Listing Page
+│   ├── pdp.php     # Product Detail Page
+│   ├── cart.php    # Shopping Cart
+│   ├── checkout.php# Checkout Page
+│   └── ...
+└── style/
+    └── style.css   # Main stylesheet
+```
 
----
+## Setup & Installation
 
-## 📄 Pages Implemented (8 Pages)
+1.  **Prerequisites**:
+    - A local server environment with PHP support (e.g., [XAMPP](https://www.apachefriends.org/), [WAMP](https://www.wampserver.com/), or PHP built-in server).
 
-1. **Home Page (`index.html`)**
-   - Hero section
-   - Featured products
-   - Popular categories
-   - Popular brands
+2.  **Installation**:
+    - Clone or download this repository.
+    - Move the project folder to your server's root directory:
+      - **XAMPP**: `C:\xampp\htdocs\easyCart`
+      - **WAMP**: `C:\wamp64\www\easyCart`
 
-2. **Product Listing Page (`plp.html`)**
-   - Product grid (max 3 items per row)
-   - Product image, name, price
-   - Discounted price display
-   - “Add to Cart” button (static)
+3.  **Running the Application**:
+    - Start your local web server (Apache).
+    - Open your browser and navigate to:
+      ```
+      http://localhost/easyCart/pages/index.php
+      ```
 
-3. **Product Detail Page (`pdp.html`)**
-   - Product image
-   - Detailed description
-   - Key features list
-   - Original price, discount, final price
-   - Add to Cart button
+## Usage
 
-4. **Cart Page (`cart.html`)**
-   - Cart items table
-   - Quantity column
-   - Subtotal calculation
-   - Shipping method selection
-   - Proceed to checkout option
+- **Browsing**: Start at the homepage to see featured items.
+- **Filtering**: Go to the "Shop" page (PLP) to filter products by brand or price range.
+- **Buying**: Click "View Product" to read more or "Add to Cart" to select items.
+- **Checkout**: Proceed to the cart and click "Checkout" to see the order summary.
 
-5. **Checkout Page (`checkout.html`)**
-   - Shipping selection
-   - Order summary table
-   - Place order button
+## Technologies Used
 
-6. **Login Page (`login.html`)**
-   - Centered login form
-   - Email & password fields
-   - Link to signup page
-
-7. **Signup Page (`signup.html`)**
-   - Centered signup form
-   - Name, email, password fields
-   - Clean and simple UI
-
-8. **My Orders Page (`myOrders.html`)**
-   - Static table showing previous orders
-
----
-
-## 🎨 Styling Guidelines
-
-- Black & white theme
-- Clean and minimal UI
-- No inline CSS
-- No external CSS frameworks 
-- responsive using CSS 
-
----
-
-## ⚙️ Functional Notes
-
-- All buttons are **static**
-- No real cart logic or authentication
-- Navigation works using standard HTML links
-- Forms do not submit data (no backend)
-
----
-
-## 🚧 Upcoming Improvements
-
-All necessary changes and enhancements will be **updated accordingly** in the project.
+- **PHP**: Core application logic and data handling.
+- **HTML5 & CSS3**: Structure and styling (Grid/Flexbox).
+- **JavaScript**: Simple client-side interactions (validations).

@@ -108,7 +108,7 @@ body {
 
 /* ===== CONTAINER ===== */
 .container {
-    max-width: 1200px;
+    max-width: 1320px;
     margin: 0 auto;
     padding: 2rem 1.5rem;
     flex: 1;
@@ -222,7 +222,7 @@ button:active {
 /* Ensure proper grid display on desktop */
 @media (min-width: 1200px) {
     .grid.three {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
@@ -324,8 +324,8 @@ button:active {
 }
 
 .card-cart-btn img {
-    width: 20px;
-    height: 20px;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
     display: block;
 }
@@ -388,6 +388,7 @@ button:active {
     transition: all 0.3s ease;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    min-width: 200px;
 }
 
 .category-card:hover,
@@ -646,6 +647,10 @@ tbody tr:last-child td {
     top: 100px;
 }
 
+.checkout-page .cart-table {
+    margin-top: 0;
+}
+
 .cart-summary h3 {
     font-size: 1.5rem;
     margin-bottom: 1.5rem;
@@ -736,7 +741,100 @@ tbody tr:last-child td {
 
 /* ===== CHECKOUT PAGE ===== */
 .checkout-page {
-    max-width: 800px;
+    max-width: 1200px;
+}
+
+.checkout-layout {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.checkout-main {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.shipping-info {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e9ecef;
+}
+
+.shipping-info h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.order-items {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e9ecef;
+}
+
+.order-items h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    background: #ffffff;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #212529;
+    box-shadow: 0 0 0 3px rgba(33, 37, 41, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.error-message {
+    background: #fff3cd;
+    color: #856404;
+    padding: 0.875rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+    border: 1px solid #ffc107;
+    font-size: 0.9rem;
 }
 
 .checkout-box {
@@ -805,7 +903,7 @@ tbody tr:last-child td {
 .plp-layout {
     display: flex;
     gap: 2rem;
-    max-width: 1200px;
+    max-width: 1320px;
     margin: 0 auto;
     align-items: flex-start;
 }
@@ -924,6 +1022,10 @@ tbody tr:last-child td {
     background: #f8f9fa;
     border-radius: 8px;
     padding: 2rem;
+    position: relative;
+    /* For absolute positioning of slider controls */
+    overflow: hidden;
+    /* Keep everything inside */
 }
 
 .pdp-image img {
@@ -931,6 +1033,78 @@ tbody tr:last-child td {
     max-height: 500px;
     object-fit: contain;
     border-radius: 4px;
+    transition: opacity 0.3s ease-in-out;
+    /* Smooth transition if we fade, but we are switching src */
+}
+
+/* Slider Controls */
+/* Slider Controls */
+.pdp-image .slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.8);
+    color: #212529;
+    border: 1px solid #dee2e6;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.25rem;
+    transition: all 0.2s ease;
+    z-index: 10;
+    padding: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.pdp-image .slider-btn:hover {
+    background: #212529;
+    color: #ffffff;
+    border-color: #212529;
+    transform: translateY(-50%) scale(1.1);
+    /* Fix generic button hover transform */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.pdp-image .prev-btn {
+    left: 1rem;
+    right: auto;
+}
+
+.pdp-image .next-btn {
+    right: 1rem;
+    left: auto;
+}
+
+.slider-dots {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+    z-index: 10;
+    padding: 0.5rem 0.75rem;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    background-color: #adb5bd;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.dot.active,
+.dot:hover {
+    background-color: #212529;
+    transform: scale(1.2);
 }
 
 .pdp-details h1 {
@@ -1317,6 +1491,14 @@ tbody tr:last-child td {
         padding: 1.5rem;
     }
 
+    .checkout-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .cart-summary {
+        position: static;
+    }
+
     .cart-actions {
         flex-direction: column;
     }
@@ -1378,3 +1560,5 @@ tbody tr:last-child td {
         font-size: 1.375rem;
     }
 }
+/* FORCE SLIDER FIX */
+.pdp-image .slider-btn { position: absolute !important; top: 50% !important; transform: translateY(-50%) !important; background: rgba(255, 255, 255, 0.8) !important; color: #212529 !important; border: 1px solid #dee2e6 !important; z-index: 100 !important; width: 40px !important; height: 40px !important; display: flex !important; margin: 0 !important; } .pdp-image .slider-btn:hover { background: #212529 !important; color: #ffffff !important; transform: translateY(-50%) scale(1.1) !important; } .pdp-image .prev-btn { left: 1rem !important; right: auto !important; } .pdp-image .next-btn { right: 1rem !important; left: auto !important; }

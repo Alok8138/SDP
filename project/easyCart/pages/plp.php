@@ -13,6 +13,13 @@ $brands = require '../data/brands.php';
  */
 $products = $allProducts;
 
+
+/**
+ * product count 
+ */
+$productCount = count($allProducts);
+
+
 // Brand filter
 if (isset($_GET['brand']) && is_array($_GET['brand'])) {
   $selectedBrands = $_GET['brand'];
@@ -65,7 +72,7 @@ if (isset($_GET['maxPrice']) && $_GET['maxPrice'] !== '') {
             name="maxPrice"
             id="maxPriceInput"
             min="0"
-            step="0.01"
+            step="1"
             placeholder="Enter price"
             value="<?= isset($_GET['maxPrice']) ? htmlspecialchars($_GET['maxPrice']) : '' ?>" />
         </div>
@@ -77,7 +84,7 @@ if (isset($_GET['maxPrice']) && $_GET['maxPrice'] !== '') {
     <!-- PRODUCT LIST -->
     <section class="products">
       <h2>All Products</h2>
-
+      <p class="product-count"><?= count($products) ?> of <?= $productCount ?> products found</p>
       <?php if (empty($products)): ?>
         <p>No products found.</p>
       <?php else: ?>

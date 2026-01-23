@@ -3,16 +3,19 @@ require '../includes/init.php';
 require '../includes/header.php';
 
 /**
- * Load orders
- * Priority:
- * 1. Session orders (after checkout)
- * 2. Default static orders
+ * Load ALL orders
+ * - Static orders (default)
+ * - Session orders (after checkout)
  */
-if (isset($_SESSION['orders']) && !empty($_SESSION['orders'])) {
-  $orders = $_SESSION['orders'];
-} else {
-  $orders = require '../data/orders.php';
-}
+
+// Load static orders
+$staticOrders = require '../data/orders.php';
+
+// Load session orders (if any)
+$sessionOrders = $_SESSION['orders'] ?? [];
+
+// Merge both (static first, session last)
+$orders = array_merge($staticOrders, $sessionOrders);
 ?>
 
 <section class="container orders-page">
@@ -39,11 +42,11 @@ if (isset($_SESSION['orders']) && !empty($_SESSION['orders'])) {
       <tbody>
         <?php foreach ($orders as $order): ?>
           <tr>
-            <td><?= $order['id'] ?></td>
-            <td><?= $order['date'] ?></td>
-            <td><?= $order['items'] ?></td>
-            <td>$<?= $order['total'] ?></td>
-            <td><?= $order['status'] ?></td>
+            <td><?= htmlspecialchars($order['id']) ?></td>
+            <td><?= htmlspecialchars($order['date']) ?></td>
+            <td><?= htmlspecialchars($order['items']) ?></td>
+            <td>$<?= htmlspecialchars($order['total']) ?></td>
+            <td><?= htmlspecialchars($order['status']) ?></td>
           </tr>
         <?php endforeach; ?>
       </tbody>

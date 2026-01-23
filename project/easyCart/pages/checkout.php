@@ -21,95 +21,145 @@ foreach ($cart as $item) {
 }
 
 /**
+ * calculate tax
+ */
+ $subtotal = $subtotal*1.1;
+
+/**
  * Place order
  */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $deliveryType = isset($_POST['delivery_type']) ? $_POST['delivery_type'] : 'normal';
   $deliveryCharge = ($deliveryType === 'express') ? $subtotal * 0.1 : 0;
   $finalTotal = $subtotal + $deliveryCharge;
+  $contactNumber = isset($_POST['contact_number']) ? trim($_POST['contact_number']) : '';
+  $address = isset($_POST['address']) ? trim($_POST['address']) : '';
 
-  // Load existing orders
-  $orders = require '../data/orders.php';
+  // Validate required fields
+  if (empty($contactNumber) || empty($address)) {
+    $error = "Please fill in all required fields.";
+  } else {
+    // Load existing orders
+    $orders = require '../data/orders.php';
 
-  // Create new order
-  $orders[] = [
-    "id" => "#ORD" . rand(1000, 9999),
-    "date" => date("d M Y"),
-    "items" => count($cart),
-    "total" => $finalTotal,
-    "status" => "Placed"
-  ];
+    // Create new order
+    $orders[] = [
+      "id" => "#ORD" . rand(1000, 9999),
+      "date" => date("d M Y"),
+      "items" => count($cart),
+      "total" => $finalTotal,
+      "status" => "Placed",
+      "contact" => $contactNumber,
+      "address" => $address
+    ];
 
-  // Clear cart
-  $_SESSION['cart'] = [];
+    // Clear cart
+    $_SESSION['cart'] = [];
 
-  // Save orders to session
-  $_SESSION['orders'] = $orders;
+    // Save orders to session
+    $_SESSION['orders'] = $orders;
 
-  header("Location: myOrders.php");
-  exit;
+    header("Location: myOrders.php");
+    exit;
+  }
 }
 ?>
 
 <section class="container checkout-page">
   <h2>Checkout</h2>
 
-  <table class="cart-table">
-    <thead>
-      <tr>
-        <th>Product</th>
-        <th>Qty</th>
-        <th>Total</th>
-      </tr>
-    </thead>
+  <?php if (isset($error)): ?>
+    <div class="error-message"><?= htmlspecialchars($error) ?></div>
+  <?php endif; ?>
 
-    <tbody>
-      <?php foreach ($cart as $item): ?>
-        <tr>
-          <td><?= $item['name'] ?></td>
-          <td><?= $item['qty'] ?></td>
-          <td>$<?= $item['price'] * $item['qty'] ?></td>
-        </tr>
-      <?php endforeach; ?>
-    </tbody>
-  </table>
+  <div class="checkout-layout">
+    <div class="checkout-main">
+      <div class="shipping-info">
+        <h3>Shipping Information</h3>
+        <form method="POST" id="checkout-form">
+          <div class="form-group">
+            <label for="contact_number">Contact Number *</label>
+            <input
+              type="tel"
+              id="contact_number"
+              name="contact_number"
+              placeholder="Enter your contact number"
+              pattern="[0-9]{10}"
+              required
+              value="<?= isset($_POST['contact_number']) ? htmlspecialchars($_POST['contact_number']) : '' ?>" />
+          </div>
 
-  <div class="cart-summary">
-    <h3>Order Summary</h3>
+          <div class="form-group">
+            <label for="address">Delivery Address *</label>
+            <textarea
+              id="address"
+              name="address"
+              rows="4"
+              placeholder="Enter your complete delivery address"
+              required><?= isset($_POST['address']) ? htmlspecialchars($_POST['address']) : '' ?></textarea>
+          </div>
+        </form>
+      </div>
 
-    <div class="summary-row">
-      <span>Subtotal:</span>
-      <span id="subtotal">$<?= number_format($subtotal, 2) ?></span>
-    </div>
+      <div class="order-items">
+        <h3>Order Items</h3>
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Qty</th>
+              <th>Total</th>
+            </tr>
+          </thead>
 
-    <div class="delivery-section">
-      <h4>Delivery Option</h4>
-      <div class="delivery-options">
-        <label class="delivery-option">
-          <input type="radio" name="delivery" value="normal" checked>
-          <span>Normal Delivery (Free)</span>
-        </label>
-        <label class="delivery-option">
-          <input type="radio" name="delivery" value="express">
-          <span>Express Delivery (+10%)</span>
-        </label>
+          <tbody>
+            <?php foreach ($cart as $item): ?>
+              <tr>
+                <td><?= $item['name'] ?></td>
+                <td><?= $item['qty'] ?></td>
+                <td>$<?= $item['price'] * $item['qty'] ?></td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
       </div>
     </div>
 
-    <div class="summary-row">
-      <span>Delivery Charge:</span>
-      <span id="delivery-charge">$0.00</span>
-    </div>
+    <div class="cart-summary">
+      <h3>Order Summary</h3>
 
-    <div class="summary-row total-row">
-      <span>Total:</span>
-      <span id="final-total">$<?= number_format($subtotal, 2) ?></span>
-    </div>
+      <div class="summary-row">
+        <span>Subtotal:</span>
+        <span id="subtotal">$<?= number_format($subtotal, 2) ?></span>
+      </div>
 
-    <form method="POST" id="checkout-form">
-      <input type="hidden" name="delivery_type" id="delivery-type" value="normal">
-      <button type="submit">Place Order</button>
-    </form>
+      <div class="delivery-section">
+        <h4>Delivery Option</h4>
+        <div class="delivery-options">
+          <label class="delivery-option">
+            <input type="radio" name="delivery" value="normal" checked>
+            <span>Normal Delivery (Free)</span>
+          </label>
+          <label class="delivery-option">
+            <input type="radio" name="delivery" value="express">
+            <span>Express Delivery (+10%)</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="summary-row">
+        <span>Delivery Charge:</span>
+        <span id="delivery-charge">$0.00</span>
+      </div>
+
+      <div class="summary-row total-row">
+        <span>Total:</span>
+        <span id="final-total">$<?= number_format($subtotal, 2) ?></span>
+      </div>
+
+      <input type="hidden" name="delivery_type" id="delivery-type" value="normal" form="checkout-form">
+      <button type="submit" form="checkout-form" class="checkout-btn">Place Order</button>
+    </div>
   </div>
 
   <script>

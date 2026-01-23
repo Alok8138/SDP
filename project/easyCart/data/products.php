@@ -14,6 +14,11 @@ return [
             "30 hours battery life",
             "Bluetooth 5.2",
             "Built-in microphone"
+        ],
+        "gallery" => [
+            "../images/phone.jpg",
+            "../images/headphone.jpg",
+            "../images/laptop.jpg"
         ]
     ],
     [
@@ -29,6 +34,11 @@ return [
             "Heart rate monitoring",
             "Sleep tracking",
             "Water resistant"
+        ],
+        "gallery" => [
+            "../images/headphone.jpg",
+            "../images/headphone.jpg",
+            "../images/headphone.jpg"
         ]
     ],
     [
@@ -44,10 +54,15 @@ return [
             "High resolution camera",
             "Fast processor",
             "Long battery life"
+        ],
+        "gallery" => [
+            "../images/headphone.jpg",
+            "../images/headphone.jpg",
+            "../images/headphone.jpg"
         ]
     ],
     [
-        "id" => 3,
+        "id" => 4,
         "name" => "Smart Phone",
         "price" => 149,
         "old_price" => 199,
@@ -59,12 +74,17 @@ return [
             "High resolution camera",
             "Fast processor",
             "Long battery life"
+        ],
+        "gallery" => [
+            "../images/headphone.jpg",
+            "../images/headphone.jpg",
+            "../images/headphone.jpg"
         ]
     ],
     [
-        "id" => 3,
+        "id" => 5,
         "name" => "Smart Phone",
-        "price" => 149,
+        "price" => 1499,
         "old_price" => 199,
         "image" => "../images/phone.jpg",
         "brand" => "Apple",
@@ -74,21 +94,111 @@ return [
             "High resolution camera",
             "Fast processor",
             "Long battery life"
+        ],
+        "gallery" => [
+            "../images/headphone.jpg",
+            "../images/headphone.jpg",
+            "../images/headphone.jpg"
         ]
     ],
     [
-        "id" => 3,
+        "id" => 6,
         "name" => "Smart Phone",
         "price" => 149,
         "old_price" => 199,
         "image" => "../images/phone.jpg",
-        "brand" => "Apple",
+        "brand" => "Lenovo",
         "category" => "Electronics",
         "description" => "Powerful smartphone with amazing camera.",
         "features" => [
             "High resolution camera",
             "Fast processor",
             "Long battery life"
+        ],
+        "gallery" => [
+            "../images/headphone.jpg",
+            "../images/headphone.jpg",
+            "../images/headphone.jpg"
+        ]
+    ],
+    [
+        "id" => 7,
+        "name" => "Smart Phone",
+        "price" => 149,
+        "old_price" => 199,
+        "image" => "../images/phone.jpg",
+        "brand" => "Lenovo",
+        "category" => "Electronics",
+        "description" => "Powerful smartphone with amazing camera.",
+        "features" => [
+            "High resolution camera",
+            "Fast processor",
+            "Long battery life"
+        ],
+        "gallery" => [
+            "../images/headphone.jpg",
+            "../images/headphone.jpg",
+            "../images/headphone.jpg"
+        ]
+    ],
+    [
+        "id" => 8,
+        "name" => "Smart Phone",
+        "price" => 149,
+        "old_price" => 199,
+        "image" => "../images/phone.jpg",
+        "brand" => "Lenovo",
+        "category" => "Electronics",
+        "description" => "Powerful smartphone with amazing camera.",
+        "features" => [
+            "High resolution camera",
+            "Fast processor",
+            "Long battery life"
+        ],
+        "gallery" => [
+            "../images/headphone.jpg",
+            "../images/headphone.jpg",
+            "../images/headphone.jpg"
+        ]
+    ],
+    [
+        "id" => 9,
+        "name" => "Smart Phone",
+        "price" => 149,
+        "old_price" => 199,
+        "image" => "../images/phone.jpg",
+        "brand" => "Lenovo",
+        "category" => "Electronics",
+        "description" => "Powerful smartphone with amazing camera.",
+        "features" => [
+            "High resolution camera",
+            "Fast processor",
+            "Long battery life"
+        ],
+        "gallery" => [
+            "../images/headphone.jpg",
+            "../images/headphone.jpg",
+            "../images/headphone.jpg"
+        ]
+    ],
+    [
+        "id" => 10,
+        "name" => "Smart Phone",
+        "price" => 149,
+        "old_price" => 199,
+        "image" => "../images/phone.jpg",
+        "brand" => "Lenovo",
+        "category" => "Electronics",
+        "description" => "Powerful smartphone with amazing camera.",
+        "features" => [
+            "High resolution camera",
+            "Fast processor",
+            "Long battery life"
+        ],
+        "gallery" => [
+            "../images/headphone.jpg",
+            "../images/headphone.jpg",
+            "../images/headphone.jpg"
         ]
     ]
 ];
