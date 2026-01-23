@@ -3,16 +3,16 @@ const Renderer = {
     // Render current view based on state
     renderView(viewName, data = {}) {
         console.log(`Renderer: Rendering view ${viewName}`);
-        
+
         const container = document.getElementById('view-container');
         if (!container) {
             console.error('View container not found');
             return;
         }
-        
+
         // Clear container
         container.innerHTML = '';
-        
+
         // Get template
         const template = document.getElementById(`${viewName}-template`);
         if (!template) {
@@ -20,13 +20,13 @@ const Renderer = {
             console.error(`Template ${viewName}-template not found`);
             return;
         }
-        
+
         // Clone and append template
         const content = template.content.cloneNode(true);
         container.appendChild(content);
-        
+
         console.log(`Template ${viewName} cloned and appended`);
-        
+
         // Render view-specific content with a small delay to ensure DOM is ready
         setTimeout(() => {
             switch (viewName) {
@@ -51,34 +51,34 @@ const Renderer = {
                     this.renderLogsView();
                     break;
             }
-            
+
             // Update navigation active state
             this.updateNavigation();
-            
+
             // Update role-based visibility
             this.updateRoleBasedVisibility();
         }, 50);
     },
-    
+
     // Render dashboard - FIXED VERSION
     renderDashboard() {
         console.log('Rendering dashboard...');
-        
+
         // Update stats - this should work now since DOM elements exist
         this.updateDashboardStats();
-        
+
         // Render recent logs
         this.renderRecentLogs();
-        
+
         console.log('Dashboard rendered');
     },
-    
+
     // Force update dashboard stats - FIXED VERSION
     updateDashboardStats() {
         console.log('Updating dashboard stats...');
-        
+
         const stats = StateManager.getStats();
-        
+
         // Wait a moment to ensure DOM elements are available
         setTimeout(() => {
             // Safely update each stat element
@@ -91,17 +91,17 @@ const Renderer = {
                     console.warn(`Element ${id} not found`);
                 }
             };
-            
+
             updateElement('total-interns', stats.totalInterns);
             updateElement('total-tasks', stats.totalTasks);
             updateElement('active-interns', stats.activeInterns);
             updateElement('completed-tasks', stats.completedTasks);
-            
+
             // Also update sidebar
             this.updateSidebarStats();
         }, 10);
     },
-    
+
     // Render recent logs
     renderRecentLogs() {
         setTimeout(() => {
@@ -110,14 +110,14 @@ const Renderer = {
                 console.warn('Recent logs container not found');
                 return;
             }
-            
+
             const logs = StateManager.getRecentLogs(5);
-            
+
             if (logs.length === 0) {
                 container.innerHTML = '<p class="placeholder-text">No recent activity</p>';
                 return;
             }
-            
+
             container.innerHTML = logs.map(log => `
                 <div class="log-item">
                     <div class="log-timestamp">${new Date(log.timestamp).toLocaleString()}</div>
@@ -127,19 +127,19 @@ const Renderer = {
             `).join('');
         }, 10);
     },
-    
+
     // Render interns view
     renderInternsView() {
         console.log('Rendering interns view...');
-        
+
         // Render interns table with a small delay
         setTimeout(() => {
             this.renderInternsTable();
         }, 10);
-        
+
         console.log('Interns view rendered');
     },
-    
+
     // Render interns table
     renderInternsTable(interns = null) {
         const tbody = document.getElementById('interns-table-body');
@@ -147,9 +147,9 @@ const Renderer = {
             console.warn('Interns table body not found');
             return;
         }
-        
+
         const internsToRender = interns || globalState.interns;
-        
+
         if (internsToRender.length === 0) {
             tbody.innerHTML = `
                 <tr>
@@ -158,11 +158,11 @@ const Renderer = {
             `;
             return;
         }
-        
+
         tbody.innerHTML = internsToRender.map(intern => {
             const taskCount = intern.assignedTasks.length;
             const totalHours = RulesEngine.calculateTotalHours(intern.id);
-            
+
             // Determine available status changes
             let statusActions = '';
             if (intern.status === 'ONBOARDING') {
@@ -182,7 +182,7 @@ const Renderer = {
                     <span class="status-disabled">Cannot change</span>
                 `;
             }
-            
+
             return `
                 <tr>
                     <td><strong>${intern.id}</strong></td>
@@ -206,11 +206,11 @@ const Renderer = {
             `;
         }).join('');
     },
-    
+
     // Render tasks view
     renderTasksView() {
         console.log('Rendering tasks view for role:', globalState.currentRole);
-        
+
         // Render tasks based on role with a small delay
         setTimeout(() => {
             if (globalState.currentRole === 'INTERN') {
@@ -219,16 +219,16 @@ const Renderer = {
                 this.renderAllTasksView();
             }
         }, 10);
-        
+
         console.log('Tasks view rendered');
     },
-    
+
     // Render all tasks (HR view)
     renderAllTasksView() {
         this.renderTasksList();
         this.renderTaskDetails();
     },
-    
+
     // Render tasks list
     renderTasksList(tasks = null) {
         const container = document.getElementById('tasks-container');
@@ -236,66 +236,40 @@ const Renderer = {
             console.warn('Tasks container not found');
             return;
         }
-        
-        const tasksToRender = tasks || globalState.tasks;
-        
+
+        // Determine tasks to render if not provided
+        let tasksToRender = tasks;
+        if (!tasksToRender) {
+            if (globalState.currentRole === 'INTERN') {
+                const internId = StateManager.getCurrentIntern()?.id;
+                tasksToRender = internId ? StateManager.getTasksForIntern(internId) : [];
+            } else {
+                tasksToRender = globalState.tasks;
+            }
+        }
+
         if (tasksToRender.length === 0) {
             container.innerHTML = '<p class="placeholder-text">No tasks available</p>';
             return;
         }
-        
+
+        const currentRole = globalState.currentRole || 'HR';
+        const currentInternId = globalState.currentInternId;
+
         container.innerHTML = tasksToRender.map(task => {
-            const assignedTo = task.assignedTo ? 
+            const assignedTo = task.assignedTo ?
                 StateManager.getInternById(task.assignedTo)?.name : 'Unassigned';
-            
+
+            const isAssignedToMe = currentRole === 'INTERN' && task.assignedTo === currentInternId;
+            const cardClass = isAssignedToMe ? 'task-card intern-task' : 'task-card';
+
             return `
-                <div class="task-card" data-task-id="${task.id}">
-                    <div class="task-header">
-                        <div class="task-title">${task.title}</div>
-                        <span class="task-status task-status-${task.status}">${task.status}</span>
-                    </div>
-                    <div class="task-description">${task.description.substring(0, 100)}...</div>
-                    <div class="task-skills">
-                        ${task.requiredSkills.map(skill => `<span class="skill-tag">${skill}</span>`).join(' ')}
-                    </div>
-                    <div class="task-info">
-                        <small><i class="fas fa-clock"></i> ${task.estimatedHours} hours</small>
-                        <small><i class="fas fa-user"></i> ${assignedTo}</small>
-                    </div>
-                </div>
-            `;
-        }).join('');
-    },
-    
-    // Render intern tasks view (only tasks assigned to that intern)
-    renderInternTasksView() {
-        const currentIntern = StateManager.getCurrentIntern();
-        if (!currentIntern) {
-            this.renderTasksList([]);
-            this.renderTaskDetails();
-            return;
-        }
-        
-        // Only tasks actually assigned to this intern
-        const assignedTasks = StateManager.getTasksForIntern(currentIntern.id);
-        
-        // Render with type indicators
-        const container = document.getElementById('tasks-container');
-        if (!container) return;
-        
-        if (assignedTasks.length === 0) {
-            container.innerHTML = '<p class="placeholder-text">You have no tasks assigned</p>';
-            return;
-        }
-        
-        container.innerHTML = assignedTasks.map(task => {
-            return `
-                <div class="task-card intern-task" data-task-id="${task.id}">
+                <div class="${cardClass}" data-task-id="${task.id}">
                     <div class="task-header">
                         <div class="task-title">${task.title}</div>
                         <div>
                             <span class="task-status task-status-${task.status}">${task.status}</span>
-                            <span class="task-type-badge">Assigned to you</span>
+                            ${isAssignedToMe ? '<span class="task-type-badge">Assigned to you</span>' : ''}
                         </div>
                     </div>
                     <div class="task-description">${task.description.substring(0, 100)}...</div>
@@ -304,15 +278,19 @@ const Renderer = {
                     </div>
                     <div class="task-info">
                         <small><i class="fas fa-clock"></i> ${task.estimatedHours} hours</small>
-                        <small><i class="fas fa-user-check"></i> Assigned to you</small>
+                        <small><i class="fas fa-user${isAssignedToMe ? '-check' : ''}"></i> ${isAssignedToMe ? 'Assigned to you' : assignedTo}</small>
                     </div>
                 </div>
             `;
         }).join('');
-        
+    },
+
+    // Render intern tasks view (delegates to unified list)
+    renderInternTasksView() {
+        this.renderTasksList();
         this.renderTaskDetails();
     },
-    
+
     // Update role badge in header
     updateRoleBadge() {
         setTimeout(() => {
@@ -324,19 +302,19 @@ const Renderer = {
             }
         }, 10);
     },
-    
+
     // Update this in updateSidebarStats to include role badge update
     updateSidebarStats() {
         setTimeout(() => {
             // Update role badge
             this.updateRoleBadge();
-            
+
             // ... rest of existing sidebar stats code ...
         }, 10);
     },
 
 
-    
+
     // Render task details
     renderTaskDetails(taskId = null) {
         const container = document.getElementById('task-details-content');
@@ -344,26 +322,26 @@ const Renderer = {
             console.warn('Task details container not found');
             return;
         }
-        
+
         if (!taskId) {
             container.innerHTML = '<p class="placeholder-text">Select a task to view details</p>';
             return;
         }
-        
+
         const task = StateManager.getTaskById(taskId);
         if (!task) {
             container.innerHTML = '<p class="error">Task not found</p>';
             return;
         }
-        
-        const assignedTo = task.assignedTo ? 
+
+        const assignedTo = task.assignedTo ?
             StateManager.getInternById(task.assignedTo) : null;
-        
+
         const dependencies = task.dependencies.map(depId => {
             const depTask = StateManager.getTaskById(depId);
             return depTask ? { id: depId, title: depTask.title, status: depTask.status } : null;
         }).filter(Boolean);
-        
+
         const currentRole = globalState.currentRole || 'HR';
         const isIntern = currentRole === 'INTERN';
         const currentIntern = isIntern ? StateManager.getCurrentIntern() : null;
@@ -410,7 +388,11 @@ const Renderer = {
         }
 
         container.innerHTML = `
-            <div class="task-details-view">
+                <div class="detail-row">
+                    <div class="detail-label"><i class="fas fa-hashtag"></i> Task ID</div>
+                    <div class="detail-value"><strong>${task.id}</strong></div>
+                </div>
+
                 <div class="detail-row">
                     <div class="detail-label"><i class="fas fa-heading"></i> Title</div>
                     <div class="detail-value">${task.title}</div>
@@ -443,20 +425,20 @@ const Renderer = {
                 <div class="detail-row">
                     <div class="detail-label"><i class="fas fa-user"></i> Assigned To</div>
                     <div class="detail-value">
-                        ${assignedTo ? 
-                            `<a href="#" class="intern-link" data-intern-id="${assignedTo.id}">
+                        ${assignedTo ?
+                `<a href="#" class="intern-link" data-intern-id="${assignedTo.id}">
                                 ${assignedTo.name} (${assignedTo.id})
-                            </a>` : 
-                            'Unassigned'}
+                            </a>` :
+                'Unassigned'}
                     </div>
                 </div>
                 
                 <div class="detail-row">
                     <div class="detail-label"><i class="fas fa-link"></i> Dependencies</div>
                     <div class="detail-value">
-                        ${dependencies.length === 0 ? 
-                            'None' : 
-                            dependencies.map(dep => `
+                        ${dependencies.length === 0 ?
+                'None' :
+                dependencies.map(dep => `
                                 <div>
                                     <span class="skill-tag">${dep.id}</span> 
                                     ${dep.title} 
@@ -475,12 +457,17 @@ const Renderer = {
                 </div>
                 
                 <div class="action-buttons">
+                    ${!isIntern ? `
+                        <button class="secondary-btn edit-task-btn" data-task-id="${task.id}">
+                            <i class="fas fa-edit"></i> Edit Task
+                        </button>
+                    ` : ''}
                     ${actionButtonsHtml}
                 </div>
             </div>
         `;
     },
-    
+
     // Helper to get next status
     getNextStatus(currentStatus) {
         const nextStatusMap = {
@@ -491,47 +478,47 @@ const Renderer = {
         };
         return nextStatusMap[currentStatus] || 'PENDING';
     },
-    
+
     // Render assignments view
     renderAssignmentsView() {
         console.log('Rendering assignments view...');
-        
+
         // Populate task dropdown and render assignments with delay
         setTimeout(() => {
             this.populateAssignmentDropdowns();
             this.renderAssignmentsList();
         }, 10);
-        
+
         console.log('Assignments view rendered');
     },
-    
+
     // Populate assignment dropdowns
     populateAssignmentDropdowns() {
         const taskSelect = document.getElementById('assignment-task-select');
         const internSelect = document.getElementById('assignment-intern-select');
-        
+
         if (!taskSelect || !internSelect) {
             console.warn('Assignment dropdowns not found');
             return;
         }
-        
+
         // Populate tasks - show ALL pending tasks (not assigned)
-        const availableTasks = globalState.tasks.filter(task => 
+        const availableTasks = globalState.tasks.filter(task =>
             !task.assignedTo && task.status === 'PENDING'
         );
-        
+
         taskSelect.innerHTML = `
             <option value="">Select a task...</option>
             ${availableTasks.map(task => `
                 <option value="${task.id}">${task.id}: ${task.title}</option>
             `).join('')}
         `;
-        
+
         // Populate interns - show ALL ACTIVE interns initially
-        const activeInterns = globalState.interns.filter(intern => 
+        const activeInterns = globalState.interns.filter(intern =>
             intern.status === 'ACTIVE'
         );
-        
+
         internSelect.innerHTML = `
             <option value="">Select an intern...</option>
             ${activeInterns.map(intern => `
@@ -539,7 +526,7 @@ const Renderer = {
             `).join('')}
         `;
     },
-    
+
     // Render assignments list
     renderAssignmentsList() {
         const container = document.getElementById('assignments-container');
@@ -547,17 +534,17 @@ const Renderer = {
             console.warn('Assignments container not found');
             return;
         }
-        
+
         const assignments = StateManager.getActiveAssignments();
-        
+
         if (assignments.length === 0) {
             container.innerHTML = '<p class="placeholder-text">No active assignments</p>';
             return;
         }
-        
+
         container.innerHTML = assignments.map(assignment => {
             const intern = StateManager.getInternById(assignment.assignedTo);
-            
+
             return `
                 <div class="assignment-card">
                     <div class="assignment-header">
@@ -583,19 +570,19 @@ const Renderer = {
             `;
         }).join('');
     },
-    
+
     // Render logs view
     renderLogsView() {
         console.log('Rendering logs view...');
-        
+
         // Render logs table with delay
         setTimeout(() => {
             this.renderLogsTable();
         }, 10);
-        
+
         console.log('Logs view rendered');
     },
-    
+
     // Render logs table
     renderLogsTable() {
         const tbody = document.getElementById('logs-table-body');
@@ -603,9 +590,9 @@ const Renderer = {
             console.warn('Logs table body not found');
             return;
         }
-        
+
         const logs = globalState.logs;
-        
+
         if (logs.length === 0) {
             tbody.innerHTML = `
                 <tr>
@@ -614,7 +601,7 @@ const Renderer = {
             `;
             return;
         }
-        
+
         tbody.innerHTML = logs.map(log => `
             <tr>
                 <td>${new Date(log.timestamp).toLocaleString()}</td>
@@ -624,7 +611,7 @@ const Renderer = {
             </tr>
         `).join('');
     },
-    
+
     // Update navigation active state
     updateNavigation() {
         setTimeout(() => {
@@ -653,9 +640,12 @@ const Renderer = {
                     button.classList.remove('active');
                 }
             });
+
+            // Also hide Dashboard sidebar/stats for interns if they are visible there
+            // (Assuming stats might be in a sidebar, we might want to hide them or simplify them)
         }, 10);
     },
-    
+
     // Update role-based visibility (currently handled mostly in updateNavigation and per-view renderers)
     updateRoleBasedVisibility() {
         // Kept for compatibility; additional per-view tweaks can be added here if needed
@@ -676,7 +666,7 @@ const Renderer = {
             }
         }, 10);
     },
-    
+
     // Show loading overlay
     showLoading() {
         const loadingEl = document.getElementById('loading');
@@ -684,7 +674,7 @@ const Renderer = {
             loadingEl.style.display = 'flex';
         }
     },
-    
+
     // Hide loading overlay
     hideLoading() {
         const loadingEl = document.getElementById('loading');
@@ -692,26 +682,26 @@ const Renderer = {
             loadingEl.style.display = 'none';
         }
     },
-    
+
     // Show error message
     showError(message, duration = 5000) {
         const container = document.getElementById('error-container');
         if (!container) return;
-        
+
         container.innerHTML = `
             <div class="error-message">
                 <i class="fas fa-exclamation-triangle"></i> ${message}
             </div>
         `;
         container.style.display = 'block';
-        
+
         if (duration > 0) {
             setTimeout(() => {
                 container.style.display = 'none';
             }, duration);
         }
     },
-    
+
     // Hide error message
     hideError() {
         const container = document.getElementById('error-container');
@@ -719,7 +709,7 @@ const Renderer = {
             container.style.display = 'none';
         }
     },
-    
+
     // Show success message
     showSuccess(message, duration = 3000) {
         // Create temporary success message
@@ -739,40 +729,40 @@ const Renderer = {
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             z-index: 10000;
         `;
-        
+
         document.body.appendChild(successEl);
-        
+
         setTimeout(() => {
             if (successEl.parentNode) {
                 successEl.parentNode.removeChild(successEl);
             }
         }, duration);
     },
-    
+
     // Update sidebar stats
     updateSidebarStats() {
         setTimeout(() => {
             const statsContent = document.getElementById('stats-content');
             const statusContent = document.getElementById('status-content');
-            
+
             if (!statsContent || !statusContent) {
                 console.warn('Sidebar stats containers not found');
                 return;
             }
-            
+
             const stats = StateManager.getStats();
             const currentRole = globalState.currentRole || 'HR';
-            
+
             statsContent.innerHTML = `
                 <div>Interns: ${stats.totalInterns}</div>
                 <div>Active: ${stats.activeInterns}</div>
                 <div>Tasks: ${stats.totalTasks}</div>
                 <div>Completed: ${stats.completedTasks}</div>
             `;
-            
+
             const activeAssignments = StateManager.getActiveAssignments().length;
             const pendingTasks = globalState.tasks.filter(t => t.status === 'PENDING').length;
-            
+
             statusContent.innerHTML = `
                 <div><i class="fas fa-user-tag"></i> Role: ${currentRole}</div>
                 <div><i class="fas fa-circle" style="color: #28a745"></i> System: Active</div>

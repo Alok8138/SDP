@@ -49,7 +49,7 @@ const globalState = {
             createdAt: new Date('2025-12-20').toISOString()
         }
     ],
-    
+
     sampleTasks: [
         {
             id: 'T001',
@@ -125,11 +125,11 @@ const StateManager = {
             globalState.currentRole = 'HR';
             globalState.currentInternId = null;
         }
-        
+
         // Add log for initialization
         this.addLog('SYSTEM', 'Application initialized', { timestamp: new Date().toISOString() });
     },
-    
+
     // Save state to localStorage
     saveState() {
         const stateToSave = {
@@ -142,7 +142,7 @@ const StateManager = {
         };
         localStorage.setItem('internOpsState', JSON.stringify(stateToSave));
     },
-    
+
     // Set current role
     setRole(role, internId = null) {
         globalState.currentRole = role;
@@ -150,12 +150,12 @@ const StateManager = {
         this.saveState();
         this.addLog('ROLE_CHANGE', `Changed role to ${role}`, { role, internId });
     },
-    
+
     // Get current role
     getCurrentRole() {
         return globalState.currentRole;
     },
-    
+
     // Get current intern (if logged in as intern)
     getCurrentIntern() {
         if (globalState.currentRole === 'INTERN' && globalState.currentInternId) {
@@ -163,7 +163,7 @@ const StateManager = {
         }
         return null;
     },
-    
+
     // ... rest of your existing functions remain the same ...
 
 
@@ -197,11 +197,11 @@ const StateManager = {
             globalState.currentRole = null;
             globalState.currentInternId = null;
         }
-        
+
         // Add log for initialization
         this.addLog('SYSTEM', 'Application initialized', { timestamp: new Date().toISOString() });
     },
-    
+
     // Save state to localStorage (including role info)
     saveState() {
         const stateToSave = {
@@ -214,7 +214,7 @@ const StateManager = {
         };
         localStorage.setItem('internOpsState', JSON.stringify(stateToSave));
     },
-    
+
     // Add a log entry
     addLog(action, details, metadata = {}) {
         const logEntry = {
@@ -224,18 +224,18 @@ const StateManager = {
             details,
             metadata
         };
-        
+
         globalState.logs.unshift(logEntry);
-        
+
         // Keep only last 500 logs
         if (globalState.logs.length > 500) {
             globalState.logs = globalState.logs.slice(0, 500);
         }
-        
+
         this.saveState();
         return logEntry;
     },
-    
+
     // Add an intern
     addIntern(internData) {
         const internId = this.generateInternId();
@@ -249,20 +249,20 @@ const StateManager = {
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString()
         };
-        
+
         globalState.interns.push(intern);
         this.addLog('INTERN_CREATED', `Created intern ${internId} - ${intern.name}`, { internId });
         this.saveState();
         return intern;
     },
-    
+
     // Generate intern ID
     generateInternId() {
         const year = new Date().getFullYear();
         const sequence = globalState.interns.filter(i => i.id.startsWith(year)).length + 1;
         return `${year}-${sequence.toString().padStart(4, '0')}`;
     },
-    
+
     // Add a task
     addTask(taskData) {
         const taskId = `T${globalState.nextTaskId.toString().padStart(4, '0')}`;
@@ -278,24 +278,24 @@ const StateManager = {
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString()
         };
-        
+
         globalState.tasks.push(task);
         globalState.nextTaskId++;
-        
+
         this.addLog('TASK_CREATED', `Created task ${taskId} - ${task.title}`, { taskId });
         this.saveState();
         return task;
     },
-    
+
     // Update intern status
     // updateInternStatus(internId, newStatus) {
     //     const intern = globalState.interns.find(i => i.id === internId);
     //     if (!intern) return false;
-        
+
     //     const oldStatus = intern.status;
     //     intern.status = newStatus;
     //     intern.updatedAt = new Date().toISOString();
-        
+
     //     this.addLog('INTERN_STATUS_CHANGED', 
     //         `Changed ${intern.name} status from ${oldStatus} to ${newStatus}`,
     //         { internId, oldStatus, newStatus }
@@ -303,62 +303,62 @@ const StateManager = {
     //     this.saveState();
     //     return true;
     // },
-    
 
 
 
 
 
-    
-        // Update intern status - SIMPLE VERSION
+
+
+    // Update intern status - SIMPLE VERSION
     updateInternStatus(internId, newStatus) {
         const intern = globalState.interns.find(i => i.id === internId);
         if (!intern) {
             console.error('Intern not found:', internId);
             return false;
         }
-        
+
         const oldStatus = intern.status;
-        
+
         // Basic validation
         if (oldStatus === 'EXITED' && newStatus === 'ACTIVE') {
             console.error('Cannot reactivate EXITED intern');
             return false;
         }
-        
+
         // Update status
         intern.status = newStatus;
         intern.updatedAt = new Date().toISOString();
-        
-        this.addLog('INTERN_STATUS_CHANGED', 
+
+        this.addLog('INTERN_STATUS_CHANGED',
             `Changed ${intern.name} status from ${oldStatus} to ${newStatus}`,
             { internId, oldStatus, newStatus }
         );
-        
+
         this.saveState();
         return true;
     },
 
 
-    
-    
-    
-    
-    
-    
 
 
-    
-    
+
+
+
+
+
+
+
+
     // Update task status
     updateTaskStatus(taskId, newStatus) {
         const task = globalState.tasks.find(t => t.id === taskId);
         if (!task) return false;
-        
+
         const oldStatus = task.status;
         task.status = newStatus;
         task.updatedAt = new Date().toISOString();
-        
+
         this.addLog('TASK_STATUS_CHANGED',
             `Changed task ${taskId} status from ${oldStatus} to ${newStatus}`,
             { taskId, oldStatus, newStatus }
@@ -366,24 +366,46 @@ const StateManager = {
         this.saveState();
         return true;
     },
-    
+
+    // Update task details
+    updateTaskDetails(taskId, updates) {
+        const task = globalState.tasks.find(t => t.id === taskId);
+        if (!task) return false;
+
+        // Apply updates
+        if (updates.title) task.title = updates.title;
+        if (updates.description) task.description = updates.description;
+        if (updates.estimatedHours) task.estimatedHours = parseInt(updates.estimatedHours);
+        if (updates.requiredSkills) task.requiredSkills = updates.requiredSkills;
+        if (updates.dependencies) task.dependencies = updates.dependencies;
+
+        task.updatedAt = new Date().toISOString();
+
+        this.addLog('TASK_UPDATED',
+            `Updated details for task ${taskId}`,
+            { taskId, updates }
+        );
+        this.saveState();
+        return true;
+    },
+
     // Assign task to intern
     // assignTask(taskId, internId) {
     //     const task = globalState.tasks.find(t => t.id === taskId);
     //     const intern = globalState.interns.find(i => i.id === internId);
-        
+
     //     if (!task || !intern) return false;
-        
+
     //     // Update task
     //     task.assignedTo = internId;
     //     task.status = 'ASSIGNED';
     //     task.updatedAt = new Date().toISOString();
-        
+
     //     // Update intern
     //     if (!intern.assignedTasks.includes(taskId)) {
     //         intern.assignedTasks.push(taskId);
     //     }
-        
+
     //     this.addLog('TASK_ASSIGNED',
     //         `Assigned task ${taskId} to ${intern.name}`,
     //         { taskId, internId }
@@ -405,7 +427,7 @@ const StateManager = {
     assignTask(taskId, internId) {
         const task = globalState.tasks.find(t => t.id === taskId);
         const intern = globalState.interns.find(i => i.id === internId);
-        
+
         if (!task) {
             console.error('Task not found:', taskId);
             return false;
@@ -414,21 +436,21 @@ const StateManager = {
             console.error('Intern not found:', internId);
             return false;
         }
-        
+
         // Update task
         task.assignedTo = internId;
         task.status = 'ASSIGNED';
         task.updatedAt = new Date().toISOString();
-        
+
         // Update intern - ensure assignedTasks is an array
         if (!Array.isArray(intern.assignedTasks)) {
             intern.assignedTasks = [];
         }
-        
+
         if (!intern.assignedTasks.includes(taskId)) {
             intern.assignedTasks.push(taskId);
         }
-        
+
         this.addLog('TASK_ASSIGNED',
             `Assigned task ${taskId} to ${intern.name}`,
             { taskId, internId }
@@ -453,22 +475,22 @@ const StateManager = {
 
 
 
-    
+
     // Unassign task
     unassignTask(taskId) {
         const task = globalState.tasks.find(t => t.id === taskId);
         if (!task || !task.assignedTo) return false;
-        
+
         const intern = globalState.interns.find(i => i.id === task.assignedTo);
         if (intern) {
             intern.assignedTasks = intern.assignedTasks.filter(t => t !== taskId);
         }
-        
+
         const oldAssignee = task.assignedTo;
         task.assignedTo = null;
         task.status = 'PENDING';
         task.updatedAt = new Date().toISOString();
-        
+
         this.addLog('TASK_UNASSIGNED',
             `Unassigned task ${taskId} from ${oldAssignee}`,
             { taskId, oldAssignee }
@@ -476,15 +498,15 @@ const StateManager = {
         this.saveState();
         return true;
     },
-    
+
     // Update task dependencies
     updateTaskDependencies(taskId, dependencies) {
         const task = globalState.tasks.find(t => t.id === taskId);
         if (!task) return false;
-        
+
         task.dependencies = dependencies;
         task.updatedAt = new Date().toISOString();
-        
+
         this.addLog('TASK_DEPENDENCIES_UPDATED',
             `Updated dependencies for task ${taskId}`,
             { taskId, dependencies }
@@ -492,23 +514,23 @@ const StateManager = {
         this.saveState();
         return true;
     },
-    
+
     // Get intern by ID
     getInternById(internId) {
         return globalState.interns.find(i => i.id === internId);
     },
-    
+
     // Get task by ID
     getTaskById(taskId) {
         return globalState.tasks.find(t => t.id === taskId);
     },
-    
+
     // Get interns by status
     getInternsByStatus(status) {
         if (status === 'all') return globalState.interns;
         return globalState.interns.filter(intern => intern.status === status);
     },
-    
+
     // Get interns by skills
     getInternsBySkills(skills) {
         if (!skills || skills.length === 0) return globalState.interns;
@@ -516,34 +538,34 @@ const StateManager = {
             skills.every(skill => intern.skills.includes(skill))
         );
     },
-    
+
     // Get tasks by status
     getTasksByStatus(status) {
         if (status === 'all') return globalState.tasks;
         return globalState.tasks.filter(task => task.status === status);
     },
-    
+
     // Get eligible interns for task
     getEligibleInternsForTask(taskId) {
         const task = this.getTaskById(taskId);
         if (!task) return [];
-        
+
         return globalState.interns.filter(intern =>
             intern.status === 'ACTIVE' &&
             task.requiredSkills.every(skill => intern.skills.includes(skill))
         );
     },
-    
+
     // Get tasks for intern
     getTasksForIntern(internId) {
         return globalState.tasks.filter(task => task.assignedTo === internId);
     },
-    
+
     // Get all active assignments
     getActiveAssignments() {
         return globalState.tasks.filter(task => task.assignedTo && task.status !== 'DONE');
     },
-    
+
     // Get system statistics
     getStats() {
         const totalInterns = globalState.interns.length;
@@ -551,7 +573,7 @@ const StateManager = {
         const totalTasks = globalState.tasks.length;
         const completedTasks = globalState.tasks.filter(t => t.status === 'DONE').length;
         const pendingTasks = globalState.tasks.filter(t => t.status === 'PENDING').length;
-        
+
         return {
             totalInterns,
             activeInterns,
@@ -560,12 +582,12 @@ const StateManager = {
             pendingTasks
         };
     },
-    
+
     // Set loading state
     setLoading(isLoading) {
         globalState.isLoading = isLoading;
     },
-    
+
     // Add error
     addError(error) {
         globalState.errors.push({
@@ -573,38 +595,33 @@ const StateManager = {
             message: error.message || error,
             timestamp: new Date().toISOString()
         });
-        
+
         // Keep only last 10 errors
         if (globalState.errors.length > 10) {
             globalState.errors = globalState.errors.slice(-10);
         }
     },
-    
+
     // Clear errors
     clearErrors() {
         globalState.errors = [];
     },
-    
+
     // Set current view
     setCurrentView(view) {
         globalState.currentView = view;
     },
-    
+
     // Get recent logs
     getRecentLogs(limit = 10) {
         return globalState.logs.slice(0, limit);
     },
-    
+
     // Clear logs
     clearLogs() {
         globalState.logs = [];
         this.addLog('SYSTEM', 'Logs cleared manually');
         this.saveState();
     },
-
-
-
-
-    
 
 };
