@@ -13,14 +13,14 @@ $brands = require '../data/brands.php';
  */
 $products = $allProducts;
 
-
 /**
- * product count 
+ * Total before filtering (for display if needed)
  */
 $productCount = count($allProducts);
 
-
-// Brand filter
+/**
+ * BRAND FILTER
+ */
 if (isset($_GET['brand']) && is_array($_GET['brand'])) {
   $selectedBrands = $_GET['brand'];
 
@@ -29,7 +29,9 @@ if (isset($_GET['brand']) && is_array($_GET['brand'])) {
   });
 }
 
-// Price filter
+/**
+ * PRICE FILTER
+ */
 if (isset($_GET['maxPrice']) && $_GET['maxPrice'] !== '') {
   $maxPrice = (int) $_GET['maxPrice'];
 
@@ -37,12 +39,25 @@ if (isset($_GET['maxPrice']) && $_GET['maxPrice'] !== '') {
     return $product['price'] <= $maxPrice;
   });
 }
+
+/**
+ * PAGINATION SETUP
+ */
+$productsPerPage = 6;
+$totalProducts = count($products);
+$totalPages = max(1, ceil($totalProducts / $productsPerPage));
+
+$currentPage = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+$currentPage = max(1, min($currentPage, $totalPages));
+
+$offset = ($currentPage - 1) * $productsPerPage;
+$products = array_slice($products, $offset, $productsPerPage);
 ?>
 
 <section class="plp-page">
   <div class="plp-layout">
 
-    <!-- LEFT FILTER SIDEBAR -->
+    <!-- FILTER SIDEBAR -->
     <aside class="filters">
       <h3>Filters</h3>
 
@@ -57,13 +72,12 @@ if (isset($_GET['maxPrice']) && $_GET['maxPrice'] !== '') {
               <input
                 type="checkbox"
                 name="brand[]"
-                value="<?= $brand ?>"
-              <?= $brand ?>>
+                value="<?= htmlspecialchars($brand) ?>"
+                <?= (isset($_GET['brand']) && in_array($brand, $_GET['brand'])) ? 'checked' : '' ?>>
+              <?= htmlspecialchars($brand) ?>
             </label>
           <?php endforeach; ?>
         </div>
-
-        <!--name="brand[]" tell the browser:Multiple values can be selected, send them as an array -->
 
         <!-- Price Filter -->
         <div class="filter-group">
@@ -71,11 +85,10 @@ if (isset($_GET['maxPrice']) && $_GET['maxPrice'] !== '') {
           <input
             type="number"
             name="maxPrice"
-            id="maxPriceInput"
             min="0"
             step="1"
             placeholder="Enter price"
-            value="<?= isset($_GET['maxPrice']) ? htmlspecialchars($_GET['maxPrice']) : '' ?>" />
+            value="<?= isset($_GET['maxPrice']) ? htmlspecialchars($_GET['maxPrice']) : '' ?>">
         </div>
 
         <button type="submit">Apply Filters</button>
@@ -85,7 +98,8 @@ if (isset($_GET['maxPrice']) && $_GET['maxPrice'] !== '') {
     <!-- PRODUCT LIST -->
     <section class="products">
       <h2>All Products</h2>
-      <p class="product-count"><?= count($products) ?> of <?= $productCount ?> products found</p>
+      <p class="product-count"><?= $totalProducts ?> products found</p>
+
       <?php if (empty($products)): ?>
         <p>No products found.</p>
       <?php else: ?>
@@ -93,18 +107,21 @@ if (isset($_GET['maxPrice']) && $_GET['maxPrice'] !== '') {
           <?php foreach ($products as $product): ?>
             <div class="card">
               <div class="card-image-wrapper">
-                <img src="<?= $product['image'] ?>" alt="<?= $product['name'] ?>">
+                <img src="<?= htmlspecialchars($product['image']) ?>" alt="<?= htmlspecialchars($product['name']) ?>">
               </div>
-              <h3><?= $product['name'] ?></h3>
-              <p class="price">$<?= $product['price'] ?></p>
+
+              <h3><?= htmlspecialchars($product['name']) ?></h3>
+              <p class="price">$<?= htmlspecialchars($product['price']) ?></p>
+
               <div class="product-actions">
-                <a href="pdp.php?id=<?= $product['id'] ?>">
+                <a href="pdp.php?id=<?= urlencode($product['id']) ?>">
                   <button>View Product</button>
                 </a>
-                <form method="POST" action="pdp.php?id=<?= $product['id'] ?>" class="quick-add-form">
+
+                <form method="POST" action="pdp.php?id=<?= urlencode($product['id']) ?>" class="quick-add-form">
                   <input type="hidden" name="quantity" value="1">
                   <button type="submit" class="card-cart-btn" aria-label="Quick add to cart" title="Add to Cart">
-                    <img src="../images/cart.jpg" alt="Add to Cart" />
+                    <img src="../images/cart.jpg" alt="Add to Cart">
                   </button>
                 </form>
               </div>
@@ -112,6 +129,23 @@ if (isset($_GET['maxPrice']) && $_GET['maxPrice'] !== '') {
           <?php endforeach; ?>
         </div>
       <?php endif; ?>
+
+      <!-- PAGINATION LINKS -->
+      <?php if ($totalPages > 1): ?>
+        <div class="pagination">
+          <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+            <?php
+            $queryParams = $_GET;
+            $queryParams['page'] = $i;
+            $url = '?' . http_build_query($queryParams);
+            ?>
+            <a href="<?= $url ?>" class="<?= ($i == $currentPage) ? 'active' : '' ?>">
+              <?= $i ?>
+            </a>
+          <?php endfor; ?>
+        </div>
+      <?php endif; ?>
+
     </section>
 
   </div>

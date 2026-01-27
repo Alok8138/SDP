@@ -14,49 +14,71 @@ $cart = $_SESSION['cart'];
 $subtotal = 0;
 
 /**
- * Calculate subtotal
+ * Calculate subtotal (PRODUCTS ONLY)
  */
 foreach ($cart as $item) {
   $subtotal += $item['price'] * $item['qty'];
 }
 
 /**
- * calculate tax
- */
- $subtotal = $subtotal*1.1;
-
-/**
- * Place order
+ * Handle order submission
  */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $deliveryType = isset($_POST['delivery_type']) ? $_POST['delivery_type'] : 'normal';
-  $deliveryCharge = ($deliveryType === 'express') ? $subtotal * 0.1 : 0;
-  $finalTotal = $subtotal + $deliveryCharge;
-  $contactNumber = isset($_POST['contact_number']) ? trim($_POST['contact_number']) : '';
-  $address = isset($_POST['address']) ? trim($_POST['address']) : '';
 
-  // Validate required fields
+  $deliveryType  = $_POST['delivery_type'] ?? 'standard';
+  $contactNumber = trim($_POST['contact_number'] ?? '');
+  $address       = trim($_POST['address'] ?? '');
+
   if (empty($contactNumber) || empty($address)) {
     $error = "Please fill in all required fields.";
   } else {
+
+    // ---------------- SHIPPING RULES ----------------
+    switch ($deliveryType) {
+      case 'standard':
+        $shipping = 40;
+        break;
+
+      case 'express':
+        $shipping = min(80, $subtotal * 0.10);
+        break;
+
+      case 'white_glove':
+        $shipping = min(150, $subtotal * 0.05);
+        break;
+
+      case 'freight':
+        $shipping = max($subtotal * 0.03, 200);
+        break;
+
+      default:
+        $shipping = 40;
+    }
+
+    // ---------------- TAX ----------------
+    $tax = ($subtotal + $shipping) * 0.18;
+
+    // ---------------- FINAL TOTAL ----------------
+    $finalTotal = $subtotal + $shipping + $tax;
+
     // Load existing orders
     $orders = require '../data/orders.php';
 
-    // Create new order
     $orders[] = [
       "id" => "#ORD" . rand(1000, 9999),
       "date" => date("d M Y"),
       "items" => count($cart),
-      "total" => $finalTotal,
+      "subtotal" => round($subtotal, 2),
+      "shipping" => round($shipping, 2),
+      "tax" => round($tax, 2),
+      "total" => round($finalTotal, 2),
       "status" => "Placed",
       "contact" => $contactNumber,
-      "address" => $address
+      "address" => $address,
+      "shipping_type" => $deliveryType
     ];
 
-    // Clear cart
     $_SESSION['cart'] = [];
-
-    // Save orders to session
     $_SESSION['orders'] = $orders;
 
     header("Location: myOrders.php");
@@ -73,31 +95,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <?php endif; ?>
 
   <div class="checkout-layout">
+
+    <!-- LEFT SIDE -->
     <div class="checkout-main">
       <div class="shipping-info">
         <h3>Shipping Information</h3>
         <form method="POST" id="checkout-form">
+
           <div class="form-group">
             <label for="contact_number">Contact Number *</label>
-            <input
-              type="tel"
-              id="contact_number"
-              name="contact_number"
-              placeholder="Enter your contact number"
-              pattern="[0-9]{10}"
-              required
-              value="<?= isset($_POST['contact_number']) ? htmlspecialchars($_POST['contact_number']) : '' ?>" />
+            <input type="tel" id="contact_number" name="contact_number"
+              pattern="[0-9]{10}" required
+              value="<?= htmlspecialchars($_POST['contact_number'] ?? '') ?>">
           </div>
 
           <div class="form-group">
             <label for="address">Delivery Address *</label>
-            <textarea
-              id="address"
-              name="address"
-              rows="4"
-              placeholder="Enter your complete delivery address"
-              required><?= isset($_POST['address']) ? htmlspecialchars($_POST['address']) : '' ?></textarea>
+            <textarea id="address" name="address" rows="4" required><?= htmlspecialchars($_POST['address'] ?? '') ?></textarea>
           </div>
+
+          <input type="hidden" name="delivery_type" id="delivery-type" value="standard">
         </form>
       </div>
 
@@ -111,13 +128,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <th>Total</th>
             </tr>
           </thead>
-
           <tbody>
             <?php foreach ($cart as $item): ?>
               <tr>
-                <td><?= $item['name'] ?></td>
+                <td><?= htmlspecialchars($item['name']) ?></td>
                 <td><?= $item['qty'] ?></td>
-                <td>$<?= $item['price'] * $item['qty'] ?></td>
+                <td>$<?= number_format($item['price'] * $item['qty'], 2) ?></td>
               </tr>
             <?php endforeach; ?>
           </tbody>
@@ -125,6 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
     </div>
 
+    <!-- RIGHT SIDE -->
     <div class="cart-summary">
       <h3>Order Summary</h3>
 
@@ -135,39 +152,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       <div class="delivery-section">
         <h4>Delivery Option</h4>
-        <div class="delivery-options">
-          <label class="delivery-option">
-            <input type="radio" name="delivery" value="normal" checked>
-            <span>Normal Delivery (Free)</span>
-          </label>
-          <label class="delivery-option">
-            <input type="radio" name="delivery" value="express">
-            <span>Express Delivery (+10%)</span>
-          </label>
-        </div>
+
+        <label><input type="radio" name="delivery" value="standard" checked> Standard Shipping ($40)</label>
+        <label><input type="radio" name="delivery" value="express"> Express (Min $80 or 10%)</label>
+        <label><input type="radio" name="delivery" value="white_glove"> White Glove (Min $150 or 5%)</label>
+        <label><input type="radio" name="delivery" value="freight"> Freight (3% or $200 min)</label>
       </div>
 
       <div class="summary-row">
-        <span>Delivery Charge:</span>
-        <span id="delivery-charge">$0.00</span>
+        <span>Shipping:</span>
+        <span id="delivery-charge">$40.00</span>
+      </div>
+
+      <div class="summary-row">
+        <span>Tax (18%):</span>
+        <span id="tax-amount">$0.00</span>
       </div>
 
       <div class="summary-row total-row">
         <span>Total:</span>
-        <span id="final-total">$<?= number_format($subtotal, 2) ?></span>
+        <span id="final-total">$<?= number_format($subtotal + 40, 2) ?></span>
       </div>
 
-      <input type="hidden" name="delivery_type" id="delivery-type" value="normal" form="checkout-form">
       <button type="submit" form="checkout-form" class="checkout-btn">Place Order</button>
     </div>
   </div>
 
   <script>
-  window.checkoutData = {
-    subtotal: <?= $subtotal ?>
-  };
-</script>
-<script src="../javascript/checkout.js"></script>
+    window.checkoutData = {
+      subtotal: <?= $subtotal ?>
+    };
+  </script>
+  <script src="../javascript/checkout.js"></script>
 </section>
 
 <?php require '../includes/footer.php'; ?>

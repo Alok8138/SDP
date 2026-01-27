@@ -28,3 +28,19 @@
     }
   }
 })();
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const brandCheckboxes = document.querySelectorAll('input[name="brand[]"]');
+  console.log(brandCheckboxes);
+  
+  const filterForm = document.querySelector('.filters form');
+
+  brandCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener("change", function () {
+      filterForm.submit();
+    });
+  });
+});
+

@@ -1608,4 +1608,215 @@ tbody tr:last-child td {
 }
 
 
+.pagination {
+    margin-top: 25px;
+    text-align: center;
+    text-decoration: dotted;
+}
 
+.pagination a {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 0 4px;
+    border: 1px solid #ccc;
+    text-decoration: none;
+    color: #333;
+}
+
+.pagination a.active {
+    background: #333;
+    color: #fff;
+    border-color: #333;
+}
+
+
+
+/* ===============================
+   CHECKOUT PAGE LAYOUT
+=================================*/
+
+.checkout-page {
+    padding: 40px 20px;
+}
+
+.checkout-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+/* ===============================
+   LEFT SIDE (FORM + ITEMS)
+=================================*/
+
+.checkout-main {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.shipping-info h3,
+.order-items h3 {
+    margin-bottom: 15px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 8px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    transition: border 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* ===============================
+   ORDER ITEMS TABLE
+=================================*/
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.cart-table th,
+.cart-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+}
+
+/* ===============================
+   RIGHT SIDE (SUMMARY)
+=================================*/
+
+.cart-summary {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    position: sticky;
+    top: 20px;
+}
+
+.cart-summary h3 {
+    margin-bottom: 15px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 8px;
+}
+
+/* Rows */
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    font-size: 15px;
+}
+
+.total-row {
+    font-weight: bold;
+    font-size: 18px;
+    border-top: 2px solid #eee;
+    padding-top: 12px;
+    margin-top: 12px;
+}
+
+/* ===============================
+   SHIPPING OPTIONS
+=================================*/
+
+.delivery-section {
+    margin: 20px 0;
+}
+
+.delivery-section h4 {
+    margin-bottom: 10px;
+}
+
+.delivery-section label {
+    display: block;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.delivery-section input[type="radio"] {
+    margin-right: 8px;
+}
+
+/* ===============================
+   BUTTON
+=================================*/
+
+.checkout-btn {
+    width: 100%;
+    padding: 12px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.checkout-btn:hover {
+    background: #218838;
+    transform: translateY(-1px);
+}
+
+/* ===============================
+   ERROR MESSAGE
+=================================*/
+
+.error-message {
+    background: #ffe5e5;
+    color: #cc0000;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    border: 1px solid #ffcccc;
+}
+
+/* ===============================
+   RESPONSIVE
+=================================*/
+
+@media (max-width: 900px) {
+    .checkout-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .cart-summary {
+        position: relative;
+        top: auto;
+    }
+}
