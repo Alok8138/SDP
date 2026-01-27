@@ -58,11 +58,12 @@ if (isset($_GET['maxPrice']) && $_GET['maxPrice'] !== '') {
                 type="checkbox"
                 name="brand[]"
                 value="<?= $brand ?>"
-                <?= (isset($_GET['brand']) && in_array($brand, $_GET['brand'])) ? 'checked' : '' ?>>
-              <?= $brand ?>
+              <?= $brand ?>>
             </label>
           <?php endforeach; ?>
         </div>
+
+        <!--name="brand[]" tell the browser:Multiple values can be selected, send them as an array -->
 
         <!-- Price Filter -->
         <div class="filter-group">
@@ -116,37 +117,6 @@ if (isset($_GET['maxPrice']) && $_GET['maxPrice'] !== '') {
   </div>
 </section>
 
-<script>
-  // Price filter validation - prevent negative values
-  (function() {
-    const priceInput = document.getElementById('maxPriceInput');
-
-    if (priceInput) {
-      // Prevent negative values on input
-      priceInput.addEventListener('input', function() {
-        if (this.value < 0) {
-          this.value = 0;
-        }
-      });
-
-      // Prevent negative values on blur (when user leaves field)
-      priceInput.addEventListener('blur', function() {
-        if (this.value < 0 || this.value === '') {
-          this.value = '';
-        }
-      });
-
-      // Prevent negative values on form submit
-      const form = priceInput.closest('form');
-      if (form) {
-        form.addEventListener('submit', function(e) {
-          if (priceInput.value < 0) {
-            priceInput.value = 0;
-          }
-        });
-      }
-    }
-  })();
-</script>
+<script src="../javascript/plp.js"></script>
 
 <?php require '../includes/footer.php'; ?>

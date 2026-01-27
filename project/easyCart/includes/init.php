@@ -3,4 +3,4 @@
 session_start();
 
 // Basic config (can expand later)
-define('SITE_NAME', 'EasyCart');
+define('SITE_NAME', 'EasyCart'); //define used to create a constant variable 
