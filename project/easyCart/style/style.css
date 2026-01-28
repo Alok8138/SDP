@@ -1751,25 +1751,61 @@ tbody tr:last-child td {
    SHIPPING OPTIONS
 =================================*/
 
+/* DELIVERY SECTION */
 .delivery-section {
     margin: 20px 0;
 }
 
 .delivery-section h4 {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: 600;
 }
 
+/* Hide default radio */
+.delivery-section input[type="radio"] {
+    display: none;
+}
+
+/* Card Style Labels */
 .delivery-section label {
     display: block;
-    margin-bottom: 8px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
     cursor: pointer;
+    transition: all 0.25s ease;
     font-size: 14px;
+    background: #fafafa;
 }
 
-.delivery-section input[type="radio"] {
-    margin-right: 8px;
+/* Hover effect */
+.delivery-section label:hover {
+    border-color: #007bff;
+    background: #f0f7ff;
+    transform: translateY(-2px);
 }
 
+/* Checked (Selected) state */
+.delivery-section input[type="radio"]:checked+label,
+.delivery-section label:has(input[type="radio"]:checked) {
+    border-color: #007bff;
+    background: #e6f0ff;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.15);
+}
+
+/* Price highlight */
+.delivery-section label strong {
+    float: right;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Smooth feel */
+.delivery-section label {
+    position: relative;
+}
 /* ===============================
    BUTTON
 =================================*/

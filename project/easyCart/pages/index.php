@@ -2,7 +2,7 @@
 require '../includes/init.php';
 require '../includes/header.php';
 
-$products = require '../data/products.php';
+$products = require '../data/featuredProduct.php';
 $categories = require '../data/categories.php';
 $brands = require '../data/brands.php';
 ?>
@@ -30,7 +30,8 @@ $brands = require '../data/brands.php';
           <a href="pdp.php?id=<?= $product['id'] ?>">
             <button>View Product</button>
           </a>
-          <form method="POST" action="pdp.php?id=<?= $product['id'] ?>" class="quick-add-form">
+          <form method="POST" action="pdp.php?id=<?= $product['id'] ?>" class="quick-add-form ajax-cart-form">
+            <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
             <input type="hidden" name="quantity" value="1">
             <button type="submit" class="card-cart-btn" aria-label="Quick add to cart" title="Add to Cart">
               <img src="../images/cart.jpg" alt="Add to Cart" />
@@ -61,7 +62,7 @@ $brands = require '../data/brands.php';
 
   <div class="grid three brand-grid">
     <?php foreach ($brands as $brand): ?>
-      <a href="plp.php" class="brand-card"><?= $brand ?></a>
+      <a href="plp.php?brand[]=<?= urlencode($brand) ?>" class= "brand-card"><?= $brand ?></a>
     <?php endforeach; ?>
   </div>
 </section>

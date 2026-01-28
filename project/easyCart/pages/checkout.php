@@ -25,12 +25,25 @@ foreach ($cart as $item) {
  */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-  $deliveryType  = $_POST['delivery_type'] ?? 'standard';
+  // New fields
+  $firstName     = trim($_POST['first_name'] ?? '');
+  $lastName      = trim($_POST['last_name'] ?? '');
+  $email         = trim($_POST['email'] ?? '');
   $contactNumber = trim($_POST['contact_number'] ?? '');
   $address       = trim($_POST['address'] ?? '');
+  $city          = trim($_POST['city'] ?? '');
+  $postalCode    = trim($_POST['postal_code'] ?? '');
+  $deliveryType  = $_POST['delivery_type'] ?? 'standard';
 
-  if (empty($contactNumber) || empty($address)) {
+  // Basic validation
+  if (
+    empty($firstName) || empty($lastName) || empty($email) ||
+    empty($contactNumber) || empty($address) ||
+    empty($city) || empty($postalCode)
+  ) {
     $error = "Please fill in all required fields.";
+  } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $error = "Please enter a valid email address.";
   } else {
 
     // ---------------- SHIPPING RULES ----------------
@@ -73,8 +86,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       "tax" => round($tax, 2),
       "total" => round($finalTotal, 2),
       "status" => "Placed",
+
+      // New customer info
+      "first_name" => $firstName,
+      "last_name" => $lastName,
+      "email" => $email,
       "contact" => $contactNumber,
       "address" => $address,
+      "city" => $city,
+      "postal_code" => $postalCode,
       "shipping_type" => $deliveryType
     ];
 
@@ -102,16 +122,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h3>Shipping Information</h3>
         <form method="POST" id="checkout-form">
 
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name *</label>
+              <input type="text" name="first_name" required
+                value="<?= htmlspecialchars($_POST['first_name'] ?? '') ?>">
+            </div>
+
+            <div class="form-group">
+              <label>Last Name *</label>
+              <input type="text" name="last_name" required
+                value="<?= htmlspecialchars($_POST['last_name'] ?? '') ?>">
+            </div>
+          </div>
+
           <div class="form-group">
-            <label for="contact_number">Contact Number *</label>
-            <input type="tel" id="contact_number" name="contact_number"
-              pattern="[0-9]{10}" required
+            <label>Email *</label>
+            <input type="email" name="email" required
+              value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+          </div>
+
+          <div class="form-group">
+            <label>Contact Number *</label>
+            <input type="tel" name="contact_number" pattern="[0-9]{10}" required
               value="<?= htmlspecialchars($_POST['contact_number'] ?? '') ?>">
           </div>
 
           <div class="form-group">
-            <label for="address">Delivery Address *</label>
-            <textarea id="address" name="address" rows="4" required><?= htmlspecialchars($_POST['address'] ?? '') ?></textarea>
+            <label>Delivery Address *</label>
+            <textarea name="address" rows="3" required><?= htmlspecialchars($_POST['address'] ?? '') ?></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>City *</label>
+              <input type="text" name="city" required
+                value="<?= htmlspecialchars($_POST['city'] ?? '') ?>">
+            </div>
+
+            <div class="form-group">
+              <label>Postal Code *</label>
+              <input type="text" name="postal_code" required
+                value="<?= htmlspecialchars($_POST['postal_code'] ?? '') ?>">
+            </div>
           </div>
 
           <input type="hidden" name="delivery_type" id="delivery-type" value="standard">
@@ -152,7 +205,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       <div class="delivery-section">
         <h4>Delivery Option</h4>
-
         <label><input type="radio" name="delivery" value="standard" checked> Standard Shipping ($40)</label>
         <label><input type="radio" name="delivery" value="express"> Express (Min $80 or 10%)</label>
         <label><input type="radio" name="delivery" value="white_glove"> White Glove (Min $150 or 5%)</label>

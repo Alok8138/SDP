@@ -111,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </ul>
       <?php endif; ?>
 
-      <form method="POST" id="addToCartForm">
+      <form method="POST" id="addToCartForm" class="ajax-cart-form">
         <div class="quantity-wrapper">
           <span class="qty-label">Quantity:</span>
           <div class="quantity-box">
@@ -120,6 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="button" id="incrementBtn" aria-label="Increase quantity">+</button>
           </div>
         </div>
+        <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
         <input type="hidden" name="quantity" id="quantityInput" value="1">
         <button type="submit">Add to Cart</button>
       </form>

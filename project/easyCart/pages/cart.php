@@ -72,7 +72,7 @@ if (isset($_GET['update']) && isset($_GET['qty'])) {
               $itemTotal = $item['price'] * $item['qty'];
               $subtotal += $itemTotal;
               ?>
-              <tr>
+              <tr data-id="<?= $item['id'] ?>">
                 <td class="cart-product">
                   <img src="<?= $item['image'] ?>" alt="<?= $item['name'] ?>" />
                   <span class="cart-product-name"><?= $item['name'] ?></span>
@@ -80,14 +80,14 @@ if (isset($_GET['update']) && isset($_GET['qty'])) {
                 <td class="cart-price">$<?= $item['price'] ?></td>
                 <td class="cart-quantity">
                   <div class="quantity-box">
-                    <a href="cart.php?update=<?= $item['id'] ?>&qty=<?= max(1, $item['qty'] - 1) ?>" class="qty-btn" aria-label="Decrease quantity">−</a>
+                    <a href="#" class="qty-btn" data-action="decrease" data-id="<?= $item['id'] ?>" aria-label="Decrease quantity">−</a>
                     <span class="qty-value"><?= $item['qty'] ?></span>
-                    <a href="cart.php?update=<?= $item['id'] ?>&qty=<?= $item['qty'] + 1 ?>" class="qty-btn" aria-label="Increase quantity">+</a>
+                    <a href="#" class="qty-btn" data-action="increase" data-id="<?= $item['id'] ?>" aria-label="Increase quantity">+</a>
                   </div>
                 </td>
                 <td class="cart-total">$<?= number_format($itemTotal, 2) ?></td>
                 <td class="cart-action">
-                  <a href="cart.php?remove=<?= $item['id'] ?>" class="remove-link">Remove</a>
+                  <a href="#" class="remove-link" data-id="<?= $item['id'] ?>">Remove</a>
                 </td>
               </tr>
             <?php endforeach; ?>
@@ -99,20 +99,22 @@ if (isset($_GET['update']) && isset($_GET['qty'])) {
         <h3>Order Summary</h3>
         <div class="summary-row">
           <span>Subtotal:</span>
-          <span>$<?= number_format($subtotal, 2) ?></span>
+          <span id="cart-subtotal">$<?= number_format($subtotal, 2) ?></span>
         </div>
         <div class="summary-row">
           <span>Tax:</span>
-          <span>$<?= number_format($subtotal * 0.1, 2) ?></span>
+          <span id="cart-tax">$<?= number_format($subtotal * 0.1, 2) ?></span>
         </div>
         <div class="summary-row total-row">
           <span>Total:</span>
-          <span>$<?= number_format($subtotal * 1.1, 2) ?></span>
+          <span id="cart-total">$<?= number_format($subtotal * 1.1, 2) ?></span>
         </div>
         <a href="checkout.php">
           <button class="checkout-btn">Proceed to Checkout</button>
         </a>
       </div>
+    </div>
+    <script src="../javascript/cart_manager.js"></script>
     </div>
 
   <?php endif; ?>

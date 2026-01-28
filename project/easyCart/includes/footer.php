@@ -47,6 +47,7 @@
     </div>
 </footer>
 
+<script src="../javascript/cart_ajax.js"></script>
 </body>
 
 </html>

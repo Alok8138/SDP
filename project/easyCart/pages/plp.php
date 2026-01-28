@@ -73,14 +73,16 @@ $products = array_slice($products, $offset, $productsPerPage);
                 type="checkbox"
                 name="brand[]"
                 value="<?= htmlspecialchars($brand) ?>"
+                onchange="this.form.submit()"
                 <?= (isset($_GET['brand']) && in_array($brand, $_GET['brand'])) ? 'checked' : '' ?>>
               <?= htmlspecialchars($brand) ?>
+
             </label>
           <?php endforeach; ?>
         </div>
 
         <!-- Price Filter -->
-        <div class="filter-group">
+        <div class=" filter-group">
           <h4>Max Price</h4>
           <input
             type="number"
@@ -88,7 +90,8 @@ $products = array_slice($products, $offset, $productsPerPage);
             min="0"
             step="1"
             placeholder="Enter price"
-            value="<?= isset($_GET['maxPrice']) ? htmlspecialchars($_GET['maxPrice']) : '' ?>">
+            value="<?= isset($_GET['maxPrice']) ? htmlspecialchars($_GET['maxPrice']) : '' ?>"
+          >
         </div>
 
         <button type="submit">Apply Filters</button>
@@ -118,7 +121,8 @@ $products = array_slice($products, $offset, $productsPerPage);
                   <button>View Product</button>
                 </a>
 
-                <form method="POST" action="pdp.php?id=<?= urlencode($product['id']) ?>" class="quick-add-form">
+                <form method="POST" action="pdp.php?id=<?= urlencode($product['id']) ?>" class="quick-add-form ajax-cart-form">
+                  <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
                   <input type="hidden" name="quantity" value="1">
                   <button type="submit" class="card-cart-btn" aria-label="Quick add to cart" title="Add to Cart">
                     <img src="../images/cart.jpg" alt="Add to Cart">
