@@ -5,9 +5,12 @@ require '../includes/header.php';
 $products = require '../data/featuredProduct.php';
 $categories = require '../data/categories.php';
 $brands = require '../data/brands.php';
+
+// var_dump($_SESSION['cart'][1]['name']);
 ?>
 
 <!-- Hero Section -->
+
 <section class="hero">
   <h1>Welcome to EasyCart</h1>
   <p>Your one-stop online shopping destination</p>

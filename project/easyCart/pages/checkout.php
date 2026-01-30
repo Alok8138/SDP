@@ -1,6 +1,8 @@
 <?php
 require '../includes/init.php';
 require '../includes/header.php';
+require_once '../includes/functions.php';
+
 
 /**
  * Cart validation
@@ -13,12 +15,13 @@ if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
 $cart = $_SESSION['cart'];
 $subtotal = 0;
 
-/**
- * Calculate subtotal (PRODUCTS ONLY)
- */
-foreach ($cart as $item) {
-  $subtotal += $item['price'] * $item['qty'];
-}
+// Calculate totals (Default to Standard for initial view)
+$totals = get_cart_totals($cart, 'standard');
+$subtotal = $totals['subtotal'];
+$shipping = $totals['shipping'];
+$tax = $totals['tax'];
+$finalTotal = $totals['finalTotal'];
+
 
 /**
  * Handle order submission
@@ -46,33 +49,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $error = "Please enter a valid email address.";
   } else {
 
-    // ---------------- SHIPPING RULES ----------------
-    switch ($deliveryType) {
-      case 'standard':
-        $shipping = 40;
-        break;
+    // ---------------- CALCULATION (Centralized) ----------------
+    $totals = get_cart_totals($cart, $deliveryType);
+    $subtotal = $totals['subtotal'];
+    $shipping = $totals['shipping'];
+    $tax = $totals['tax'];
+    $finalTotal = $totals['finalTotal'];
 
-      case 'express':
-        $shipping = min(80, $subtotal * 0.10);
-        break;
-
-      case 'white_glove':
-        $shipping = min(150, $subtotal * 0.05);
-        break;
-
-      case 'freight':
-        $shipping = max($subtotal * 0.03, 200);
-        break;
-
-      default:
-        $shipping = 40;
-    }
-
-    // ---------------- TAX ----------------
-    $tax = ($subtotal + $shipping) * 0.18;
-
-    // ---------------- FINAL TOTAL ----------------
-    $finalTotal = $subtotal + $shipping + $tax;
 
     // Load existing orders
     $orders = require '../data/orders.php';
@@ -87,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       "total" => round($finalTotal, 2),
       "status" => "Placed",
 
-      // New customer info
+      // customer info
       "first_name" => $firstName,
       "last_name" => $lastName,
       "email" => $email,
@@ -213,28 +196,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       <div class="summary-row">
         <span>Shipping:</span>
-        <span id="delivery-charge">$40.00</span>
+        <span id="delivery-charge">$<?= number_format($shipping, 2) ?></span>
       </div>
 
       <div class="summary-row">
         <span>Tax (18%):</span>
-        <span id="tax-amount">$0.00</span>
+        <span id="tax-amount">$<?= number_format($tax, 2) ?></span>
       </div>
 
       <div class="summary-row total-row">
         <span>Total:</span>
-        <span id="final-total">$<?= number_format($subtotal + 40, 2) ?></span>
+        <span id="final-total">$<?= number_format($finalTotal, 2) ?></span>
       </div>
 
       <button type="submit" form="checkout-form" class="checkout-btn">Place Order</button>
     </div>
   </div>
 
-  <script>
-    window.checkoutData = {
-      subtotal: <?= $subtotal ?>
-    };
-  </script>
+  <!-- Local data script removed in favor of AJAX -->
+
   <script src="../javascript/checkout.js"></script>
 </section>
 

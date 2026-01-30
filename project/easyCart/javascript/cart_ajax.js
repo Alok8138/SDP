@@ -1,19 +1,24 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Select all forms with class 'ajax-cart-form'
     const cartForms = document.querySelectorAll('.ajax-cart-form');
-
+    
     cartForms.forEach(form => {
         form.addEventListener('submit', function (e) {
             e.preventDefault(); // Stop normal submission
 
             const formData = new FormData(this);
+            // console.log(formData);
+            
             const submitBtn = this.querySelector('button[type="submit"]');
+            // console.log(submitBtn);
 
             // Optional: Visual feedback on button (loading state)
             const originalBtnContent = submitBtn.innerHTML;
             // Don't fully replace if it's an image, but maybe change opacity
             submitBtn.style.opacity = '0.7';
             submitBtn.disabled = true;
+            // console.log(formData.get('quantity'));
+            
 
             fetch('add_to_cart_ajax.php', {
                 method: 'POST',
@@ -21,11 +26,14 @@ document.addEventListener('DOMContentLoaded', function () {
             })
                 .then(response => response.json())
                 .then(data => {
+                    console.log("data", data);
                     if (data.success) {
                         // Update cart badge
                         const badge = document.querySelector('.cart-badge');
+                        
                         if (badge) {
                             badge.textContent = data.cartCount;
+                            console.log(badge);
                         } else {
                             // If badge doesn't exist yet (empty cart), append it to the link if possible
                             // This depends on the header structure, but usually .cart-badge exists if count > 0
@@ -38,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 newBadge.className = 'cart-badge';
                                 newBadge.textContent = data.cartCount;
                                 cartLink.appendChild(newBadge);
+                                
                             }
                         }
 

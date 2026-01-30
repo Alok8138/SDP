@@ -73,7 +73,7 @@ $products = array_slice($products, $offset, $productsPerPage);
                 type="checkbox"
                 name="brand[]"
                 value="<?= htmlspecialchars($brand) ?>"
-                onchange="this.form.submit()"
+            
                 <?= (isset($_GET['brand']) && in_array($brand, $_GET['brand'])) ? 'checked' : '' ?>>
               <?= htmlspecialchars($brand) ?>
 

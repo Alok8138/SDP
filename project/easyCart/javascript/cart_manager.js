@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const id = btn.dataset.id;
             const row = btn.closest('tr');
             const qtyInput = row.querySelector('.qty-value');
-
+            console.log(row)
             let currentQty = parseInt(qtyInput.textContent);
             let newQty = currentQty;
 

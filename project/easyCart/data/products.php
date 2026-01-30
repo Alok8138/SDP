@@ -19,7 +19,8 @@ return [
             "../images/phone.jpg",
             "../images/headphone.jpg",
             "../images/laptop.jpg"
-        ]
+        ],
+        "delivery_type" => "Express"
     ],
     [
         "id" => 2,
@@ -39,7 +40,8 @@ return [
             "../images/headphone.jpg",
             "../images/headphone.jpg",
             "../images/headphone.jpg"
-        ]
+        ],
+        "delivery_type" => "Express"
     ],
     [
         "id" => 3,
@@ -59,15 +61,16 @@ return [
             "../images/headphone.jpg",
             "../images/headphone.jpg",
             "../images/headphone.jpg"
-        ]
+        ],
+        "delivery_type" => "Express"
     ],
     [
         "id" => 4,
         "name" => "Smart Phone",
-        "price" => 149,
+        "price" => 1499,
         "old_price" => 199,
         "image" => "../images/phone.jpg",
-        "brand" => "Apple",
+        "brand" => "Asus",
         "category" => "Electronics",
         "description" => "Powerful smartphone with amazing camera.",
         "features" => [
@@ -79,7 +82,8 @@ return [
             "../images/headphone.jpg",
             "../images/headphone.jpg",
             "../images/headphone.jpg"
-        ]
+        ],
+        "delivery_type" => "Freight"
     ],
     [
         "id" => 5,
@@ -87,7 +91,7 @@ return [
         "price" => 1499,
         "old_price" => 199,
         "image" => "../images/phone.jpg",
-        "brand" => "Apple",
+        "brand" => "HP",
         "category" => "Electronics",
         "description" => "Powerful smartphone with amazing camera.",
         "features" => [
@@ -99,12 +103,13 @@ return [
             "../images/headphone.jpg",
             "../images/headphone.jpg",
             "../images/headphone.jpg"
-        ]
+        ],
+        "delivery_type" => "Freight"
     ],
     [
         "id" => 6,
         "name" => "Smart Phone",
-        "price" => 149,
+        "price" => 499,
         "old_price" => 199,
         "image" => "../images/phone.jpg",
         "brand" => "Lenovo",
@@ -119,12 +124,13 @@ return [
             "../images/headphone.jpg",
             "../images/headphone.jpg",
             "../images/headphone.jpg"
-        ]
+        ],
+        "delivery_type" => "Freight"
     ],
     [
         "id" => 7,
         "name" => "Smart Phone",
-        "price" => 149,
+        "price" => 549,
         "old_price" => 199,
         "image" => "../images/phone.jpg",
         "brand" => "Lenovo",
@@ -139,7 +145,8 @@ return [
             "../images/headphone.jpg",
             "../images/headphone.jpg",
             "../images/headphone.jpg"
-        ]
+        ],
+        "delivery_type" => "Freight"
     ],
     [
         "id" => 8,
@@ -159,7 +166,8 @@ return [
             "../images/headphone.jpg",
             "../images/headphone.jpg",
             "../images/headphone.jpg"
-        ]
+        ],
+        "delivery_type" => "Express"
     ],
     [
         "id" => 9,
@@ -167,7 +175,7 @@ return [
         "price" => 149,
         "old_price" => 199,
         "image" => "../images/phone.jpg",
-        "brand" => "Lenovo",
+        "brand" => "DELL",
         "category" => "Electronics",
         "description" => "Powerful smartphone with amazing camera.",
         "features" => [
@@ -179,7 +187,8 @@ return [
             "../images/headphone.jpg",
             "../images/headphone.jpg",
             "../images/headphone.jpg"
-        ]
+        ],
+        "delivery_type" => "Express"
     ],
     [
         "id" => 10,
@@ -199,6 +208,7 @@ return [
             "../images/headphone.jpg",
             "../images/headphone.jpg",
             "../images/headphone.jpg"
-        ]
+        ],
+        "delivery_type" => "Express"
     ]
 ];

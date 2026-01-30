@@ -12,35 +12,22 @@ if (!isset($_SESSION['cart'])) {
 $cart = $_SESSION['cart'];
 $subtotal = 0;
 
-/**
- * Remove item from cart
- */
-if (isset($_GET['remove'])) {
-  $removeId = (int) $_GET['remove'];
-  unset($_SESSION['cart'][$removeId]);
 
-  header("Location: cart.php");
-  exit;
+require_once '../includes/functions.php';
+
+// Initialize cart
+if (!isset($_SESSION['cart'])) {
+  $_SESSION['cart'] = [];
 }
 
-/**
- * Update item quantity
- */
-if (isset($_GET['update']) && isset($_GET['qty'])) {
-  $updateId = (int) $_GET['update'];
-  $newQty = (int) $_GET['qty'];
+$cart = $_SESSION['cart'];
+$totals = get_cart_totals($cart); // Only using 'subtotal' from this on this page
+$subtotal = $totals['subtotal'];
 
-  if ($newQty < 1) {
-    $newQty = 1;
-  }
+// Note: GET handling for update/remove is removed in favor of AJAX (Phase 5) 
+// or could be restored using add_to_cart/remove helper if needed for non-JS fallback.
+// For this cleanup, we rely on the clean structure.
 
-  if (isset($_SESSION['cart'][$updateId])) {
-    $_SESSION['cart'][$updateId]['qty'] = $newQty;
-  }
-
-  header("Location: cart.php");
-  exit;
-}
 ?>
 
 <section class="container cart-page">
@@ -70,7 +57,7 @@ if (isset($_GET['update']) && isset($_GET['qty'])) {
             <?php foreach ($cart as $item): ?>
               <?php
               $itemTotal = $item['price'] * $item['qty'];
-              $subtotal += $itemTotal;
+              // Subtotal calculated via helper, no need to sum here
               ?>
               <tr data-id="<?= $item['id'] ?>">
                 <td class="cart-product">
@@ -101,13 +88,8 @@ if (isset($_GET['update']) && isset($_GET['qty'])) {
           <span>Subtotal:</span>
           <span id="cart-subtotal">$<?= number_format($subtotal, 2) ?></span>
         </div>
-        <div class="summary-row">
-          <span>Tax:</span>
-          <span id="cart-tax">$<?= number_format($subtotal * 0.1, 2) ?></span>
-        </div>
-        <div class="summary-row total-row">
-          <span>Total:</span>
-          <span id="cart-total">$<?= number_format($subtotal * 1.1, 2) ?></span>
+        <div class="summary-note">
+           <small>Shipping & Tax calculated at checkout</small>
         </div>
         <a href="checkout.php">
           <button class="checkout-btn">Proceed to Checkout</button>

@@ -1,8 +1,12 @@
 <?php
+// echo ("PDP LOADED WITH METHOD: " . $_SERVER['REQUEST_METHOD']);
+
 require '../includes/init.php';
 require '../includes/header.php';
 
 $products = require '../data/products.php';
+
+
 
 // Validate product ID
 if (!isset($_GET['id'])) {
@@ -10,6 +14,7 @@ if (!isset($_GET['id'])) {
   require '../includes/footer.php';
   exit;
 }
+
 
 $productId = (int) $_GET['id'];
 $product = null;
@@ -34,29 +39,17 @@ if (!isset($_SESSION['cart'])) {
   $_SESSION['cart'] = [];
 }
 
-// Handle Add to Cart
+// Handle Add to Cart (Fallback)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  require_once '../includes/functions.php';
+  
   $id = $product['id'];
-  $qty = isset($_POST['quantity']) ? (int) $_POST['quantity'] : 1;
 
-  // Ensure quantity is at least 1
-  if ($qty < 1) {
-    $qty = 1;
-  }
-
-  if (isset($_SESSION['cart'][$id])) {
-    $_SESSION['cart'][$id]['qty'] += $qty;
-  } else {
-    $_SESSION['cart'][$id] = [
-      'id' => $product['id'],
-      'name' => $product['name'],
-      'price' => $product['price'],
-      'image' => $product['image'],
-      'qty' => $qty
-    ];
-  }
+  add_to_cart($id, $qty);
 
   header("Location: cart.php");
+  $qty = isset($_POST['quantity']) ? (int) $_POST['quantity'] : 1;
+
   exit;
 }
 ?>

@@ -1,5 +1,6 @@
 <?php
-session_start();
+
+require '../includes/init.php';
 
 header('Content-Type: application/json');
 
@@ -37,31 +38,32 @@ if ($action === 'remove') {
     exit;
 }
 
-// Recalculate Totals
-$subtotal = 0;
-$totalItems = 0;
-$itemTotal = 0;
 
+require_once '../includes/functions.php';
+
+// ... (code for parsing ID/Action is fine)
+
+// Recalculate Totals using centralized logic
+// Default to standard shipping for estimation or just 0 if we want to hide it.
+// However, since we plan to hide Tax/Total on Cart page, these values might be unused,
+// but let's return them consistent with Phase 4 rules mechanism.
+$totals = get_cart_totals($_SESSION['cart'], 'standard'); 
+
+// Calculate specific item total for the UI update
+$itemTotal = 0;
 foreach ($_SESSION['cart'] as $item) {
-    $itemSub = $item['price'] * $item['qty'];
-    $subtotal += $itemSub;
-    $totalItems += $item['qty'];
-    
-    // Get total for the specific updated item
     if ($item['id'] === $productId) {
-        $itemTotal = $itemSub;
+        $itemTotal = $item['price'] * $item['qty'];
+        break;
     }
 }
-
-$tax = $subtotal * 0.1;
-$grandTotal = $subtotal * 1.1;
 
 echo json_encode([
     'success' => true,
     'isEmpty' => empty($_SESSION['cart']),
     'itemTotal' => number_format($itemTotal, 2),
-    'subtotal' => number_format($subtotal, 2),
-    'tax' => number_format($tax, 2),
-    'grandTotal' => number_format($grandTotal, 2),
-    'cartCount' => $totalItems
+    'subtotal' => number_format($totals['subtotal'], 2),
+    'tax' => number_format($totals['tax'], 2), 
+    'grandTotal' => number_format($totals['finalTotal'], 2),
+    'cartCount' => $totals['totalItems']
 ]);

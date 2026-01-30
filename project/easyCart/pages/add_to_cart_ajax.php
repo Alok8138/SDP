@@ -1,5 +1,5 @@
 <?php
-session_start();
+require '../includes/init.php';
 
 // Validates request method
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -8,8 +8,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// Load products
-$products = require '../data/products.php';
+
+// Load helper functions
+require_once '../includes/functions.php';
 
 // Get JSON input or Form data
 $productId = isset($_POST['product_id']) ? (int)$_POST['product_id'] : null;
@@ -20,43 +21,20 @@ if (!$productId) {
     exit;
 }
 
-// Find product
-$product = null;
-foreach ($products as $p) {
-    if ($p['id'] === $productId) {
-        $product = $p;
-        break;
-    }
-}
+// Add to cart using helper
+$success = add_to_cart($productId, $quantity);
 
-if (!$product) {
+if (!$success) {
     echo json_encode(['success' => false, 'message' => 'Product not found']);
     exit;
 }
 
-// Initialize cart if needed
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
-}
-
-// Add/Update cart
-if (isset($_SESSION['cart'][$productId])) {
-    $_SESSION['cart'][$productId]['qty'] += $quantity;
-} else {
-    $_SESSION['cart'][$productId] = [
-        'id' => $product['id'],
-        'name' => $product['name'],
-        'price' => $product['price'],
-        'image' => $product['image'],
-        'qty' => $quantity
-    ];
-}
-
-// Calculate total items
+// Calculate total items (simplified)
 $totalItems = 0;
 foreach ($_SESSION['cart'] as $item) {
     $totalItems += $item['qty'];
 }
+
 
 header('Content-Type: application/json');
 echo json_encode([

@@ -2,6 +2,8 @@
 require '../includes/init.php';
 require '../includes/header.php';
 
+
+
 // If already logged in
 if (isset($_SESSION['user'])) {
   header("Location: index.php");
