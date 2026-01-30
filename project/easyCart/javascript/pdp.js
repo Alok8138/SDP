@@ -98,3 +98,49 @@
     // Initialize
     updateQuantity(1);
 })();
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    
+
+    const quantityBox = document.getElementsByClassName('quantity-box');
+    const cartQuantity = document.getElementById('quantityValue');
+    const sessionQuantity = document.getElementById('sessionQuantity');
+    const incrementBtn = document.getElementById('incrementBtn');
+    const decrementBtn = document.getElementById('decrementBtn');
+    const addToCartBtn = document.getElementById('addToCartBtn');
+    // console.log(sessionQuantity);
+
+    console.log(addToCartBtn);
+
+
+    let sm = 1;
+
+    incrementBtn.addEventListener('click', function () {
+        ++sm;
+        console.log("Increment clicked",sm);
+    });
+
+    decrementBtn.addEventListener('click', function () {
+        --sm;
+        console.log("Decrement clicked",sm);
+        
+    });
+
+    addToCartBtn.addEventListener('click', function () {
+        sessionQuantity.innerText = parseInt(sessionQuantity.innerText) + sm;
+    });
+
+
+    console.log(sessionQuantity.innerText);
+
+
+    
+    
+});
+
+
+
+

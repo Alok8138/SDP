@@ -16,10 +16,20 @@ if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
 
 // Get the delivery type from the request
 $input = json_decode(file_get_contents('php://input'), true);
-$deliveryType = $input['type'] ?? ($_POST['type'] ?? 'standard');
+$deliveryType = isset($input['type']) ? $input['type'] : ($_POST['type'] ?? 'standard');
 
 // Calculate all totals using centralized logic
 $totals = get_cart_totals($_SESSION['cart'], $deliveryType);
+
+// Validate if requested type was allowed (if it was swapped by helper)
+if ($totals['shippingType'] !== $deliveryType) {
+    echo json_encode(['success' => false, 'message' => 'Shipping option not allowed for this subtotal']);
+    exit;
+}
+
+// Persist the choice
+$_SESSION['delivery_type'] = $deliveryType;
+session_write_close(); // Ensure session is saved immediately
 
 echo json_encode([
     'success' => true,

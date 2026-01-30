@@ -12,15 +12,31 @@ if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
   exit;
 }
 
-$cart = $_SESSION['cart'];
-$subtotal = 0;
+// echo '<pre>';
+// print_r($_SESSION['cart']);
 
-// Calculate totals (Default to Standard for initial view)
-$totals = get_cart_totals($cart, 'standard');
+
+
+$cart = $_SESSION['cart'];
+
+// Calculate totals (Initial view)
+$initial_subtotal = 0;
+foreach ($cart as $item) {
+  $initial_subtotal += $item['price'] * $item['qty'];
+}
+
+// Get from session or default (empty)
+$saved_shipping = $_SESSION['delivery_type'] ?? '';
+if (!is_shipping_allowed($initial_subtotal, $saved_shipping)) {
+  $saved_shipping = ''; 
+}
+
+$totals = get_cart_totals($cart, $saved_shipping);
 $subtotal = $totals['subtotal'];
 $shipping = $totals['shipping'];
 $tax = $totals['tax'];
 $finalTotal = $totals['finalTotal'];
+$deliveryType = $totals['shippingType'];
 
 
 /**
@@ -47,6 +63,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $error = "Please fill in all required fields.";
   } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $error = "Please enter a valid email address.";
+  } elseif (empty($deliveryType)) {
+    $error = "Please select a shipping method.";
+  } elseif (!is_shipping_allowed($subtotal, $deliveryType)) {
+    $error = "Invalid shipping option selected for your order total.";
   } else {
 
     // ---------------- CALCULATION (Centralized) ----------------
@@ -83,6 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $_SESSION['cart'] = [];
     $_SESSION['orders'] = $orders;
+    unset($_SESSION['delivery_type']);
 
     header("Location: myOrders.php");
     exit;
@@ -150,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
           </div>
 
-          <input type="hidden" name="delivery_type" id="delivery-type" value="standard">
+          <input type="hidden" name="delivery_type" id="delivery-type" value="<?= htmlspecialchars($deliveryType) ?>">
         </form>
       </div>
 
@@ -187,11 +208,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
 
       <div class="delivery-section">
+
         <h4>Delivery Option</h4>
-        <label><input type="radio" name="delivery" value="standard" checked> Standard Shipping ($40)</label>
-        <label><input type="radio" name="delivery" value="express"> Express (Min $80 or 10%)</label>
-        <label><input type="radio" name="delivery" value="white_glove"> White Glove (Min $150 or 5%)</label>
-        <label><input type="radio" name="delivery" value="freight"> Freight (3% or $200 min)</label>
+        <div class="shipping-options">
+          <label>
+            <input type="radio" name="delivery" value="standard" id="ship_standard" 
+              <?= ($deliveryType === 'standard') ? 'checked' : '' ?> 
+              <?= (!is_shipping_allowed($subtotal, 'standard')) ? 'disabled' : '' ?>> 
+            Standard Shipping ($40)
+          </label>
+          <label>
+            <input type="radio" name="delivery" value="express" id="ship_express" 
+              <?= ($deliveryType === 'express') ? 'checked' : '' ?> 
+              <?= (!is_shipping_allowed($subtotal, 'express')) ? 'disabled' : '' ?>> 
+            Express (10%, Min $80)
+          </label>
+          <label>
+            <input type="radio" name="delivery" value="white_glove" id="ship_whiteglove" 
+              <?= ($deliveryType === 'white_glove') ? 'checked' : '' ?> 
+              <?= (!is_shipping_allowed($subtotal, 'white_glove')) ? 'disabled' : '' ?>> 
+            White Glove (5%, Min $150)
+          </label>
+          <label>
+            <input type="radio" name="delivery" value="freight" id="ship_freight" 
+              <?= ($deliveryType === 'freight') ? 'checked' : '' ?> 
+              <?= (!is_shipping_allowed($subtotal, 'freight')) ? 'disabled' : '' ?>> 
+            Freight (3%, Min $200)
+          </label>
+        </div>
       </div>
 
       <div class="summary-row">
@@ -200,7 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
 
       <div class="summary-row">
-        <span>Tax (18%):</span>
+        <span>Tax (10%):</span>
         <span id="tax-amount">$<?= number_format($tax, 2) ?></span>
       </div>
 

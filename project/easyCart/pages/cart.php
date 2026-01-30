@@ -4,7 +4,13 @@ require '../includes/header.php';
 
 /**
  * Initialize cart
+ * 
+ * 
  */
+// echo '<pre>';
+// print_r($_SESSION['cart']);
+
+
 if (!isset($_SESSION['cart'])) {
   $_SESSION['cart'] = [];
 }

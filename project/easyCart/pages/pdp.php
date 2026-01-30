@@ -16,6 +16,8 @@ if (!isset($_GET['id'])) {
 }
 
 
+
+// $cart = $_SESSION['cart'];
 $productId = (int) $_GET['id'];
 $product = null;
 
@@ -113,9 +115,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="button" id="incrementBtn" aria-label="Increase quantity">+</button>
           </div>
         </div>
+        <div class="quantity-wrapper">
+          <span class="qty-label">Cart Quantity:</span>
+          <div class="quantity-box">
+            <span class="qty-value qty-cart" id="sessionQuantity">
+              <?= $_SESSION['cart'][$product['id']]['qty'] ?? 0 ?>
+            </span>
+          </div>
+        </div>
         <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
         <input type="hidden" name="quantity" id="quantityInput" value="1">
-        <button type="submit">Add to Cart</button>
+        <button type="submit" id = "addToCartBtn">Add to Cart</button>
       </form>
     </div>
 

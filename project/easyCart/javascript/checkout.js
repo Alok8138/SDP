@@ -39,8 +39,9 @@ document.addEventListener("DOMContentLoaded", function () {
     radio.addEventListener("change", () => updateTotals(radio.value));
   });
 
-  // Initial load logic if needed, typically PHP renders initial state
-  // But if we want to ensure consistency, we can trigger one update:
-  // const initialType = document.querySelector("input[name='delivery']:checked").value || 'standard';
-  // updateTotals(initialType);
+  // Sync hidden input with initially checked radio on load
+  const checkedRadio = document.querySelector("input[name='delivery']:checked");
+  if (checkedRadio) {
+    deliveryTypeInput.value = checkedRadio.value;
+  }
 });

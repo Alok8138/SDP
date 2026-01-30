@@ -50,21 +50,21 @@ function add_to_cart($productId, $quantity) {
  * Calculate Shipping Cost based on rules (Phase 4)
  */
 function calculate_shipping($subtotal, $type) {
+    if (empty($type) || $type === 'none') {
+        return 0;
+    }
     switch ($type) {
         case 'standard':
             return 40;
         case 'express':
-            // $80 OR 10% of subtotal (whichever is lower)
-            return min(80, $subtotal * 0.10);
+            // 10% of subtotal, minimum $80
+            return max($subtotal * 0.10, 80);
         case 'white_glove':
-            // $150 OR 5% of subtotal (whichever is lower)
-            return min(150, $subtotal * 0.05);
+            // 5% of subtotal, minimum $150
+            return max($subtotal * 0.05, 150);
         case 'freight':
             // 3% of subtotal, minimum $200
-            return max(200, $subtotal * 0.03); 
-            // Note: PHP max() returns the highest value. 
-            // "minimum $200" means the cost is AT LEAST 200.
-            // So if 3% is 50, we return 200. Thus max is correct.
+            return max($subtotal * 0.03, 200); 
         default:
             return 40;
     }
@@ -83,10 +83,15 @@ function get_cart_totals($cart, $shippingType = 'standard') {
         $totalItems += $item['qty'];
     }
 
+    // Default shipping type if not allowed
+    if (!empty($shippingType) && !is_shipping_allowed($subtotal, $shippingType)) {
+        $shippingType = ''; // Reset if invalid
+    }
+
     $shipping = calculate_shipping($subtotal, $shippingType);
     
-    // Tax = 18% of (Subtotal + Shipping) (Phase 4 Requirement)
-    $tax = ($subtotal + $shipping) * 0.18;
+    // Tax = 10% of Subtotal
+    $tax = $subtotal * 0.10;
 
     $finalTotal = $subtotal + $shipping + $tax;
 
@@ -95,6 +100,23 @@ function get_cart_totals($cart, $shippingType = 'standard') {
         'shipping' => $shipping,
         'tax' => $tax,
         'finalTotal' => $finalTotal,
-        'totalItems' => $totalItems
+        'totalItems' => $totalItems,
+        'shippingType' => $shippingType
     ];
+}
+
+
+
+/**
+ * Validate allowed shipping methods based on subtotal
+ */
+function is_shipping_allowed($subtotal, $type)
+{
+    if ($subtotal <= 300) {
+        // Only Standard & Express allowed
+        return in_array($type, ['standard', 'express']);
+    } else {
+        // Only Freight & White Glove allowed
+        return in_array($type, ['freight', 'white_glove']);
+    }
 }
