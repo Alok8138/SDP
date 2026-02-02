@@ -1,6 +1,5 @@
 <?php
 
-
 echo "<h2>PHP Basic Data Types and Variables task-1</h2>";
 $greeting = "Hello";
 
@@ -25,5 +24,6 @@ print_r($items); // Output: Array ( [0] => Apple [1] => Banana [2] => Orange )
 echo '<pre>';
 var_dump($items);
 
-
 print($price);
+
+
