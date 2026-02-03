@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
         formData.append('qty', qty);
         formData.append('action', action);
 
-        fetch('update_cart_ajax.php', {
+        fetch('ajax/update_cart_ajax.php', {
             method: 'POST',
             body: formData
         })

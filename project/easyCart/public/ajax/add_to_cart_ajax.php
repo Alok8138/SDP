@@ -1,5 +1,5 @@
 <?php
-require '../includes/init.php';
+require '../../app/config/database.php';
 
 // Validates request method
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 
 // Load helper functions
-require_once '../includes/functions.php';
+require_once '../../app/helpers/functions.php';
 
 // Get JSON input or Form data
 $productId = isset($_POST['product_id']) ? (int)$_POST['product_id'] : null;

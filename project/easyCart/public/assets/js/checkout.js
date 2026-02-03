@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateTotals(type) {
     // Phase 5: AJAX update
-    fetch('ajax_checkout_totals.php', {
+    fetch('ajax/ajax_checkout_totals.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

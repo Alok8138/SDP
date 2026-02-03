@@ -1,6 +1,7 @@
 <?php
-require '../includes/init.php';
-require '../includes/header.php';
+require '../app/config/database.php';
+require '../app/helpers/functions.php';
+require '../resources/views/header.php';
 
 
 
@@ -50,4 +51,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </p>
 </section>
 
-<?php require '../includes/footer.php'; ?>
+<?php require '../resources/views/footer.php'; ?>

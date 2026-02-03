@@ -6,7 +6,7 @@
 
 // Helper to get products (Phase 2)
 function get_products() {
-    return require '../data/products.php';
+    return require __DIR__ . '/../models/Product.php';
 }
 
 /**

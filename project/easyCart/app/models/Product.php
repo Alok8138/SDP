@@ -5,7 +5,7 @@ return [
         "name" => "Wireless Headphones",
         "price" => 99,
         "old_price" => 129,
-        "image" => "../images/headphone.jpg",
+        "image" => "assets/images/headphone.jpg",
         "brand" => "Sony",
         "category" => "Electronics",
         "description" => "Premium wireless headphones with noise cancellation.",
@@ -16,9 +16,9 @@ return [
             "Built-in microphone"
         ],
         "gallery" => [
-            "../images/phone.jpg",
-            "../images/headphone.jpg",
-            "../images/laptop.jpg"
+            "assets/images/phone.jpg",
+            "assets/images/headphone.jpg",
+            "assets/images/laptop.jpg"
         ],
         "delivery_type" => "Express"
     ],
@@ -27,7 +27,7 @@ return [
         "name" => "Smart Watch",
         "price" => 79,
         "old_price" => 99,
-        "image" => "../images/watch.jpg",
+        "image" => "assets/images/watch.jpg",
         "brand" => "Samsung",
         "category" => "Gadgets",
         "description" => "Track fitness and notifications with style.",
@@ -37,9 +37,9 @@ return [
             "Water resistant"
         ],
         "gallery" => [
-            "../images/headphone.jpg",
-            "../images/headphone.jpg",
-            "../images/headphone.jpg"
+            "assets/images/headphone.jpg",
+            "assets/images/headphone.jpg",
+            "assets/images/headphone.jpg"
         ],
         "delivery_type" => "Express"
     ],
@@ -48,7 +48,7 @@ return [
         "name" => "Smart Phone",
         "price" => 149,
         "old_price" => 199,
-        "image" => "../images/phone.jpg",
+        "image" => "assets/images/phone.jpg",
         "brand" => "Apple",
         "category" => "Electronics",
         "description" => "Powerful smartphone with amazing camera.",
@@ -58,9 +58,9 @@ return [
             "Long battery life"
         ],
         "gallery" => [
-            "../images/headphone.jpg",
-            "../images/headphone.jpg",
-            "../images/headphone.jpg"
+            "assets/images/headphone.jpg",
+            "assets/images/headphone.jpg",
+            "assets/images/headphone.jpg"
         ],
         "delivery_type" => "Express"
     ],
@@ -69,7 +69,7 @@ return [
         "name" => "Smart Phone",
         "price" => 1499,
         "old_price" => 199,
-        "image" => "../images/phone.jpg",
+        "image" => "assets/images/phone.jpg",
         "brand" => "Asus",
         "category" => "Electronics",
         "description" => "Powerful smartphone with amazing camera.",
@@ -79,9 +79,9 @@ return [
             "Long battery life"
         ],
         "gallery" => [
-            "../images/headphone.jpg",
-            "../images/headphone.jpg",
-            "../images/headphone.jpg"
+            "assets/images/headphone.jpg",
+            "assets/images/headphone.jpg",
+            "assets/images/headphone.jpg"
         ],
         "delivery_type" => "Freight"
     ],
@@ -90,7 +90,7 @@ return [
         "name" => "Smart Phone",
         "price" => 1499,
         "old_price" => 199,
-        "image" => "../images/phone.jpg",
+        "image" => "assets/images/phone.jpg",
         "brand" => "HP",
         "category" => "Electronics",
         "description" => "Powerful smartphone with amazing camera.",
@@ -100,9 +100,9 @@ return [
             "Long battery life"
         ],
         "gallery" => [
-            "../images/headphone.jpg",
-            "../images/headphone.jpg",
-            "../images/headphone.jpg"
+            "assets/images/headphone.jpg",
+            "assets/images/headphone.jpg",
+            "assets/images/headphone.jpg"
         ],
         "delivery_type" => "Freight"
     ],
@@ -111,7 +111,7 @@ return [
         "name" => "Smart Phone",
         "price" => 499,
         "old_price" => 199,
-        "image" => "../images/phone.jpg",
+        "image" => "assets/images/phone.jpg",
         "brand" => "Lenovo",
         "category" => "Electronics",
         "description" => "Powerful smartphone with amazing camera.",
@@ -121,9 +121,9 @@ return [
             "Long battery life"
         ],
         "gallery" => [
-            "../images/headphone.jpg",
-            "../images/headphone.jpg",
-            "../images/headphone.jpg"
+            "assets/images/headphone.jpg",
+            "assets/images/headphone.jpg",
+            "assets/images/headphone.jpg"
         ],
         "delivery_type" => "Freight"
     ],
@@ -132,7 +132,7 @@ return [
         "name" => "Smart Phone",
         "price" => 549,
         "old_price" => 199,
-        "image" => "../images/phone.jpg",
+        "image" => "assets/images/phone.jpg",
         "brand" => "Lenovo",
         "category" => "Electronics",
         "description" => "Powerful smartphone with amazing camera.",
@@ -142,9 +142,9 @@ return [
             "Long battery life"
         ],
         "gallery" => [
-            "../images/headphone.jpg",
-            "../images/headphone.jpg",
-            "../images/headphone.jpg"
+            "assets/images/headphone.jpg",
+            "assets/images/headphone.jpg",
+            "assets/images/headphone.jpg"
         ],
         "delivery_type" => "Freight"
     ],
@@ -153,7 +153,7 @@ return [
         "name" => "Smart Phone",
         "price" => 149,
         "old_price" => 199,
-        "image" => "../images/phone.jpg",
+        "image" => "assets/images/phone.jpg",
         "brand" => "Lenovo",
         "category" => "Electronics",
         "description" => "Powerful smartphone with amazing camera.",
@@ -163,9 +163,9 @@ return [
             "Long battery life"
         ],
         "gallery" => [
-            "../images/headphone.jpg",
-            "../images/headphone.jpg",
-            "../images/headphone.jpg"
+            "assets/images/headphone.jpg",
+            "assets/images/headphone.jpg",
+            "assets/images/headphone.jpg"
         ],
         "delivery_type" => "Express"
     ],
@@ -174,7 +174,7 @@ return [
         "name" => "Smart Phone",
         "price" => 149,
         "old_price" => 199,
-        "image" => "../images/phone.jpg",
+        "image" => "assets/images/phone.jpg",
         "brand" => "DELL",
         "category" => "Electronics",
         "description" => "Powerful smartphone with amazing camera.",
@@ -184,9 +184,9 @@ return [
             "Long battery life"
         ],
         "gallery" => [
-            "../images/headphone.jpg",
-            "../images/headphone.jpg",
-            "../images/headphone.jpg"
+            "assets/images/headphone.jpg",
+            "assets/images/headphone.jpg",
+            "assets/images/headphone.jpg"
         ],
         "delivery_type" => "Express"
     ],
@@ -195,7 +195,7 @@ return [
         "name" => "Smart Phone",
         "price" => 149,
         "old_price" => 199,
-        "image" => "../images/phone.jpg",
+        "image" => "assets/images/phone.jpg",
         "brand" => "Lenovo",
         "category" => "Electronics",
         "description" => "Powerful smartphone with amazing camera.",
@@ -205,9 +205,9 @@ return [
             "Long battery life"
         ],
         "gallery" => [
-            "../images/headphone.jpg",
-            "../images/headphone.jpg",
-            "../images/headphone.jpg"
+            "assets/images/headphone.jpg",
+            "assets/images/headphone.jpg",
+            "assets/images/headphone.jpg"
         ],
         "delivery_type" => "Express"
     ]

@@ -1,14 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Select all forms with class 'ajax-cart-form'
     const cartForms = document.querySelectorAll('.ajax-cart-form');
-    
+
     cartForms.forEach(form => {
         form.addEventListener('submit', function (e) {
             e.preventDefault(); // Stop normal submission
 
             const formData = new FormData(this);
             // console.log(formData);
-            
+
             const submitBtn = this.querySelector('button[type="submit"]');
             // console.log(submitBtn);
 
@@ -18,9 +18,9 @@ document.addEventListener('DOMContentLoaded', function () {
             submitBtn.style.opacity = '0.7';
             submitBtn.disabled = true;
             // console.log(formData.get('quantity'));
-            
 
-            fetch('add_to_cart_ajax.php', {
+
+            fetch('ajax/add_to_cart_ajax.php', {
                 method: 'POST',
                 body: formData
             })
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (data.success) {
                         // Update cart badge
                         const badge = document.querySelector('.cart-badge');
-                        
+
                         if (badge) {
                             badge.textContent = data.cartCount;
                             console.log(badge);
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 newBadge.className = 'cart-badge';
                                 newBadge.textContent = data.cartCount;
                                 cartLink.appendChild(newBadge);
-                                
+
                             }
                         }
 

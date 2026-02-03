@@ -1,10 +1,11 @@
 <?php
-require '../includes/init.php';
-require '../includes/header.php';
+require '../app/config/database.php';
+require '../app/helpers/functions.php';
+require '../resources/views/header.php';
 
-$products = require '../data/featuredProduct.php';
-$categories = require '../data/categories.php';
-$brands = require '../data/brands.php';
+$products = require '../app/models/FeaturedProduct.php';
+$categories = require '../app/models/Category.php';
+$brands = require '../app/models/Brand.php';
 
 // var_dump($_SESSION['cart'][1]['name']);
 ?>
@@ -37,7 +38,7 @@ $brands = require '../data/brands.php';
             <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
             <input type="hidden" name="quantity" value="1">
             <button type="submit" class="card-cart-btn" aria-label="Quick add to cart" title="Add to Cart">
-              <img src="../images/cart.jpg" alt="Add to Cart" />
+              <img src="assets/images/cart.jpg" alt="Add to Cart" />
             </button>
           </form>
         </div>
@@ -70,4 +71,4 @@ $brands = require '../data/brands.php';
   </div>
 </section>
 
-<?php require '../includes/footer.php'; ?>
+<?php require '../resources/views/footer.php'; ?>

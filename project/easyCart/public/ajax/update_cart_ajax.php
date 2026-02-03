@@ -1,6 +1,6 @@
 <?php
 
-require '../includes/init.php';
+require '../../app/config/database.php';
 
 header('Content-Type: application/json');
 
@@ -39,7 +39,7 @@ if ($action === 'remove') {
 }
 
 
-require_once '../includes/functions.php';
+require_once '../../app/helpers/functions.php';
 
 // ... (code for parsing ID/Action is fine)
 

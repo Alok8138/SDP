@@ -1,6 +1,7 @@
 <?php
-require '../includes/init.php';
-require '../includes/header.php';
+require '../app/config/database.php';
+require '../app/helpers/functions.php';
+require '../resources/views/header.php';
 
 /**
  * Initialize cart
@@ -19,7 +20,7 @@ $cart = $_SESSION['cart'];
 $subtotal = 0;
 
 
-require_once '../includes/functions.php';
+require_once '../app/helpers/functions.php';
 
 // Initialize cart
 if (!isset($_SESSION['cart'])) {
@@ -102,10 +103,10 @@ $subtotal = $totals['subtotal'];
         </a>
       </div>
     </div>
-    <script src="../javascript/cart_manager.js"></script>
+    <script src="assets/js/cart_manager.js"></script>
     </div>
 
   <?php endif; ?>
 </section>
 
-<?php require '../includes/footer.php'; ?>
+<?php require '../resources/views/footer.php'; ?>

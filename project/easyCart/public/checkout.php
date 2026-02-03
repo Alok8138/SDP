@@ -1,7 +1,7 @@
 <?php
-require '../includes/init.php';
-require '../includes/header.php';
-require_once '../includes/functions.php';
+require '../app/config/database.php';
+require '../app/helpers/functions.php';
+require '../resources/views/header.php';
 
 
 /**
@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     // Load existing orders
-    $orders = require '../data/orders.php';
+    $orders = require '../app/models/Order.php';
 
     $orders[] = [
       "id" => "#ORD" . rand(1000, 9999),
@@ -259,7 +259,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   <!-- Local data script removed in favor of AJAX -->
 
-  <script src="../javascript/checkout.js"></script>
+  <script src="assets/js/checkout.js"></script>
 </section>
 
-<?php require '../includes/footer.php'; ?>
+<?php require '../resources/views/footer.php'; ?>

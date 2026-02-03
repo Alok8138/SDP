@@ -1,6 +1,7 @@
 <?php
-require '../includes/init.php';
-require '../includes/header.php';
+require '../app/config/database.php';
+require '../app/helpers/functions.php';
+require '../resources/views/header.php';
 
 /**
  * Load ALL orders
@@ -9,7 +10,7 @@ require '../includes/header.php';
  */
 
 // Load static orders
-$staticOrders = require '../data/orders.php';
+$staticOrders = require '../app/models/Order.php';
 
 // Load session orders (if any)
 $sessionOrders = $_SESSION['orders'] ?? [];
@@ -55,4 +56,4 @@ $orders = array_merge($staticOrders, $sessionOrders);
   <?php endif; ?>
 </section>
 
-<?php require '../includes/footer.php'; ?>
+<?php require '../resources/views/footer.php'; ?>
