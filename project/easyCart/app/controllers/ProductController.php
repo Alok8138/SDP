@@ -1,15 +1,15 @@
 <?php
 require_once __DIR__ . '/../models/Product.php';
-require_once __DIR__ . '/../models/Brand.php';
+require_once __DIR__ . '/../models/Category.php';
 require_once __DIR__ . '/../helpers/functions.php';
 
 class ProductController {
     
     /**
-     * Method for getting all products for homepage
+     * Method for getting random products for homepage (Task 2)
      */
-    public function getAllProducts() {
-        return Product::getAll();
+    public function getHomeProducts() {
+        return Product::getRandomProducts(6);
     }
     
     /**
@@ -17,10 +17,12 @@ class ProductController {
      */
     public function index() {
         $allProducts = Product::getAll();
-        $brands = require __DIR__ . '/../models/Brand.php';
+        $brands = Product::getBrands();
+        $categories = Category::getAll();
 
         $allProducts = is_array($allProducts) ? $allProducts : [];
         $brands = is_array($brands) ? $brands : [];
+        $categories = is_array($categories) ? $categories : [];
 
         $products = $allProducts;
 
@@ -29,6 +31,22 @@ class ProductController {
             $selectedBrands = $_GET['brand'];
             $products = array_filter($products, function ($product) use ($selectedBrands) {
                 return in_array($product['brand'], $selectedBrands);
+            });
+        }
+
+        // Apply Category Filter (Task 1)
+        if (isset($_GET['category']) && is_array($_GET['category'])) {
+            $selectedCategories = $_GET['category'];
+            
+            // We need to know which products belong to which categories
+            $db = Database::connect();
+            $placeholders = implode(',', array_fill(0, count($selectedCategories), '?'));
+            $stmt = $db->prepare("SELECT product_id FROM catalog_category_products WHERE category_id IN ($placeholders)");
+            $stmt->execute($selectedCategories);
+            $productIds = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+            $products = array_filter($products, function ($product) use ($productIds) {
+                return in_array($product['id'], $productIds);
             });
         }
 
@@ -54,6 +72,7 @@ class ProductController {
         return [
             'paginatedProducts' => $paginatedProducts,
             'brands' => $brands,
+            'categories' => $categories,
             'totalProducts' => $totalProducts,
             'totalPages' => $totalPages,
             'currentPage' => $currentPage

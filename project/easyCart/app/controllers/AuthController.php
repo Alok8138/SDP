@@ -3,16 +3,16 @@
  * AuthController.php
  */
 
+require_once __DIR__ . '/../models/Customer.php';
+require_once __DIR__ . '/../helpers/auth_helper.php';
+
 class AuthController {
     
     /**
      * Handle Login
      */
     public function login() {
-        if (isset($_SESSION['user'])) {
-             header("Location: index.php");
-            exit;
-        }
+        redirectIfLoggedIn();
 
         $error = '';
 
@@ -23,11 +23,22 @@ class AuthController {
             if ($email === '' || $password === '') {
                 $error = "All fields are required.";
             } else {
-                if (isset($_SESSION['user']) && $_SESSION['user']['email'] === $email) {
-                    header("Location: index.php");
+                $customer = Customer::getByEmail($email);
+                
+                if ($customer && password_verify($password, $customer['password_hash'])) {
+                    // Start Session and store user info
+                    $_SESSION['user_id'] = $customer['entity_id'];
+                    $_SESSION['user_email'] = $customer['email'];
+                    $_SESSION['user_name'] = $customer['firstname'] . ' ' . $customer['lastname'];
+                    
+                    // Handle redirect URL
+                    $redirect = $_GET['redirect'] ?? 'index';
+                    $location = ($redirect === 'cart') ? 'cart.php' : 'index.php';
+                    
+                    header("Location: $location");
                     exit;
                 } else {
-                    $error = "Invalid credentials.";
+                    $error = "Invalid email or password.";
                 }
             }
         }
@@ -39,31 +50,66 @@ class AuthController {
      * Handle Signup
      */
     public function signup() {
-        if (isset($_SESSION['user'])) {
-            header("Location: index.php");
-            exit;
-        }
+        redirectIfLoggedIn();
 
         $error = '';
         $success = '';
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = trim($_POST['name'] ?? '');
-            $email = trim($_POST['email'] ?? '');
-            $password = trim($_POST['password'] ?? '');
+            $firstname = trim($_POST['firstname'] ?? '');
+            $lastname  = trim($_POST['lastname'] ?? '');
+            $email     = trim($_POST['email'] ?? '');
+            $password  = trim($_POST['password'] ?? '');
+            $phone     = trim($_POST['phone'] ?? '');
 
-            if ($name === '' || $email === '' || $password === '') {
-                $error = "All fields are required.";
+            if ($firstname === '' || $lastname === '' || $email === '' || $password === '') {
+                $error = "Please fill in all required fields.";
+            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $error = "Please enter a valid email address.";
+            } elseif (Customer::emailExists($email)) {
+                $error = "This email is already registered.";
             } else {
-                $_SESSION['user'] = [
-                    'name' => $name,
-                    'email' => $email
+                $data = [
+                    'firstname' => $firstname,
+                    'lastname'  => $lastname,
+                    'email'     => $email,
+                    'password'  => $password,
+                    'phone'     => $phone
                 ];
-                header("Location: login.php");
-                exit;
+
+                if (Customer::create($data)) {
+                    $success = "Registration successful! You can now log in.";
+                    // Optionally auto-login or redirect
+                    header("Location: login.php?signup=success");
+                    exit;
+                } else {
+                    $error = "Something went wrong. Please try again.";
+                }
             }
         }
 
         return ['error' => $error, 'success' => $success];
+    }
+
+    /**
+     * Handle Logout
+     */
+    public function logout() {
+        // Unset all session variables
+        $_SESSION = [];
+
+        // Destroy the session
+        if (session_id() !== "" || isset($_COOKIE[session_name()])) {
+            setcookie(session_name(), '', time() - 42000, '/');
+        }
+        session_destroy();
+
+        // Start a new session and regenerate ID to prevent fixation
+        session_start();
+        session_regenerate_id(true);
+        session_destroy(); // Destroy again to ensure it's clean for the redirect
+
+        header("Location: login.php");
+        exit;
     }
 }

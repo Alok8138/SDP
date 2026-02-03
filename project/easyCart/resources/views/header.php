@@ -15,7 +15,11 @@
             <a href="plp.php">Shop</a>
             <a href="cart.php">Cart</a>
             <a href="myOrders.php">Orders</a>
-            <a href="login.php">Login</a>
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <a href="logout.php">Logout</a>
+            <?php else: ?>
+                <a href="login.php">Login</a>
+            <?php endif; ?>
             <a href="cart.php" class="cart-icon-link">
                 <button type="submit" class="card-cart-btn" aria-label="Quick add to cart" title="Add to Cart">
                     <img src="assets/images/cart.jpg" alt="Add to Cart" />

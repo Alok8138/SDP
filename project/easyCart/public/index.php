@@ -8,12 +8,12 @@ require_once __DIR__ . '/../app/controllers/ProductController.php';
 // Instantiate Controller
 $controller = new ProductController();
 
-// Fetch products from Database via Controller
-$products = $controller->getAllProducts();
+// Fetch products from Database via Controller (Task 2: 6 Random Products)
+$products = $controller->getHomeProducts();
 
-// For categories and brands, we can still use static for now or add to model
-$categories = require '../app/models/Category.php';
-$brands = require '../app/models/Brand.php';
+// Dynamic Categories and Brands (Task 1)
+$categories = Category::getAll();
+$brands = Product::getBrands();
 
 require_once '../app/helpers/functions.php';
 require_once '../resources/views/header.php';
@@ -75,7 +75,7 @@ require_once '../resources/views/header.php';
 
     <div class="grid three category-grid">
       <?php foreach ($categories as $category): ?>
-        <a href="plp.php" class="category-card"><?= htmlspecialchars($category) ?></a>
+        <a href="plp.php?category_id=<?= (int)$category['entity_id'] ?>" class="category-card"><?= htmlspecialchars($category['name']) ?></a>
       <?php endforeach; ?>
     </div>
   </div>

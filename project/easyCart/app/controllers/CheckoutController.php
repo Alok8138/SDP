@@ -4,19 +4,28 @@
  */
 
 require_once __DIR__ . '/../helpers/functions.php';
+require_once __DIR__ . '/../helpers/auth_helper.php';
+require_once __DIR__ . '/../models/Order.php';
+require_once __DIR__ . '/../models/Cart.php';
 
 class CheckoutController {
+    
     public function index() {
-        if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
+        // Restricted to logged-in users only
+        requireLogin();
+
+        $userId = $_SESSION['user_id'];
+        $cartRecord = Cart::getActiveCart($userId);
+        $items = $cartRecord ? Cart::getItems($cartRecord['entity_id']) : [];
+
+        if (empty($items)) {
             header("Location: cart.php");
             exit;
         }
 
-        $cart = $_SESSION['cart'];
-
-        // Calculate initial subtotal
+        // Calculate initial subtotal from DB items
         $initialSubtotal = 0;
-        foreach ($cart as $item) {
+        foreach ($items as $item) {
             $initialSubtotal += $item['price'] * $item['qty'];
         }
 
@@ -26,10 +35,11 @@ class CheckoutController {
             $savedShipping = ''; 
         }
 
-        $totals = get_cart_totals($cart, $savedShipping);
+        // Use standard get_cart_totals (adapted for DB item property 'quantity')
+        $totals = $this->calculateTotals($items, $savedShipping);
         
         $data = [
-            'cart' => $cart,
+            'cart' => $items,
             'subtotal' => $totals['subtotal'],
             'shipping' => $totals['shipping'],
             'tax' => $totals['tax'],
@@ -39,7 +49,7 @@ class CheckoutController {
 
         // Handle POST (Order submission)
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $result = $this->placeOrder($data['subtotal']);
+            $result = $this->placeOrder($userId, $cartRecord['entity_id'], $data);
             if (isset($result['error'])) {
                 $data['error'] = $result['error'];
             }
@@ -48,9 +58,24 @@ class CheckoutController {
         return $data;
     }
 
-    private function placeOrder($subtotal) {
-        $cart = $_SESSION['cart'];
-        
+    /**
+     * Helper to bridge DB items to the shipping calculation logic
+     */
+    private function calculateTotals($items, $shippingType) {
+        $cartForTotals = [];
+        foreach ($items as $item) {
+            $cartForTotals[] = [
+                'price' => $item['price'],
+                'qty' => $item['qty']
+            ];
+        }
+        return get_cart_totals($cartForTotals, $shippingType);
+    }
+
+    /**
+     * Handle the transition from persistent Cart to Order via Transaction
+     */
+    private function placeOrder($userId, $cartId, $totalsData) {
         $firstName     = trim($_POST['first_name'] ?? '');
         $lastName      = trim($_POST['last_name'] ?? '');
         $email         = trim($_POST['email'] ?? '');
@@ -68,37 +93,38 @@ class CheckoutController {
             return ['error' => "Please enter a valid email address."];
         } elseif (empty($deliveryType)) {
             return ['error' => "Please select a shipping method."];
-        } elseif (!is_shipping_allowed($subtotal, $deliveryType)) {
+        } elseif (!is_shipping_allowed($totalsData['subtotal'], $deliveryType)) {
             return ['error' => "Invalid shipping option selected for your order total."];
         } else {
-            $totals = get_cart_totals($cart, $deliveryType);
+            // Precise totals for selected delivery type
+            $cartItems = Cart::getItems($cartId);
+            $totals = $this->calculateTotals($cartItems, $deliveryType);
             
-            $orders = require __DIR__ . '/../models/Order.php';
-            $orders[] = [
-                "id" => "#ORD" . rand(1000, 9999),
-                "date" => date("d M Y"),
-                "items" => count($cart),
-                "subtotal" => round($totals['subtotal'], 2),
-                "shipping" => round($totals['shipping'], 2),
-                "tax" => round($totals['tax'], 2),
-                "total" => round($totals['finalTotal'], 2),
-                "status" => "Placed",
-                "first_name" => $firstName,
-                "last_name" => $lastName,
-                "email" => $email,
-                "contact" => $contactNumber,
-                "address" => $address,
-                "city" => $city,
-                "postal_code" => $postalCode,
-                "shipping_type" => $deliveryType
+            $orderData = [
+                'subtotal'        => $totals['subtotal'],
+                'tax'             => $totals['tax'],
+                'shipping_cost'   => $totals['shipping'],
+                'total'           => $totals['finalTotal'],
+                'first_name'      => $firstName,
+                'last_name'       => $lastName,
+                'email'           => $email,
+                'phone'           => $contactNumber,
+                'address'         => $address,
+                'city'            => $city,
+                'postal_code'     => $postalCode,
+                'shipping_method' => $deliveryType
             ];
 
-            $_SESSION['cart'] = [];
-            $_SESSION['orders'] = $orders;
-            unset($_SESSION['delivery_type']);
+            // Use the transaction-based conversion in the Order model
+            if (Order::convertCartToOrder($userId, $cartId, $orderData)) {
+                // Clear the temporary shipping selection
+                unset($_SESSION['delivery_type']);
 
-            header("Location: myOrders.php");
-            exit;
+                header("Location: myOrders.php?order=success");
+                exit;
+            } else {
+                return ['error' => "Could not place order. Transaction failed."];
+            }
         }
     }
 }

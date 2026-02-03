@@ -10,25 +10,33 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+require_once __DIR__ . '/../helpers/env_loader.php';
+
 // Global Site Configuration
-define('SITE_NAME', 'EasyCart');
+define('SITE_NAME', getenv('SITE_NAME') ?: 'EasyCart');
 
 class Database {
     // Hold the class instance
     private static $instance = null;
     private $pdo;
 
-    // Database Credentials
-    private $host = 'localhost';
-    private $port = '5432';
-    private $dbname = 'easycart';
-    private $user = 'postgres';
-    private $pass = 'Alok@6768';
+    // Database Credentials from environment
+    private $host;
+    private $port;
+    private $dbname;
+    private $user;
+    private $pass;
 
     /**
      * Private constructor to prevent direct instantiation
      */
     private function __construct() {
+        $this->host   = getenv('DB_HOST') ?: 'localhost';
+        $this->port   = getenv('DB_PORT') ?: '5432';
+        $this->dbname = getenv('DB_NAME') ?: 'easycart';
+        $this->user   = getenv('DB_USER') ?: 'postgres';
+        $this->pass   = getenv('DB_PASS') ?: '';
+
         try {
             // PostgreSQL DSN
             $dsn = "pgsql:host={$this->host};port={$this->port};dbname={$this->dbname}";

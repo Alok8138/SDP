@@ -34,6 +34,18 @@ require_once '../resources/views/header.php';
                     <?php endforeach; ?>
                 </div>
 
+                <!-- Category Filter (Task 1) -->
+                <div class="filter-group">
+                    <h4>Category</h4>
+                    <?php foreach ($data['categories'] as $cat): ?>
+                        <label>
+                            <input type="checkbox" name="category[]" value="<?= (int)$cat['entity_id'] ?>"
+                                <?= (isset($_GET['category']) && in_array((string)$cat['entity_id'], (array)$_GET['category'])) ? 'checked' : '' ?>>
+                            <?= htmlspecialchars($cat['name']) ?>
+                        </label>
+                    <?php endforeach; ?>
+                </div>
+
                 <!-- Price Filter -->
                 <div class="filter-group">
                     <h4>Max Price</h4>

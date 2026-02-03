@@ -24,7 +24,42 @@ class Product {
             return $stmt->fetchAll();
             
         } catch (PDOException $e) {
-            // In a real app, you'd log this error
+            return [];
+        }
+    }
+
+    /**
+     * Fetch random products (for homepage)
+     */
+    public static function getRandomProducts($limit = 6) {
+        try {
+            $db = Database::connect();
+            $sql = "SELECT p.*, p.entity_id as id, i.image_path as image 
+                    FROM catalog_product_entity p 
+                    LEFT JOIN catalog_product_image i 
+                    ON p.entity_id = i.product_id AND i.is_main = true 
+                    ORDER BY RANDOM() 
+                    LIMIT :limit";
+            
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
+
+    /**
+     * Fetch all unique brands from the database
+     */
+    public static function getBrands() {
+        try {
+            $db = Database::connect();
+            $sql = "SELECT DISTINCT brand FROM catalog_product_entity WHERE brand IS NOT NULL ORDER BY brand ASC";
+            $stmt = $db->query($sql);
+            return $stmt->fetchAll(PDO::FETCH_COLUMN);
+        } catch (PDOException $e) {
             return [];
         }
     }

@@ -1,44 +1,40 @@
 <?php
 require_once '../../app/config/database.php';
+require_once '../../app/helpers/functions.php';
+require_once '../../app/helpers/auth_helper.php';
 
-// Validates request method
+header('Content-Type: application/json');
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
     echo json_encode(['success' => false, 'message' => 'Method not allowed']);
     exit;
 }
 
+require_once '../../app/controllers/CartController.php';
+$controller = new CartController();
+$result = $controller->addToCart();
 
-// Load helper functions
-require_once '../../app/helpers/functions.php';
+if (isset($result['success']) && $result['success']) {
+    // Re-calculating total items for the response
+    $userId = $_SESSION['user_id'];
+    $cartRecord = Cart::getActiveCart($userId);
+    $items = Cart::getItems($cartRecord['entity_id']);
+    $totalItems = 0;
+    foreach ($items as $item) {
+        $totalItems += $item['qty'];
+    }
 
-// Get JSON input or Form data
-$productId = isset($_POST['product_id']) ? (int)$_POST['product_id'] : null;
-$quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
-
-if (!$productId) {
-    echo json_encode(['success' => false, 'message' => 'Product ID required']);
+    echo json_encode([
+        'success' => true, 
+        'message' => 'Item added to cart',
+        'cartCount' => $totalItems
+    ]);
     exit;
 }
 
-// Add to cart using helper
-$success = add_to_cart($productId, $quantity);
+// If we reach here, it might be a failure or CartController already exited with a header redirect
+echo json_encode(['success' => false, 'message' => 'Failed to add item to cart']);
+exit;
 
-if (!$success) {
-    echo json_encode(['success' => false, 'message' => 'Product not found']);
-    exit;
-}
-
-// Calculate total items (simplified)
-$totalItems = 0;
-foreach ($_SESSION['cart'] as $item) {
-    $totalItems += $item['qty'];
-}
-
-
-header('Content-Type: application/json');
-echo json_encode([
-    'success' => true, 
-    'message' => 'Item added to cart',
-    'cartCount' => $totalItems
-]);
+// This section is now handled by the block above
+exit;

@@ -4,14 +4,21 @@
  */
 
 require_once __DIR__ . '/../models/Order.php';
+require_once __DIR__ . '/../helpers/auth_helper.php';
 
 class OrderController {
+    
+    /**
+     * Fetch orders for the logged-in user
+     */
     public function index() {
-        $staticOrders = require __DIR__ . '/../models/Order.php';
-        $sessionOrders = $_SESSION['orders'] ?? [];
+        requireLogin();
+        
+        $userId = $_SESSION['user_id'];
+        $orders = Order::getByUserId($userId);
 
         return [
-            'orders' => array_merge($staticOrders, $sessionOrders)
+            'orders' => $orders
         ];
     }
 }
