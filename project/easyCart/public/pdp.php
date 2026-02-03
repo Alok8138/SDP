@@ -1,54 +1,20 @@
 <?php
-/**
- * pdp.php - Product Detail Page
- */
+require_once '../app/config/database.php';
+require_once __DIR__ . '/../app/controllers/ProductController.php';
 
-require '../app/config/database.php';
-require '../app/helpers/functions.php';
-require '../resources/views/header.php';
+$controller = new ProductController();
+$data = $controller->show();
 
-// 1. Load Products Data
-$products = require '../app/models/Product.php';
+require_once '../app/helpers/functions.php';
+require_once '../resources/views/header.php';
 
-// 2. Validate Product ID from URL
-if (!isset($_GET['id']) || empty($_GET['id'])) {
-    echo "<section class='container'><p>Product ID is missing.</p></section>";
+if (isset($data['error'])) {
+    echo "<section class='container'><p>" . htmlspecialchars($data['error']) . "</p></section>";
     require '../resources/views/footer.php';
     exit;
 }
 
-$productId = (int) $_GET['id'];
-$product = null;
-
-// 3. Find the specific product
-if (is_array($products)) {
-    foreach ($products as $item) {
-        if ($item['id'] === $productId) {
-            $product = $item;
-            break;
-        }
-    }
-}
-
-// 4. If product not found
-if (!$product) {
-    echo "<section class='container'><p>Product not found.</p></section>";
-    require '../resources/views/footer.php';
-    exit;
-}
-
-// 5. Handle "Add to Cart" POST Request (Fallback for non-AJAX)
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $qty = isset($_POST['quantity']) ? (int) $_POST['quantity'] : 1;
-    $id = isset($_POST['product_id']) ? (int) $_POST['product_id'] : $product['id'];
-
-    if (add_to_cart($id, $qty)) {
-        header("Location: cart.php");
-        exit;
-    }
-}
-
-// 6. Prepare Slider Images
+$product = $data['product'];
 $sliderImages = !empty($product['gallery']) ? $product['gallery'] : [$product['image']];
 $hasMultipleImages = count($sliderImages) > 1;
 ?>

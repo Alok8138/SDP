@@ -1,41 +1,21 @@
 <?php
-require '../app/config/database.php';
-require '../app/helpers/functions.php';
-require '../resources/views/header.php';
+require_once '../app/config/database.php';
+require_once __DIR__ . '/../app/controllers/AuthController.php';
 
+$controller = new AuthController();
+$data = $controller->login();
 
+$error = $data['error'];
 
-// If already logged in
-if (isset($_SESSION['user'])) {
-  header("Location: index.php");
-  exit;
-}
-
-$error = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $email = trim($_POST['email']);
-  $password = trim($_POST['password']);
-
-  if ($email === '' || $password === '') {
-    $error = "All fields are required.";
-  } else {
-    // Simple session-based login check
-    if (isset($_SESSION['user']) && $_SESSION['user']['email'] === $email) {
-      header("Location: index.php");
-      exit;
-    } else {
-      $error = "Invalid credentials.";
-    }
-  }
-}
+require_once '../app/helpers/functions.php';
+require_once '../resources/views/header.php';
 ?>
 
 <section class="container auth-page">
   <h2>Login</h2>
 
   <?php if ($error): ?>
-    <p class="error"><?= $error ?></p>
+    <p class="error"><?= htmlspecialchars($error) ?></p>
   <?php endif; ?>
 
   <form method="POST" class="auth-form">

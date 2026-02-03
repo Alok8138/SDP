@@ -1,6 +1,6 @@
 <?php
 
-require '../../app/config/database.php';
+require_once '../../app/config/database.php';
 
 header('Content-Type: application/json');
 

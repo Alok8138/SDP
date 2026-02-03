@@ -1,48 +1,18 @@
 <?php
-/**
- * plp.php - Product Listing Page
- */
+require_once '../app/config/database.php';
+require_once __DIR__ . '/../app/controllers/ProductController.php';
 
-require '../app/config/database.php';
-require '../app/helpers/functions.php';
-require '../resources/views/header.php';
+$controller = new ProductController();
+$data = $controller->index();
 
-// 1. Load Data
-$allProducts = require '../app/models/Product.php';
-$brands = require '../app/models/Brand.php';
+$paginatedProducts = $data['paginatedProducts'];
+$brands = $data['brands'];
+$totalProducts = $data['totalProducts'];
+$totalPages = $data['totalPages'];
+$currentPage = $data['currentPage'];
 
-// Ensure data is array
-$allProducts = is_array($allProducts) ? $allProducts : [];
-$brands = is_array($brands) ? $brands : [];
-
-$products = $allProducts;
-
-// 2. Apply Brand Filter
-if (isset($_GET['brand']) && is_array($_GET['brand'])) {
-    $selectedBrands = $_GET['brand'];
-    $products = array_filter($products, function ($product) use ($selectedBrands) {
-        return in_array($product['brand'], $selectedBrands);
-    });
-}
-
-// 3. Apply Price Filter
-if (isset($_GET['maxPrice']) && $_GET['maxPrice'] !== '') {
-    $maxPrice = (int) $_GET['maxPrice'];
-    $products = array_filter($products, function ($product) use ($maxPrice) {
-        return $product['price'] <= $maxPrice;
-    });
-}
-
-// 4. Pagination Setup
-$productsPerPage = 6;
-$totalProducts = count($products);
-$totalPages = max(1, ceil($totalProducts / $productsPerPage));
-
-$currentPage = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-$currentPage = max(1, min($currentPage, $totalPages));
-
-$offset = ($currentPage - 1) * $productsPerPage;
-$paginatedProducts = array_slice($products, $offset, $productsPerPage);
+require_once '../app/helpers/functions.php';
+require_once '../resources/views/header.php';
 ?>
 
 <section class="plp-page">

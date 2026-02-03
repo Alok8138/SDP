@@ -1,5 +1,5 @@
 <?php
-require '../../app/config/database.php';
+require_once '../../app/config/database.php';
 
 // Validates request method
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

@@ -1,22 +1,14 @@
 <?php
-require '../app/config/database.php';
-require '../app/helpers/functions.php';
-require '../resources/views/header.php';
+require_once '../app/config/database.php';
+require_once __DIR__ . '/../app/controllers/OrderController.php';
 
-/**
- * Load ALL orders
- * - Static orders (default)
- * - Session orders (after checkout)
- */
+$controller = new OrderController();
+$data = $controller->index();
 
-// Load static orders
-$staticOrders = require '../app/models/Order.php';
+$orders = $data['orders'];
 
-// Load session orders (if any)
-$sessionOrders = $_SESSION['orders'] ?? [];
-
-// Merge both (static first, session last)
-$orders = array_merge($staticOrders, $sessionOrders);
+require_once '../app/helpers/functions.php';
+require_once '../resources/views/header.php';
 ?>
 
 <section class="container orders-page">

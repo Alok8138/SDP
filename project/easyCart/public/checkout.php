@@ -1,120 +1,26 @@
 <?php
-require '../app/config/database.php';
-require '../app/helpers/functions.php';
-require '../resources/views/header.php';
+require_once '../app/config/database.php';
+require_once __DIR__ . '/../app/controllers/CheckoutController.php';
 
+$controller = new CheckoutController();
+$data = $controller->index();
 
-/**
- * Cart validation
- */
-if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
-  header("Location: cart.php");
-  exit;
-}
+$cart = $data['cart'];
+$subtotal = $data['subtotal'];
+$shipping = $data['shipping'];
+$tax = $data['tax'];
+$finalTotal = $data['finalTotal'];
+$deliveryType = $data['deliveryType'];
+$error = $data['error'] ?? null;
 
-// echo '<pre>';
-// print_r($_SESSION['cart']);
-
-
-
-$cart = $_SESSION['cart'];
-
-// Calculate totals (Initial view)
-$initial_subtotal = 0;
-foreach ($cart as $item) {
-  $initial_subtotal += $item['price'] * $item['qty'];
-}
-
-// Get from session or default (empty)
-$saved_shipping = $_SESSION['delivery_type'] ?? '';
-if (!is_shipping_allowed($initial_subtotal, $saved_shipping)) {
-  $saved_shipping = ''; 
-}
-
-$totals = get_cart_totals($cart, $saved_shipping);
-$subtotal = $totals['subtotal'];
-$shipping = $totals['shipping'];
-$tax = $totals['tax'];
-$finalTotal = $totals['finalTotal'];
-$deliveryType = $totals['shippingType'];
-
-
-/**
- * Handle order submission
- */
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-  // New fields
-  $firstName     = trim($_POST['first_name'] ?? '');
-  $lastName      = trim($_POST['last_name'] ?? '');
-  $email         = trim($_POST['email'] ?? '');
-  $contactNumber = trim($_POST['contact_number'] ?? '');
-  $address       = trim($_POST['address'] ?? '');
-  $city          = trim($_POST['city'] ?? '');
-  $postalCode    = trim($_POST['postal_code'] ?? '');
-  $deliveryType  = $_POST['delivery_type'] ?? 'standard';
-
-  // Basic validation
-  if (
-    empty($firstName) || empty($lastName) || empty($email) ||
-    empty($contactNumber) || empty($address) ||
-    empty($city) || empty($postalCode)
-  ) {
-    $error = "Please fill in all required fields.";
-  } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $error = "Please enter a valid email address.";
-  } elseif (empty($deliveryType)) {
-    $error = "Please select a shipping method.";
-  } elseif (!is_shipping_allowed($subtotal, $deliveryType)) {
-    $error = "Invalid shipping option selected for your order total.";
-  } else {
-
-    // ---------------- CALCULATION (Centralized) ----------------
-    $totals = get_cart_totals($cart, $deliveryType);
-    $subtotal = $totals['subtotal'];
-    $shipping = $totals['shipping'];
-    $tax = $totals['tax'];
-    $finalTotal = $totals['finalTotal'];
-
-
-    // Load existing orders
-    $orders = require '../app/models/Order.php';
-
-    $orders[] = [
-      "id" => "#ORD" . rand(1000, 9999),
-      "date" => date("d M Y"),
-      "items" => count($cart),
-      "subtotal" => round($subtotal, 2),
-      "shipping" => round($shipping, 2),
-      "tax" => round($tax, 2),
-      "total" => round($finalTotal, 2),
-      "status" => "Placed",
-
-      // customer info
-      "first_name" => $firstName,
-      "last_name" => $lastName,
-      "email" => $email,
-      "contact" => $contactNumber,
-      "address" => $address,
-      "city" => $city,
-      "postal_code" => $postalCode,
-      "shipping_type" => $deliveryType
-    ];
-
-    $_SESSION['cart'] = [];
-    $_SESSION['orders'] = $orders;
-    unset($_SESSION['delivery_type']);
-
-    header("Location: myOrders.php");
-    exit;
-  }
-}
+require_once '../app/helpers/functions.php';
+require_once '../resources/views/header.php';
 ?>
 
 <section class="container checkout-page">
   <h2>Checkout</h2>
 
-  <?php if (isset($error)): ?>
+  <?php if ($error): ?>
     <div class="error-message"><?= htmlspecialchars($error) ?></div>
   <?php endif; ?>
 
@@ -189,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php foreach ($cart as $item): ?>
               <tr>
                 <td><?= htmlspecialchars($item['name']) ?></td>
-                <td><?= $item['qty'] ?></td>
+                <td><?= (int)$item['qty'] ?></td>
                 <td>$<?= number_format($item['price'] * $item['qty'], 2) ?></td>
               </tr>
             <?php endforeach; ?>
@@ -256,8 +162,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <button type="submit" form="checkout-form" class="checkout-btn">Place Order</button>
     </div>
   </div>
-
-  <!-- Local data script removed in favor of AJAX -->
 
   <script src="assets/js/checkout.js"></script>
 </section>
