@@ -1,0 +1,3 @@
+# Exclude database configuration
+database.php
+config/database.php
