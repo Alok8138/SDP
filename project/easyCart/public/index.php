@@ -1,13 +1,19 @@
 <?php
+/**
+ * index.php
+ */
 require_once '../app/config/database.php';
-require_once __DIR__ . '/../app/controllers/HomeController.php';
+require_once __DIR__ . '/../app/controllers/ProductController.php';
 
-$controller = new HomeController();
-$data = $controller->index();
+// Instantiate Controller
+$controller = new ProductController();
 
-$products = $data['products'];
-$categories = $data['categories'];
-$brands = $data['brands'];
+// Fetch products from Database via Controller
+$products = $controller->getAllProducts();
+
+// For categories and brands, we can still use static for now or add to model
+$categories = require '../app/models/Category.php';
+$brands = require '../app/models/Brand.php';
 
 require_once '../app/helpers/functions.php';
 require_once '../resources/views/header.php';
@@ -26,27 +32,39 @@ require_once '../resources/views/header.php';
   <h2>Featured Products</h2>
 
   <div class="grid three">
-    <?php foreach ($products as $product): ?>
-      <div class="card">
-        <div class="card-image-wrapper">
-          <img src="<?= htmlspecialchars($product['image']) ?>" alt="<?= htmlspecialchars($product['name']) ?>" />
-        </div>
-        <h3><?= htmlspecialchars($product['name']) ?></h3>
-        <p class="price">$<?= htmlspecialchars($product['price']) ?></p>
-        <div class="product-actions">
-          <a href="pdp.php?id=<?= urlencode($product['id']) ?>">
-            <button>View Product</button>
-          </a>
-          <form method="POST" action="pdp.php?id=<?= urlencode($product['id']) ?>" class="quick-add-form ajax-cart-form">
-            <input type="hidden" name="product_id" value="<?= (int)$product['id'] ?>">
-            <input type="hidden" name="quantity" value="1">
-            <button type="submit" class="card-cart-btn" aria-label="Quick add to cart" title="Add to Cart">
-              <img src="assets/images/cart.jpg" alt="Add to Cart" />
-            </button>
-          </form>
-        </div>
-      </div>
-    <?php endforeach; ?>
+    <?php if (empty($products)): ?>
+        <p>No products found in the database. Please run schema.sql to import sample data.</p>
+    <?php else: ?>
+        <?php foreach ($products as $product): ?>
+          <div class="card">
+            <div class="card-image-wrapper">
+              <!-- Using image from DB join -->
+              <img src="<?= htmlspecialchars($product['image'] ?? 'assets/images/default.jpg') ?>" alt="<?= htmlspecialchars($product['name']) ?>" />
+            </div>
+            <h3><?= htmlspecialchars($product['name']) ?></h3>
+            <p class="price">$<?= htmlspecialchars($product['price']) ?></p>
+            
+            <?php if (!empty($product['old_price'])): ?>
+                <p class="old-price" style="text-decoration: line-through; color: #777;">$<?= htmlspecialchars($product['old_price']) ?></p>
+            <?php endif; ?>
+
+            <p class="brand">Brand: <?= htmlspecialchars($product['brand']) ?></p>
+
+            <div class="product-actions">
+              <a href="pdp.php?id=<?= urlencode($product['entity_id'] ?? $product['id']) ?>">
+                <button>View Product</button>
+              </a>
+              <form method="POST" action="pdp.php?id=<?= urlencode($product['entity_id'] ?? $product['id']) ?>" class="quick-add-form ajax-cart-form">
+                <input type="hidden" name="product_id" value="<?= (int)($product['entity_id'] ?? $product['id']) ?>">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="card-cart-btn" aria-label="Quick add to cart" title="Add to Cart">
+                  <img src="assets/images/cart.jpg" alt="Add to Cart" />
+                </button>
+              </form>
+            </div>
+          </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
   </div>
 </section>
 
@@ -74,4 +92,4 @@ require_once '../resources/views/header.php';
   </div>
 </section>
 
-<?php require '../resources/views/footer.php'; ?>
+<?php require_once '../resources/views/footer.php'; ?>

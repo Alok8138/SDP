@@ -1,8 +1,4 @@
 <?php
-/**
- * ProductController.php
- */
-
 require_once __DIR__ . '/../models/Product.php';
 require_once __DIR__ . '/../models/Brand.php';
 require_once __DIR__ . '/../helpers/functions.php';
@@ -10,10 +6,17 @@ require_once __DIR__ . '/../helpers/functions.php';
 class ProductController {
     
     /**
+     * Method for getting all products for homepage
+     */
+    public function getAllProducts() {
+        return Product::getAll();
+    }
+    
+    /**
      * Handle Product Listing Page (PLP)
      */
     public function index() {
-        $allProducts = require __DIR__ . '/../models/Product.php';
+        $allProducts = Product::getAll();
         $brands = require __DIR__ . '/../models/Brand.php';
 
         $allProducts = is_array($allProducts) ? $allProducts : [];
@@ -61,23 +64,12 @@ class ProductController {
      * Handle Product Detail Page (PDP)
      */
     public function show() {
-        $products = require __DIR__ . '/../models/Product.php';
-
         if (!isset($_GET['id']) || empty($_GET['id'])) {
             return ['error' => 'Product ID is missing.'];
         }
 
         $productId = (int) $_GET['id'];
-        $product = null;
-
-        if (is_array($products)) {
-            foreach ($products as $item) {
-                if ($item['id'] === $productId) {
-                    $product = $item;
-                    break;
-                }
-            }
-        }
+        $product = Product::getById($productId);
 
         if (!$product) {
             return ['error' => 'Product not found.'];

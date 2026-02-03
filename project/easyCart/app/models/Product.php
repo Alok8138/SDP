@@ -1,214 +1,71 @@
 <?php
-return [
-    [
-        "id" => 1,
-        "name" => "Wireless Headphones",
-        "price" => 99,
-        "old_price" => 129,
-        "image" => "assets/images/headphone.jpg",
-        "brand" => "Sony",
-        "category" => "Electronics",
-        "description" => "Premium wireless headphones with noise cancellation.",
-        "features" => [
-            "Active Noise Cancellation",
-            "30 hours battery life",
-            "Bluetooth 5.2",
-            "Built-in microphone"
-        ],
-        "gallery" => [
-            "assets/images/phone.jpg",
-            "assets/images/headphone.jpg",
-            "assets/images/laptop.jpg"
-        ],
-        "delivery_type" => "Express"
-    ],
-    [
-        "id" => 2,
-        "name" => "Smart Watch",
-        "price" => 79,
-        "old_price" => 99,
-        "image" => "assets/images/watch.jpg",
-        "brand" => "Samsung",
-        "category" => "Gadgets",
-        "description" => "Track fitness and notifications with style.",
-        "features" => [
-            "Heart rate monitoring",
-            "Sleep tracking",
-            "Water resistant"
-        ],
-        "gallery" => [
-            "assets/images/headphone.jpg",
-            "assets/images/headphone.jpg",
-            "assets/images/headphone.jpg"
-        ],
-        "delivery_type" => "Express"
-    ],
-    [
-        "id" => 3,
-        "name" => "Smart Phone",
-        "price" => 149,
-        "old_price" => 199,
-        "image" => "assets/images/phone.jpg",
-        "brand" => "Apple",
-        "category" => "Electronics",
-        "description" => "Powerful smartphone with amazing camera.",
-        "features" => [
-            "High resolution camera",
-            "Fast processor",
-            "Long battery life"
-        ],
-        "gallery" => [
-            "assets/images/headphone.jpg",
-            "assets/images/headphone.jpg",
-            "assets/images/headphone.jpg"
-        ],
-        "delivery_type" => "Express"
-    ],
-    [
-        "id" => 4,
-        "name" => "Smart Phone",
-        "price" => 1499,
-        "old_price" => 199,
-        "image" => "assets/images/phone.jpg",
-        "brand" => "Asus",
-        "category" => "Electronics",
-        "description" => "Powerful smartphone with amazing camera.",
-        "features" => [
-            "High resolution camera",
-            "Fast processor",
-            "Long battery life"
-        ],
-        "gallery" => [
-            "assets/images/headphone.jpg",
-            "assets/images/headphone.jpg",
-            "assets/images/headphone.jpg"
-        ],
-        "delivery_type" => "Freight"
-    ],
-    [
-        "id" => 5,
-        "name" => "Smart Phone",
-        "price" => 1499,
-        "old_price" => 199,
-        "image" => "assets/images/phone.jpg",
-        "brand" => "HP",
-        "category" => "Electronics",
-        "description" => "Powerful smartphone with amazing camera.",
-        "features" => [
-            "High resolution camera",
-            "Fast processor",
-            "Long battery life"
-        ],
-        "gallery" => [
-            "assets/images/headphone.jpg",
-            "assets/images/headphone.jpg",
-            "assets/images/headphone.jpg"
-        ],
-        "delivery_type" => "Freight"
-    ],
-    [
-        "id" => 6,
-        "name" => "Smart Phone",
-        "price" => 499,
-        "old_price" => 199,
-        "image" => "assets/images/phone.jpg",
-        "brand" => "Lenovo",
-        "category" => "Electronics",
-        "description" => "Powerful smartphone with amazing camera.",
-        "features" => [
-            "High resolution camera",
-            "Fast processor",
-            "Long battery life"
-        ],
-        "gallery" => [
-            "assets/images/headphone.jpg",
-            "assets/images/headphone.jpg",
-            "assets/images/headphone.jpg"
-        ],
-        "delivery_type" => "Freight"
-    ],
-    [
-        "id" => 7,
-        "name" => "Smart Phone",
-        "price" => 549,
-        "old_price" => 199,
-        "image" => "assets/images/phone.jpg",
-        "brand" => "Lenovo",
-        "category" => "Electronics",
-        "description" => "Powerful smartphone with amazing camera.",
-        "features" => [
-            "High resolution camera",
-            "Fast processor",
-            "Long battery life"
-        ],
-        "gallery" => [
-            "assets/images/headphone.jpg",
-            "assets/images/headphone.jpg",
-            "assets/images/headphone.jpg"
-        ],
-        "delivery_type" => "Freight"
-    ],
-    [
-        "id" => 8,
-        "name" => "Smart Phone",
-        "price" => 149,
-        "old_price" => 199,
-        "image" => "assets/images/phone.jpg",
-        "brand" => "Lenovo",
-        "category" => "Electronics",
-        "description" => "Powerful smartphone with amazing camera.",
-        "features" => [
-            "High resolution camera",
-            "Fast processor",
-            "Long battery life"
-        ],
-        "gallery" => [
-            "assets/images/headphone.jpg",
-            "assets/images/headphone.jpg",
-            "assets/images/headphone.jpg"
-        ],
-        "delivery_type" => "Express"
-    ],
-    [
-        "id" => 9,
-        "name" => "Smart Phone",
-        "price" => 149,
-        "old_price" => 199,
-        "image" => "assets/images/phone.jpg",
-        "brand" => "DELL",
-        "category" => "Electronics",
-        "description" => "Powerful smartphone with amazing camera.",
-        "features" => [
-            "High resolution camera",
-            "Fast processor",
-            "Long battery life"
-        ],
-        "gallery" => [
-            "assets/images/headphone.jpg",
-            "assets/images/headphone.jpg",
-            "assets/images/headphone.jpg"
-        ],
-        "delivery_type" => "Express"
-    ],
-    [
-        "id" => 10,
-        "name" => "Smart Phone",
-        "price" => 149,
-        "old_price" => 199,
-        "image" => "assets/images/phone.jpg",
-        "brand" => "Lenovo",
-        "category" => "Electronics",
-        "description" => "Powerful smartphone with amazing camera.",
-        "features" => [
-            "High resolution camera",
-            "Fast processor",
-            "Long battery life"
-        ],
-        "gallery" => [
-            "assets/images/headphone.jpg",
-            "assets/images/headphone.jpg",
-            "assets/images/headphone.jpg"
-        ],
-        "delivery_type" => "Express"
-    ]
-];
+/**
+ * Product Model
+ */
+
+require_once __DIR__ . '/../config/database.php';
+
+class Product {
+    
+    /**
+     * Fetch all products with their main image
+     */
+    public static function getAll() {
+        try { 
+            $db = Database::connect();
+            
+            // SQL Query to join products with their main image
+            $sql = "SELECT p.*, p.entity_id as id, i.image_path as image 
+                    FROM catalog_product_entity p 
+                    LEFT JOIN catalog_product_image i 
+                    ON p.entity_id = i.product_id AND i.is_main = true";
+            
+            $stmt = $db->query($sql);
+            return $stmt->fetchAll();
+            
+        } catch (PDOException $e) {
+            // In a real app, you'd log this error
+            return [];
+        }
+    }
+
+    /**
+     * Fetch a single product by ID (to support PDP later)
+     */
+    public static function getById($id) {
+        try {
+            $db = Database::connect();
+            
+            // 1. Get main product info
+            $sql = "SELECT p.*, p.entity_id as id, i.image_path as image 
+                    FROM catalog_product_entity p 
+                    LEFT JOIN catalog_product_image i 
+                    ON p.entity_id = i.product_id AND i.is_main = true 
+                    WHERE p.entity_id = :id";
+            
+            $stmt = $db->prepare($sql);
+            $stmt->execute(['id' => $id]);
+            $product = $stmt->fetch();
+
+            if ($product) {
+                // 2. Fetch Gallery
+                $imgSql = "SELECT image_path FROM catalog_product_image WHERE product_id = :id ORDER BY sort_order ASC";
+                $imgStmt = $db->prepare($imgSql);
+                $imgStmt->execute(['id' => $id]);
+                $product['gallery'] = $imgStmt->fetchAll(PDO::FETCH_COLUMN);
+
+                // 3. Fetch Features (from catalog_product_attribute)
+                $attrSql = "SELECT attribute_value FROM catalog_product_attribute 
+                            WHERE product_id = :id AND attribute_name = 'Feature'";
+                $attrStmt = $db->prepare($attrSql);
+                $attrStmt->execute(['id' => $id]);
+                $product['features'] = $attrStmt->fetchAll(PDO::FETCH_COLUMN);
+            }
+
+            return $product;
+            
+        } catch (PDOException $e) {
+            return null;
+        }
+    }
+}

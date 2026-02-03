@@ -6,7 +6,8 @@
 
 // Helper to get products (Phase 2)
 function get_products() {
-    return require __DIR__ . '/../models/Product.php';
+    require_once __DIR__ . '/../models/Product.php';
+    return Product::getAll();
 }
 
 /**
