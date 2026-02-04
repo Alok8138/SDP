@@ -15,6 +15,11 @@ require_once __DIR__ . '/../helpers/env_loader.php';
 // Global Site Configuration
 define('SITE_NAME', getenv('SITE_NAME') ?: 'EasyCart');
 
+// Robust BASE_URL fallback for clean URL Support
+if (!defined('BASE_URL')) {
+    define('BASE_URL', '/Internship/project/easyCart/public');
+}
+
 class Database {
     // Hold the class instance
     private static $instance = null;

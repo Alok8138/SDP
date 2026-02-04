@@ -33,7 +33,7 @@ class AuthController {
                     
                     // Handle redirect URL
                     $redirect = $_GET['redirect'] ?? 'index';
-                    $location = ($redirect === 'cart') ? 'cart' : './';
+                    $location = ($redirect === 'cart') ? BASE_URL . '/cart' : BASE_URL . '/';
                     
                     header("Location: $location");
                     exit;
@@ -80,7 +80,7 @@ class AuthController {
                 if (Customer::create($data)) {
                     $success = "Registration successful! You can now log in.";
                     // Optionally auto-login or redirect
-                    header("Location: login?signup=success");
+                    header("Location: " . BASE_URL . "/login?signup=success");
                     exit;
                 } else {
                     $error = "Something went wrong. Please try again.";
@@ -109,7 +109,7 @@ class AuthController {
         session_regenerate_id(true);
         session_destroy(); // Destroy again to ensure it's clean for the redirect
 
-        header("Location: login");
+        header("Location: " . BASE_URL . "/login");
         exit;
     }
 }

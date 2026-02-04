@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: formData
             })
                 .then(response => {
-                    // If the server redirected (e.g., to login.php), follow it by changing window location
+                    // If the server redirected (e.g., to login), follow it by changing window location
                     if (response.redirected) {
                         window.location.href = response.url;
                         return;

@@ -10,12 +10,12 @@
         <div class="footer-section">
             <h4 class="footer-title">Quick Links</h4>
             <ul class="footer-links">
-                <li><a href="index.php">Home</a></li>
-                <li><a href="plp.php">Shop</a></li>
-                <li><a href="cart.php">Cart</a></li>
-                <li><a href="myOrders.php">My Orders</a></li>
-                <li><a href="login.php">Login</a></li>
-                <li><a href="signUp.php">Sign Up</a></li>
+                <li><a href="<?= BASE_URL ?>/">Home</a></li>
+                <li><a href="<?= BASE_URL ?>/plp">Shop</a></li>
+                <li><a href="<?= BASE_URL ?>/cart">Cart</a></li>
+                <li><a href="<?= BASE_URL ?>/orders">My Orders</a></li>
+                <li><a href="<?= BASE_URL ?>/login">Login</a></li>
+                <li><a href="<?= BASE_URL ?>/signup">Sign Up</a></li>
             </ul>
         </div>
 
@@ -47,7 +47,7 @@
     </div>
 </footer>
 
-<script src="assets/js/cart_ajax.js"></script>
+<script src="<?= BASE_URL ?>/assets/js/cart_ajax.js"></script>
 </body>
 
 </html>

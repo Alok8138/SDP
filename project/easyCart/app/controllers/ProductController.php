@@ -100,7 +100,7 @@ class ProductController {
             $id = isset($_POST['product_id']) ? (int) $_POST['product_id'] : $product['id'];
 
             if (add_to_cart($id, $qty)) {
-                header("Location: cart.php");
+                header("Location: cart");
                 exit;
             }
         }

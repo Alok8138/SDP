@@ -24,7 +24,7 @@ $hasMultipleImages = count($sliderImages) > 1;
 
         <!-- Image Slider Section -->
         <div class="pdp-image" id="pdpImageContainer">
-            <img src="<?= htmlspecialchars($sliderImages[0]) ?>" alt="<?= htmlspecialchars($product['name']) ?>" id="mainImage">
+            <img src="<?= BASE_URL ?>/<?= htmlspecialchars($sliderImages[0]) ?>" alt="<?= htmlspecialchars($product['name']) ?>" id="mainImage">
             
             <?php if ($hasMultipleImages): ?>
                 <button class="slider-btn prev-btn" id="prevBtn" aria-label="Previous image">&#10094;</button>
@@ -94,6 +94,6 @@ $hasMultipleImages = count($sliderImages) > 1;
     </div>
 </section>
 
-<script src="assets/js/pdp.js"></script>
+<script src="<?= BASE_URL ?>/assets/js/pdp.js"></script>
 
 <?php require '../resources/views/footer.php'; ?>

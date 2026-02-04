@@ -9,7 +9,9 @@ require_once '../app/helpers/functions.php';
 $request = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 // Correct the base path if running in a subfolder
 $basePath = '/Internship/project/easyCart/public';
-define('BASE_URL', $basePath);
+if (!defined('BASE_URL')) {
+    define('BASE_URL', $basePath);
+}
 $route = trim(str_replace($basePath, '', $request), '/');
 
 // Dispatch to the correct page script
@@ -79,7 +81,7 @@ require_once '../resources/views/header.php';
           <div class="card">
             <div class="card-image-wrapper">
               <!-- Using image from DB join -->
-              <img src="<?= htmlspecialchars($product['image'] ?? 'assets/images/default.jpg') ?>" alt="<?= htmlspecialchars($product['name']) ?>" />
+              <img src="<?= BASE_URL ?>/<?= htmlspecialchars($product['image'] ?? 'assets/images/default.jpg') ?>" alt="<?= htmlspecialchars($product['name']) ?>" />
             </div>
             <h3><?= htmlspecialchars($product['name']) ?></h3>
             <p class="price">$<?= htmlspecialchars($product['price']) ?></p>
@@ -91,14 +93,14 @@ require_once '../resources/views/header.php';
             <p class="brand">Brand: <?= htmlspecialchars($product['brand']) ?></p>
 
             <div class="product-actions">
-              <a href="pdp?id=<?= urlencode($product['entity_id'] ?? $product['id']) ?>">
+              <a href="<?= BASE_URL ?>/pdp?id=<?= urlencode($product['entity_id'] ?? $product['id']) ?>">
                 <button>View Product</button>
               </a>
-              <form method="POST" action="pdp?id=<?= urlencode($product['entity_id'] ?? $product['id']) ?>" class="quick-add-form ajax-cart-form">
+              <form method="POST" action="<?= BASE_URL ?>/pdp?id=<?= urlencode($product['entity_id'] ?? $product['id']) ?>" class="quick-add-form ajax-cart-form">
                 <input type="hidden" name="product_id" value="<?= (int)($product['entity_id'] ?? $product['id']) ?>">
                 <input type="hidden" name="quantity" value="1">
                 <button type="submit" class="card-cart-btn" aria-label="Quick add to cart" title="Add to Cart">
-                  <img src="assets/images/cart.jpg" alt="Add to Cart" />
+                  <img src="<?= BASE_URL ?>/assets/images/cart.jpg" alt="Add to Cart" />
                 </button>
               </form>
             </div>

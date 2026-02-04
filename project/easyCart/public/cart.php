@@ -77,7 +77,7 @@ require_once '../resources/views/header.php';
         </a>
       </div>
     </div>
-    <script src="assets/js/cart_manager.js"></script>
+    <script src="<?= BASE_URL ?>/assets/js/cart_manager.js"></script>
     </div>
 
   <?php endif; ?>

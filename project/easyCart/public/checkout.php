@@ -163,7 +163,7 @@ require_once '../resources/views/header.php';
     </div>
   </div>
 
-  <script src="assets/js/checkout.js"></script>
+  <script src="<?= BASE_URL ?>/assets/js/checkout.js"></script>
 </section>
 
 <?php require '../resources/views/footer.php'; ?>

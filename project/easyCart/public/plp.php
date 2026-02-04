@@ -69,22 +69,22 @@ require_once '../resources/views/header.php';
                     <?php foreach ($paginatedProducts as $product): ?>
                         <div class="card">
                             <div class="card-image-wrapper">
-                                <img src="<?= htmlspecialchars($product['image']) ?>" alt="<?= htmlspecialchars($product['name']) ?>">
+                                <img src="<?= BASE_URL ?>/<?= htmlspecialchars($product['image']) ?>" alt="<?= htmlspecialchars($product['name']) ?>">
                             </div>
 
                             <h3><?= htmlspecialchars($product['name']) ?></h3>
                             <p class="price">$<?= htmlspecialchars($product['price']) ?></p>
 
                             <div class="product-actions">
-                                <a href="pdp.php?id=<?= urlencode($product['id']) ?>">
+                                <a href="<?= BASE_URL ?>/pdp?id=<?= urlencode($product['id']) ?>">
                                     <button>View Product</button>
                                 </a>
 
-                                <form method="POST" action="pdp.php?id=<?= urlencode($product['id']) ?>" class="quick-add-form ajax-cart-form">
+                                <form method="POST" action="<?= BASE_URL ?>/pdp?id=<?= urlencode($product['id']) ?>" class="quick-add-form ajax-cart-form">
                                     <input type="hidden" name="product_id" value="<?= (int)$product['id'] ?>">
                                     <input type="hidden" name="quantity" value="1">
                                     <button type="submit" class="card-cart-btn" aria-label="Quick add to cart" title="Add to Cart">
-                                        <img src="assets/images/cart.jpg" alt="Add to Cart">
+                                        <img src="<?= BASE_URL ?>/assets/images/cart.jpg" alt="Add to Cart">
                                     </button>
                                 </form>
                             </div>
@@ -114,6 +114,6 @@ require_once '../resources/views/header.php';
     </div>
 </section>
 
-<script src="assets/js/plp.js"></script>
+<script src="<?= BASE_URL ?>/assets/js/plp.js"></script>
 
 <?php require '../resources/views/footer.php'; ?>
