@@ -35,7 +35,7 @@ require_once '../resources/views/header.php';
   <?php if (empty($orders)): ?>
     <div style="text-align: center; padding: 50px 0;">
       <p>You have no orders yet.</p>
-      <a href="plp.php">
+      <a href="plp">
         <button style="padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Shop Now</button>
       </a>
     </div>

@@ -19,7 +19,7 @@ class CheckoutController {
         $items = $cartRecord ? Cart::getItems($cartRecord['entity_id']) : [];
 
         if (empty($items)) {
-            header("Location: cart.php");
+            header("Location: cart");
             exit;
         }
 
@@ -121,7 +121,7 @@ class CheckoutController {
                 // Clear the temporary shipping selection
                 unset($_SESSION['delivery_type']);
 
-                header("Location: myOrders.php?order=success");
+                header("Location: orders?order=success");
                 exit;
             } else {
                 return ['error' => "Could not place order. Transaction failed."];

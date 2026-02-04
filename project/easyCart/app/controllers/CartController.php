@@ -41,7 +41,7 @@ class CartController {
      */
     public function addToCart() {
         if (!isset($_SESSION['user_id'])) {
-            header('Location: ../login.php?redirect=cart');
+            header('Location: login?redirect=cart');
             exit;
         }
         

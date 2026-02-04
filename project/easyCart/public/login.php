@@ -32,7 +32,7 @@ require_once '../resources/views/header.php';
 
   <p style="margin-top: 1em;">
     Don’t have an account?
-    <a href="signup.php" style="color: #333; font-weight: bold;">Sign Up</a>
+    <a href="signup" style="color: #333; font-weight: bold;">Sign Up</a>
   </p>
 </section>
 

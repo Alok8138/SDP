@@ -17,7 +17,7 @@ require_once '../resources/views/header.php';
 
   <?php if (empty($cart)): ?>
     <p>Your cart is empty.</p>
-    <a href="plp.php">
+    <a href="plp">
       <button>Continue Shopping</button>
     </a>
   <?php else: ?>
@@ -72,7 +72,7 @@ require_once '../resources/views/header.php';
         <div class="summary-note">
            <small>Shipping & Tax calculated at checkout</small>
         </div>
-        <a href="checkout.php">
+        <a href="checkout">
           <button class="checkout-btn">Proceed to Checkout</button>
         </a>
       </div>

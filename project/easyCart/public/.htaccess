@@ -1,0 +1,14 @@
+RewriteEngine On
+
+# 1. Prevent directory browsing
+Options -Indexes
+
+# 2. Set the base path (adjust if your subfolder changes)
+# This handles http://localhost/Internship/project/easyCart/public/
+RewriteBase /Internship/project/easyCart/public/
+
+# 3. Handle Clean URLs
+# If the request is not a real file or directory, send it to index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]

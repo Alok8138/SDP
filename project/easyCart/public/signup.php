@@ -31,7 +31,7 @@ require_once '../resources/views/header.php';
 
   <p style="margin-top: 1em;">
     Already have an account?
-    <a href="login.php" style="color: #333; font-weight: bold;">Login</a>
+    <a href="login" style="color: #333; font-weight: bold;">Login</a>
   </p>
 </section>
 
