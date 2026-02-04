@@ -135,4 +135,49 @@ class Order {
             return [];
         }
     }
+
+    /**
+     * Get advanced dashboard statistics (Task 9 Upgrade)
+     */
+    public static function getUserDashboardStats($userId) {
+        try {
+            $db = Database::connect();
+            $sql = "SELECT 
+                        COUNT(entity_id) as total_orders, 
+                        SUM(total_amount) as total_spent,
+                        AVG(total_amount) as avg_order_value
+                    FROM sales_order 
+                    WHERE user_id = :user_id";
+            $stmt = $db->prepare($sql);
+            $stmt->execute(['user_id' => $userId]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return ['total_orders' => 0, 'total_spent' => 0, 'avg_order_value' => 0];
+        }
+    }
+
+    /**
+     * Get 30-day order history with zero-filling (Task 9 Upgrade)
+     */
+    public static function getOrderHistoryForChart($userId) {
+        try {
+            $db = Database::connect();
+            // Using generate_series to ensure every day in the last 30 days is represented
+            $sql = "SELECT 
+                        days.day::date as order_date,
+                        COALESCE(SUM(o.total_amount), 0) as daily_total
+                    FROM (
+                        SELECT generate_series(CURRENT_DATE - INTERVAL '29 days', CURRENT_DATE, '1 day') as day
+                    ) days
+                    LEFT JOIN sales_order o ON days.day::date = o.created_at::date AND o.user_id = :user_id
+                    GROUP BY days.day
+                    ORDER BY days.day ASC";
+            
+            $stmt = $db->prepare($sql);
+            $stmt->execute(['user_id' => $userId]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
 }

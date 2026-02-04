@@ -34,6 +34,9 @@ switch ($route) {
     case 'orders':
         require 'myOrders.php';
         exit;
+    case 'dashboard':
+        require 'dashboard.php';
+        exit;
     case 'plp':
         require 'plp.php';
         exit;

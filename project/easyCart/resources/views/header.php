@@ -15,6 +15,7 @@
             <a href="<?= BASE_URL ?>/plp">Shop</a>
             <a href="<?= BASE_URL ?>/cart">Cart</a>
             <a href="<?= BASE_URL ?>/orders">Orders</a>
+            <a href="<?= BASE_URL ?>/dashboard">Dashboard</a>
             <?php if (isset($_SESSION['user_id'])): ?>
                 <a href="<?= BASE_URL ?>/logout">Logout</a>
             <?php else: ?>
