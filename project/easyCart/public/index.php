@@ -120,7 +120,7 @@ require_once '../resources/views/header.php';
 
     <div class="grid three category-grid">
       <?php foreach ($categories as $category): ?>
-        <a href="plp?category_id=<?= (int)$category['entity_id'] ?>" class="category-card"><?= htmlspecialchars($category['name']) ?></a>
+        <a href="plp?category[]=<?= (int)$category['entity_id'] ?>" class="category-card"><?= htmlspecialchars($category['name']) ?></a>
       <?php endforeach; ?>
     </div>
   </div>
