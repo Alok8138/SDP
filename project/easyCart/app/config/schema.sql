@@ -120,6 +120,30 @@ CREATE TABLE IF NOT EXISTS order_address (
     pincode VARCHAR(20) NOT NULL
 );
 
+CREATE TABLE sales_order_price (
+    id SERIAL PRIMARY KEY,
+
+    order_id INT NOT NULL
+        REFERENCES sales_order(entity_id)
+        ON DELETE CASCADE,
+
+    -- price breakdown
+    subtotal_amount   NUMERIC(10,2) NOT NULL,
+    shipping_amount   NUMERIC(10,2) NOT NULL,
+    tax_amount        NUMERIC(10,2) NOT NULL,
+    discount_amount  NUMERIC(10,2) DEFAULT 0,
+
+    -- derived but stored for history integrity
+    final_amount      NUMERIC(10,2) NOT NULL,
+
+    -- meta info
+    shipping_type     VARCHAR(30) NOT NULL,     -- standard | express | freight | white_glove
+    tax_rate          NUMERIC(5,2) NOT NULL,     -- e.g. 10.00
+    currency          VARCHAR(10) DEFAULT 'USD',
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -----------------------------------------------------------
 -- SAMPLE DATA INSERTION (Based on PHP Arrays)
 -----------------------------------------------------------

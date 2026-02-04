@@ -17,6 +17,11 @@ class OrderController {
         $userId = $_SESSION['user_id'];
         $orders = Order::getByUserId($userId);
 
+        // Fetch items for each order
+        foreach ($orders as &$order) {
+            $order['items'] = Order::getItemsByOrderId($order['entity_id']);
+        }
+
         return [
             'orders' => $orders
         ];

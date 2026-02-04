@@ -73,6 +73,7 @@ function get_cart_totals($cart, $shippingType = 'standard') {
         'subtotal' => $subtotal,
         'shipping' => $shipping,
         'tax' => $tax,
+        'tax_rate' => 10,
         'finalTotal' => $finalTotal,
         'totalItems' => $totalItems,
         'shippingType' => $shippingType

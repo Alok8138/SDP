@@ -103,6 +103,7 @@ class CheckoutController {
             $orderData = [
                 'subtotal'        => $totals['subtotal'],
                 'tax'             => $totals['tax'],
+                'tax_rate'        => $totals['tax_rate'],
                 'shipping_cost'   => $totals['shipping'],
                 'total'           => $totals['finalTotal'],
                 'first_name'      => $firstName,

@@ -64,7 +64,22 @@ class Order {
                 ]);
             }
 
-            // 5. Update cart status to converted
+            // 5. Insert price breakdown into sales_order_price
+            $priceSql = "INSERT INTO sales_order_price (order_id, subtotal_amount, shipping_amount, tax_amount, discount_amount, final_amount, shipping_type, tax_rate) 
+                         VALUES (:order_id, :subtotal, :shipping, :tax, :discount, :final, :type, :rate)";
+            $priceStmt = $db->prepare($priceSql);
+            $priceStmt->execute([
+                'order_id' => $orderId,
+                'subtotal' => $orderData['subtotal'] ?? 0,
+                'shipping' => $orderData['shipping_cost'] ?? 0,
+                'tax'      => $orderData['tax'] ?? 0,
+                'discount' => $orderData['discount'] ?? 0,
+                'final'    => $orderData['total'] ?? $orderData['total_amount'],
+                'type'     => $orderData['shipping_method'] ?? 'Standard',
+                'rate'     => $orderData['tax_rate'] ?? 0
+            ]);
+
+            // 6. Update cart status to converted
             $updateCartSql = "UPDATE sales_cart SET status = 'converted' WHERE entity_id = :cart_id";
             $updateCartStmt = $db->prepare($updateCartSql);
             $updateCartStmt->execute(['cart_id' => $cartId]);
@@ -88,14 +103,34 @@ class Order {
             $db = Database::connect();
             $sql = "SELECT o.*, 
                            a.full_name as first_name, '' as last_name, 
-                           a.address, a.city, a.pincode as postal_code
+                           a.address, a.city, a.pincode as postal_code,
+                           p.subtotal_amount, p.shipping_amount, p.tax_amount, p.discount_amount, p.shipping_type, p.tax_rate
                     FROM sales_order o
                     LEFT JOIN order_address a ON o.entity_id = a.order_id
+                    LEFT JOIN sales_order_price p ON o.entity_id = p.order_id
                     WHERE o.user_id = :user_id 
                     ORDER BY o.created_at DESC";
             $stmt = $db->prepare($sql);
             $stmt->execute(['user_id' => $userId]);
             return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
+
+    /**
+     * Fetch order items for a specific order
+     */
+    public static function getItemsByOrderId($orderId) {
+        try {
+            $db = Database::connect();
+            $sql = "SELECT sop.*, p.name as product_name
+                    FROM sales_order_product sop
+                    JOIN catalog_product_entity p ON sop.product_id = p.entity_id
+                    WHERE sop.order_id = :order_id";
+            $stmt = $db->prepare($sql);
+            $stmt->execute(['order_id' => $orderId]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             return [];
         }
