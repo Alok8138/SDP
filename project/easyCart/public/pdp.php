@@ -65,7 +65,7 @@ $hasMultipleImages = count($sliderImages) > 1;
                 </ul>
             <?php endif; ?>
 
-            <form method="POST" id="addToCartForm" class="ajax-cart-form">
+            <form method="POST" id="addToCartForm" class="pdp-cart-form">
                 <input type="hidden" name="product_id" value="<?= (int) $product['id'] ?>">
                 <input type="hidden" name="quantity" id="quantityInput" value="1">
                 

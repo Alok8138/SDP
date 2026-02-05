@@ -1871,6 +1871,40 @@ tbody tr:last-child td {
         position: relative;
         top: auto;
     }
+
+    /* ===============================
+   VALIDATION STYLES
+   =============================== */
+
+    /* Input Error State */
+    .input-error {
+        border-color: #dc3545 !important;
+        /* Red border */
+        background-color: #fff8f8;
+    }
+
+    /* Error Message Text */
+    .error-text {
+        color: #dc3545;
+        font-size: 0.85rem;
+        margin-top: -0.5rem;
+        margin-bottom: 0.75rem;
+        display: block;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-5px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
 }
 
 /* ===============================
