@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS catalog_product_entity (
 CREATE TABLE IF NOT EXISTS catalog_product_attribute (
     id SERIAL PRIMARY KEY,
     product_id INT REFERENCES catalog_product_entity(entity_id) ON DELETE CASCADE,
-    attribute_name VARCHAR(100) NOT NULL,
+    attribute_name  VARCHAR(100) NOT NULL,
     attribute_value VARCHAR(255) NOT NULL
 );
 
