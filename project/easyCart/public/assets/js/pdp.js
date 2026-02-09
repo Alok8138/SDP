@@ -13,13 +13,28 @@ document.addEventListener('DOMContentLoaded', function () {
         const dots = document.querySelectorAll('.dot');
         let currentIndex = 0;
 
+        // --- Error Handling for Main Image ---
+        if (mainImage) {
+            mainImage.addEventListener('error', function () {
+                // Prevent infinite loop if placeholder is missing
+                if (this.src.includes('no-image-placeholder.png')) return;
+                this.src = 'assets/images/no-image-placeholder.png';
+            });
+        }
+
         function showImage(index) {
             if (index < 0) index = images.length - 1;
             if (index >= images.length) index = 0;
 
             currentIndex = index;
 
-            if (mainImage) mainImage.src = images[currentIndex];
+            if (mainImage) {
+                // Reset error handler trigger for new source
+                const newSrc = images[currentIndex];
+                // Check if already showing placeholder to avoid flicker? 
+                // Simple assignment is fine, error handler will catch if it fails
+                mainImage.src = newSrc;
+            }
 
             dots.forEach(dot => dot.classList.remove('active'));
             if (dots[currentIndex]) dots[currentIndex].classList.add('active');

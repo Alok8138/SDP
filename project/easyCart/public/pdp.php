@@ -15,8 +15,17 @@ if (isset($data['error'])) {
 }
 
 $product = $data['product'];
-$sliderImages = !empty($product['gallery']) ? $product['gallery'] : [$product['image']];
-$hasMultipleImages = count($sliderImages) > 1;
+$sliderImages = !empty($product['gallery']) ? $product['gallery'] : [];
+
+// Fallback to main image if gallery is empty
+if (empty($sliderImages) && !empty($product['image'])) {
+    $sliderImages = [$product['image']];
+}
+
+// Fallback to placeholder if still empty
+if (empty($sliderImages)) {
+    $sliderImages = ['assets/images/no-image-placeholder.png'];
+}
 ?>
 
 <section class="container pdp">
@@ -26,16 +35,14 @@ $hasMultipleImages = count($sliderImages) > 1;
         <div class="pdp-image" id="pdpImageContainer">
             <img src="<?= BASE_URL ?>/<?= htmlspecialchars($sliderImages[0]) ?>" alt="<?= htmlspecialchars($product['name']) ?>" id="mainImage">
             
-            <?php if ($hasMultipleImages): ?>
-                <button class="slider-btn prev-btn" id="prevBtn" aria-label="Previous image">&#10094;</button>
-                <button class="slider-btn next-btn" id="nextBtn" aria-label="Next image">&#10095;</button>
-                
-                <div class="slider-dots" id="sliderDots">
-                    <?php foreach ($sliderImages as $index => $img): ?>
-                        <span class="dot <?= $index === 0 ? 'active' : '' ?>" data-index="<?= $index ?>"></span>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
+            <button class="slider-btn prev-btn" id="prevBtn" aria-label="Previous image">&#10094;</button>
+            <button class="slider-btn next-btn" id="nextBtn" aria-label="Next image">&#10095;</button>
+            
+            <div class="slider-dots" id="sliderDots">
+                <?php foreach ($sliderImages as $index => $img): ?>
+                    <span class="dot <?= $index === 0 ? 'active' : '' ?>" data-index="<?= $index ?>"></span>
+                <?php endforeach; ?>
+            </div>
 
             <script>
                 window.pdpData = {

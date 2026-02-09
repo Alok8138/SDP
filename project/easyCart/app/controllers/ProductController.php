@@ -17,6 +17,10 @@ class ProductController {
      */
     public function index() {
         $allProducts = Product::getAll();
+
+        // echo '<pre>';
+        // print_r($allProducts);
+        
         $brands = Product::getBrands();
         $categories = Category::getAll();
 

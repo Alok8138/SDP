@@ -15,8 +15,8 @@ class CheckoutController {
         requireLogin();
 
         $userId = $_SESSION['user_id'];
-        $cartRecord = Cart::getActiveCart($userId);
-        $items = $cartRecord ? Cart::getItems($cartRecord['entity_id']) : [];
+        $cartRecord = Cart::getActiveCart($userId);//get user active cart 
+        $items = $cartRecord ? Cart::getItems($cartRecord['entity_id']) : []; //Get all items in a cart with product details
 
         if (empty($items)) {
             header("Location: " . BASE_URL . "/cart");

@@ -15,12 +15,15 @@ class OrderController {
         requireLogin();
         
         $userId = $_SESSION['user_id'];
-        $orders = Order::getByUserId($userId);
+        $orders = Order::getByUserId($userId); // fetch order of specific user 
 
         // Fetch items for each order
         foreach ($orders as &$order) {
             $order['items'] = Order::getItemsByOrderId($order['entity_id']);
         }
+
+        // echo '<pre>';
+        // print_r($order);
 
         return [
             'orders' => $orders

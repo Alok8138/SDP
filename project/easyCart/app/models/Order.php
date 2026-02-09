@@ -29,7 +29,7 @@ class Order {
             
             $orderId = $stmt->fetchColumn();
 
-            // 2. Insert Shipping Address into order_address (matching schema.sql)
+            // 2. Insert Shipping Address into order_address
             $addrSql = "INSERT INTO order_address (order_id, full_name, phone, address, city, pincode) 
                         VALUES (:order_id, :full_name, :phone, :address, :city, :pincode)";
             $addrStmt = $db->prepare($addrSql);

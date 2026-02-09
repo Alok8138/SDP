@@ -17,6 +17,9 @@ class CartController {
         
         $userId = $_SESSION['user_id'];
         $cartRecord = Cart::getActiveCart($userId);
+
+        // echo '<pre>';
+        // print_r($cartRecord);
         
         if (!$cartRecord) {
             return ['cart' => [], 'subtotal' => 0];

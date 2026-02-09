@@ -17,7 +17,7 @@ class AuthController {
         $error = '';
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = trim($_POST['email'] ?? '');
+            $email = strtolower(trim($_POST['email'] ?? ''));
             $password = trim($_POST['password'] ?? '');
 
             if ($email === '' || $password === '') {
@@ -58,7 +58,7 @@ class AuthController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $firstname = trim($_POST['firstname'] ?? '');
             $lastname  = trim($_POST['lastname'] ?? '');
-            $email     = trim($_POST['email'] ?? '');
+            $email     = strtolower(trim($_POST['email'] ?? ''));
             $password  = trim($_POST['password'] ?? '');
             $phone     = trim($_POST['phone'] ?? '');
 

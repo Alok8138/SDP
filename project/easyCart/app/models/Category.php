@@ -1,22 +1,33 @@
 <?php
+
 /**
  * Category Model
  */
 
 require_once __DIR__ . '/../config/database.php';
 
-class Category {
-    
+class Category
+{
+
     /**
      * Fetch all categories from the database
      */
-    public static function getAll() {
+    public static function getAll()
+    {
         try {
             $db = Database::connect();
             // Fetch categories that have products associated with them
             $sql = "SELECT DISTINCT c.* FROM catalog_category_entity c 
                     JOIN catalog_category_products cp ON c.entity_id = cp.category_id 
                     ORDER BY c.name ASC";
+
+
+            // [
+            //   { "entity_id": 3, "name": "Accessories" },
+            //   { "entity_id": 1, "name": "Electronics" },
+            //   { "entity_id": 4, "name": "Gadgets" }
+            // ]
+
             $stmt = $db->query($sql);
             return $stmt->fetchAll();
         } catch (PDOException $e) {
