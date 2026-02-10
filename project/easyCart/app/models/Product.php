@@ -122,4 +122,129 @@ class Product
             return null;
         }
     }
+    /**
+     * Get total count of products
+     */
+    public static function getCount() {
+        try {
+            $db = Database::connect();
+            return $db->query("SELECT COUNT(*) FROM catalog_product_entity")->fetchColumn();
+        } catch (PDOException $e) {
+            return 0;
+        }
+    }
+
+    /**
+     * Import products from CSV
+     */
+    public static function importFromCSV($filePath) {
+        $summary = ['total' => 0, 'inserted' => 0, 'skipped' => 0];
+        if (!file_exists($filePath) || !($handle = fopen($filePath, "r"))) {
+            return $summary;
+        }
+
+        $header = fgetcsv($handle); // Read header
+        if (!$header) return $summary;
+
+        // Map header to indices
+        $cols = array_flip($header);
+        $db = Database::connect();
+
+        while (($row = fgetcsv($handle)) !== FALSE) {
+            $summary['total']++;
+            
+            try {
+                $name = $row[$cols['name']] ?? '';
+                $price = $row[$cols['price']] ?? 0;
+                $desc = $row[$cols['description']] ?? '';
+                $qty = $row[$cols['quantity']] ?? 0;
+                $catId = $row[$cols['category_id']] ?? null;
+                $brandId = $row[$cols['brand_id']] ?? '';
+                $status = $row[$cols['status']] ?? 'Active';
+
+                if (empty($name) || !is_numeric($price)) {
+                    $summary['skipped']++;
+                    continue;
+                }
+
+                // Generate SKU from name if not present (simple slug)
+                $sku = 'sku-' . strtolower(preg_replace('/[^A-Za-z0-9]/', '-', $name)) . '-' . time() . rand(10, 99);
+
+                $db->beginTransaction();
+
+                // Check for duplicates by name (or SKU if we had one)
+                $stmt = $db->prepare("SELECT entity_id FROM catalog_product_entity WHERE name = :name LIMIT 1");
+                $stmt->execute(['name' => $name]);
+                if ($stmt->fetch()) {
+                    $db->rollBack();
+                    $summary['skipped']++;
+                    continue;
+                }
+
+                // Insert into catalog_product_entity
+                $sql = "INSERT INTO catalog_product_entity (sku, name, price, description, brand) 
+                        VALUES (:sku, :name, :price, :desc, :brand) RETURNING entity_id";
+                $stmt = $db->prepare($sql);
+                $stmt->execute([
+                    'sku' => $sku,
+                    'name' => $name,
+                    'price' => $price,
+                    'desc' => $desc,
+                    'brand' => $brandId
+                ]);
+                $productId = $stmt->fetchColumn();
+
+                // Insert Category Mapping
+                if ($catId) {
+                    $stmt = $db->prepare("INSERT INTO catalog_category_products (category_id, product_id) VALUES (:cat_id, :prod_id)");
+                    $stmt->execute(['cat_id' => $catId, 'prod_id' => $productId]);
+                }
+
+                // Insert Attributes (Quantity, Status)
+                $attrSql = "INSERT INTO catalog_product_attribute (product_id, attribute_name, attribute_value) VALUES (?, ?, ?)";
+                $attrStmt = $db->prepare($attrSql);
+                $attrStmt->execute([$productId, 'Quantity', $qty]);
+                $attrStmt->execute([$productId, 'Status', $status]);
+
+                $db->commit();
+                $summary['inserted']++;
+
+            } catch (Exception $e) {
+                if ($db->inTransaction()) $db->rollBack();
+                $summary['skipped']++;
+            }
+        }
+        fclose($handle);
+        return $summary;
+    }
+
+    /**
+     * Export products to CSV
+     */
+    public static function exportToCSV() {
+        $db = Database::connect();
+        $sql = "SELECT p.name, p.description, p.price, 
+                       COALESCE(aq.attribute_value, '0') as quantity, 
+                       c.category_id, p.brand as brand_id, 
+                       COALESCE(at_status.attribute_value, 'Active') as status
+                FROM catalog_product_entity p
+                LEFT JOIN catalog_category_products c ON p.entity_id = c.product_id
+                LEFT JOIN catalog_product_attribute aq ON p.entity_id = aq.product_id AND aq.attribute_name = 'Quantity'
+                LEFT JOIN catalog_product_attribute at_status ON p.entity_id = at_status.product_id AND at_status.attribute_name = 'Status'";
+        
+        $stmt = $db->query($sql);
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="products_export_' . date('Ymd_His') . '.csv"');
+        
+        $output = fopen('php://output', 'w');
+        fputcsv($output, ['name', 'description', 'price', 'quantity', 'category_id', 'brand_id', 'status']);
+        
+        foreach ($products as $product) {
+            fputcsv($output, $product);
+        }
+        fclose($output);
+        exit;
+    }
 }

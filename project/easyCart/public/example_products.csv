@@ -1,0 +1,6 @@
+name,description,price,quantity,category_id,brand_id,status
+"Gaming Mouse","RGB Gaming Mouse with high DPI",49.99,50,1,"Logitech","Active"
+"Wired Keyboard","Mechanical wired keyboard with blue switches",59.99,30,1,"Corsair","Active"
+"USB-C Cable","Fast charging USB-C to USB-C cable 2m",14.99,100,3,"Anker","Active"
+"Bluetooth Speaker","Portable waterproof bluetooth speaker",39.99,25,1,"JBL","Active"
+"Laptop Stand","Adjustable aluminum laptop stand",29.99,40,3,"Generic","Active"

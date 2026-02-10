@@ -111,4 +111,33 @@ class ProductController {
 
         return ['product' => $product];
     }
+
+    /**
+     * Handle CSV Import
+     */
+    public function importCSV() {
+        if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
+            header("Location: index");
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['product_csv'])) {
+            $file = $_FILES['product_csv'];
+            if ($file['error'] === UPLOAD_ERR_OK) {
+                return Product::importFromCSV($file['tmp_name']);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Handle CSV Export
+     */
+    public function exportCSV() {
+        if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
+            header("Location: index");
+            exit;
+        }
+        Product::exportToCSV();
+    }
 }

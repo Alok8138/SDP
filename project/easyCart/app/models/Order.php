@@ -157,6 +157,23 @@ class Order {
     }
 
     /**
+     * Get admin dashboard statistics (All orders)
+     */
+    public static function getAdminDashboardStats() {
+        try {
+            $db = Database::connect();
+            $sql = "SELECT 
+                        COUNT(entity_id) as total_orders, 
+                        SUM(total_amount) as total_spent
+                    FROM sales_order";
+            $stmt = $db->query($sql);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return ['total_orders' => 0, 'total_spent' => 0];
+        }
+    }
+
+    /**
      * Get 30-day order history with zero-filling (Task 9 Upgrade)
      */
     public static function getOrderHistoryForChart($userId) {
