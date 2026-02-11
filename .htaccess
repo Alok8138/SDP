@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Internship Project Access"
+AuthUserFile "c:/xampp/htdocs/Internship/.htpasswd"
+Require valid-user
