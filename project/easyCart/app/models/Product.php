@@ -122,6 +122,61 @@ class Product
             return null;
         }
     }
+
+    /**
+     * Fetch a single product by slug with related images and attributes
+     *
+     * @param string $slug
+     * @return array|null
+     */
+    public static function getBySlug(string $slug): ?array
+    {
+        try {
+            $db = Database::connect();
+
+            // 1. Get main product info by slug
+            $sql = "SELECT p.*, p.entity_id as id
+                    FROM catalog_product_entity p
+                    WHERE p.slug = :slug
+                    LIMIT 1";
+
+            $stmt = $db->prepare($sql);
+            $stmt->execute(['slug' => $slug]);
+            $product = $stmt->fetch();
+
+            if (!$product) {
+                return null;
+            }
+
+            $productId = (int) $product['id'];
+
+            // 2. Fetch all images for the product (gallery)
+            $imgSql = "SELECT image_path 
+                       FROM catalog_product_image 
+                       WHERE product_id = :id 
+                       ORDER BY sort_order ASC";
+            $imgStmt = $db->prepare($imgSql);
+            $imgStmt->execute(['id' => $productId]);
+            $images = $imgStmt->fetchAll(PDO::FETCH_COLUMN);
+
+            // 3. Fetch all attributes for the product
+            $attrSql = "SELECT attribute_name, attribute_value 
+                        FROM catalog_product_attribute 
+                        WHERE product_id = :id";
+            $attrStmt = $db->prepare($attrSql);
+            $attrStmt->execute(['id' => $productId]);
+            $attributes = $attrStmt->fetchAll();
+
+            return [
+                'product' => $product,
+                'images' => $images,
+                'attributes' => $attributes,
+            ];
+        } catch (PDOException $e) {
+            // Do not leak internal DB errors
+            return null;
+        }
+    }
     /**
      * Get total count of products
      */

@@ -96,10 +96,10 @@ require_once '../resources/views/header.php';
             <p class="brand">Brand: <?= htmlspecialchars($product['brand']) ?></p>
 
             <div class="product-actions">
-              <a href="<?= BASE_URL ?>/pdp?id=<?= urlencode($product['entity_id'] ?? $product['id']) ?>">
+              <a href="<?= BASE_URL ?>/pdp?slug=<?= urlencode($product['slug']) ?>">
                 <button>View Product</button>
               </a>
-              <form method="POST" action="<?= BASE_URL ?>/pdp?id=<?= urlencode($product['entity_id'] ?? $product['id']) ?>" class="quick-add-form ajax-cart-form">
+              <form method="POST" action="<?= BASE_URL ?>/ajax/add_to_cart_ajax.php" class="quick-add-form ajax-cart-form">
                 <input type="hidden" name="product_id" value="<?= (int)($product['entity_id'] ?? $product['id']) ?>">
                 <input type="hidden" name="quantity" value="1">
                 <button type="submit" class="card-cart-btn" aria-label="Quick add to cart" title="Add to Cart">

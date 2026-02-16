@@ -84,32 +84,73 @@ class ProductController {
     }
 
     /**
-     * Handle Product Detail Page (PDP)
+     * Handle Product Detail Page (PDP) by slug
+     *
+     * @param string $slug
+     * @return array
      */
-    public function show() {
-        if (!isset($_GET['id']) || empty($_GET['id'])) {
-            return ['error' => 'Product ID is missing.'];
-        }
+    public function show(string $slug) {
+        // Basic slug validation & sanitization
+        $slug = trim($slug);
 
-        $productId = (int) $_GET['id'];
-        $product = Product::getById($productId);
-
-        if (!$product) {
+        if ($slug === '') {
+            http_response_code(404);
             return ['error' => 'Product not found.'];
         }
 
-        // Handle POST (Add to Cart fallback)
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $qty = isset($_POST['quantity']) ? (int) $_POST['quantity'] : 1;
-            $id = isset($_POST['product_id']) ? (int) $_POST['product_id'] : $product['id'];
+        // Optionally enforce a simple slug pattern (letters, numbers, dashes)
+        if (!preg_match('/^[a-zA-Z0-9\-]+$/', $slug)) {
+            http_response_code(404);
+            return ['error' => 'Product not found.'];
+        }
 
-            if (add_to_cart($id, $qty)) {
-                header("Location: cart");
-                exit;
+        $result = Product::getBySlug($slug);
+
+        if ($result === null) {
+            http_response_code(404);
+            return ['error' => 'Product not found.'];
+        }
+
+        $product = $result['product'];
+        $images = $result['images'] ?? [];
+        $attributes = $result['attributes'] ?? [];
+
+        // Build slider images with proper fallbacks (no business logic in views)
+        $sliderImages = $images;
+
+        // Fallback to main image if gallery is empty
+        if (empty($sliderImages) && !empty($product['image'])) {
+            $sliderImages = [$product['image']];
+        }
+
+        // Fallback to placeholder if still empty
+        if (empty($sliderImages)) {
+            $sliderImages = ['assets/images/no-image-placeholder.png'];
+        }
+
+        // Extract feature list from attributes
+        $features = [];
+        foreach ($attributes as $attribute) {
+            if (
+                isset($attribute['attribute_name'], $attribute['attribute_value']) &&
+                $attribute['attribute_name'] === 'Feature'
+            ) {
+                $features[] = $attribute['attribute_value'];
             }
         }
 
-        return ['product' => $product];
+        // Current quantity in cart (if any) for this product
+        $cartQuantity = 0;
+        if (isset($_SESSION['cart'][$product['id']]['qty'])) {
+            $cartQuantity = (int) $_SESSION['cart'][$product['id']]['qty'];
+        }
+
+        return [
+            'product' => $product,
+            'sliderImages' => $sliderImages,
+            'features' => $features,
+            'cartQuantity' => $cartQuantity,
+        ];
     }
 
     /**
