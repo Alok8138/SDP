@@ -1,11 +1,8 @@
 <?php
 
-class Page_Block_Content extends Core_Block_Template
-{
-
-    function __construct()
+class Page_Block_Content extends Core_Block_Template{
+    public function  __construct()
     {
-        // parent::__construct();
-        $this->setTemplet("Page/View/content.phtml");
+        $this->setTemplate("Page/View/content.phtml");
     }
 }

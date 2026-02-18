@@ -1,24 +1,22 @@
 <?php
-class Catalog_Controllers_Product
+
+class Catalog_Controllers_Product extends Core_Controllers_Front
 {
     public function listAction()
     {
-        echo "List Action";
+        $root = Sdp::getBlock('page/root');
+        $list = Sdp::getBlock("catalog/product_List");
+        $root->getChild("content")->addChild("list", $list);   
+        $root->toHtml();
     }
+
     public function viewAction()
     {
-        // echo "View Action";
         $root = Sdp::getBlock("page/root");
+        $view = Sdp::getBlock("catalog/product_View");
+        $root->getChild("content")->addChild("view", $view);
+        $root->getChild("head")->addJs("view/catalog.js");
+        $root->toHtml();
         
-
-        
-
-        $view = Sdp::getBlock("catalog/product_view");
-        $root->getChild('content')->addChild('view',$view);
-        $root->tooHtml();
-
-        // catalog_prd_block_view
     }
-
-    
 }
