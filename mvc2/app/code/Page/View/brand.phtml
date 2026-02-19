@@ -1,0 +1,80 @@
+<?php
+$brand = $this->getMenuArray(); 
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #222;   /* Dark background */
+            padding: 20px;
+        }
+
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 40px;          /* Space between items */
+        }
+
+        .navbar li {
+            text-align: center;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: white;
+            display: flex;
+            flex-direction: column;  /* Image above text */
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .navbar a:hover {
+            transform: scale(1.1);   /* Smooth zoom effect */
+        }
+
+        /* Image Styling */
+        .navbar img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            background-color: white;   /* White box for logo */
+            padding: 8px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .navbar span {
+            font-size: 14px;
+            font-weight: bold;
+            color: #f0c040;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <ul>
+            <?php foreach ($brand as $key => $value): ?>
+                <li>
+                    <a href="#">
+                        <img src="/mvc1/images/<?php echo $value['image']; ?>" 
+                             alt="<?php echo $value['name']; ?>">
+                        <span><?php echo $value['name']; ?></span>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </nav>
+
+</body>
+</html>

@@ -1,67 +1,70 @@
 <?php
 
-
 class Core_Model_Request
 {
 
-    protected $_moduleName = "page";
-    protected $_controllersName = "index";
-    protected $_actionName = "index";
+    protected $_module = "page";
+    protected $_controller = "index";
+    protected $_action = "index";
 
-
-    function __construct()
+    public function __construct()
     {
-
         $uri = $this->getRequestUri();
+        $uri = str_replace($this->getBaseUrl(), "", $uri);
+        $uri = array_filter(explode('/', $uri));
 
-        $uri = str_replace($this->getbaseUrl(), "", $uri);
-        //   /core/request
+        $this->_module     = isset($uri[0]) ? $uri[0] : "page";
+        $this->_controller = isset($uri[1]) ? $uri[1] : "index";
+        $this->_action     = isset($uri[2]) ? $uri[2] : "index";
 
-        $uri = array_filter(explode("/", $uri));
-
-        $this->_moduleName      = isset($uri[0]) ? $uri[0] : "page";
-        $this->_controllersName = isset($uri[1]) ? $uri[1] : "index";
-        $this->_actionName      = isset($uri[2]) ? $uri[2] : "index";
+        // echo "<pre>";
+        // print_r($uri);
     }
 
     public function getRequestUri()
     {
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : "http";
-
-        $fulluri = $protocol . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-
-        return $fulluri;
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== "off") ? 'https' : 'http';
+        $fullUrl = $protocol . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        return $fullUrl;
     }
+
     public function getParams()
     {
         return $_REQUEST;
     }
+
     public function isPost()
     {
-        return isset($_SERVER['POST']) ? true : false;
+        return $_SERVER['REQUEST_METHOD'] === 'POST';
     }
-    public function getPost()
-    {
-        return $_POST;
-    }
-    public function getbaseUrl()
-    {
-        return "http://localhost/internship/mvc2/";
-    }
+
     public function getQuery()
     {
         return $_GET;
     }
+
+    public function getPost()
+    {
+        return $_POST;
+    }
+
+    public function getBaseUrl()
+    {
+        return "http://localhost/internship/mvc2/";
+    }
+
     public function getModuleName()
     {
-        return $this->_moduleName;
+        return $this->_module;
     }
-    public function getControllersName()
+
+    public function getControllerName()
     {
-        return $this->_controllersName;
+        return $this->_controller;
     }
+
     public function getActionName()
     {
-        return $this->_actionName;
+        return $this->_action;
     }
 }

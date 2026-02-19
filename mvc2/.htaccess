@@ -16,6 +16,8 @@
 ## path relative to web root
 
     #RewriteBase /yourdirector/
+    
+
 
 ############################################
 ## workaround for HTTP authorization

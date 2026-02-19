@@ -1,21 +1,22 @@
 <?php
 
+class Core_Controllers_Front extends Core_Controllers_Front_Action
+{
+    protected $_request;
 
-class Core_Controllers_Front{
     public function run(){
-        $request = Sdp::getModel("core/request");
+        // $request = new Core_Model_Request();
+        $request = $this->getRequest();
 
-        $class = sprintf("%s_Controllers_%s",
+        $className = sprintf(
+            "%s_Controllers_%s",
             ucfirst($request->getModuleName()),
-            ucfirst($request->getControllersName())
-            );
+            ucfirst($request->getControllerName())  
+        );
+        $action = $request->getActionName() . "Action";
+        $classObj = new $className();
+        $classObj->$action();
+        
+    }}
 
-        $actionName = $request->getActionName() ."Action";
-
-        $className = new $class();
-
-        $className->$actionName();
-
-
-    }
-}
+?>
