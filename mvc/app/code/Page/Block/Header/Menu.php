@@ -10,7 +10,7 @@ class Page_Block_Header_Menu extends Core_Block_Template
     {
         return [
             "/"        => "Home",
-            "/product" => "Product",
+            "/product" => "Products",
             "/cart"    => "Cart",
             "/profile" => "Profile",
         ];

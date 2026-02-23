@@ -11,6 +11,7 @@ class Student
 {
 
     public static $name = "Alok";
+  
 
 
     public static function hii($name)
@@ -19,7 +20,7 @@ class Student
 
         echo "hii, $name <br>";
 
-        echo self::$name;
+        // echo self::$name;
         echo "<br>";
     }
 }
@@ -37,7 +38,8 @@ class Student
 // op: hii,Alok
 
 /*this is good practice to access the static method and variables*/
-Student::hii(Student::$name);
+
+// Student::hii(Student::$name);
 
 //op: Alok
 // $obj = new Student();
@@ -61,8 +63,8 @@ Student::hii(Student::$name);
 
 /*  dont access static method using obj it is bad practice  */
 
-// $obj = new Student();
-// echo $obj->hii($obj::$name);
+$obj = new Student();
+echo $obj->hii($obj::$name);
 
 // Component	        Where is it stored?	            Number of copies
 // Static Variable	    Class Entry (Global Scope)	    Only 1
@@ -73,7 +75,7 @@ Student::hii(Student::$name);
 
 
 /*
-    it assign only once second thime when we call the same fn this line is ignored by compiler and it has program life time.
+    count = 0 assign only once, second time when we call the same fn this line is ignored by compiler and it has program life time.
  */
 function counter()
 {
@@ -95,8 +97,6 @@ counter();
         Static properties
         Static methods 
      Inside the same class.
-
-
 */
 
 
@@ -108,6 +108,8 @@ class Student1
 
     public static function hii()
     {
+        // $this->name;
+        // echo "hii, $this->name";
         $name = self::$name;
         echo "hii, $name";
         echo "<br>";
@@ -126,23 +128,27 @@ class A
 {
     static $var1 = 10;
     static $var2 = 20;
-    public static function add(){
+    protected static function add(){
 
         return self::$var1 + self::$var2;
 
     }
 
-
 }
 
 class B extends A
 {
-
-
+     
     public function callAdd()
     {
+        $aobj = new A();
+        echo "in B class: ";
+        echo "<br>";
 
+        echo $aobj::$var1;
+        echo "<br>";
         echo self::add();
+        
     }
 }
 
