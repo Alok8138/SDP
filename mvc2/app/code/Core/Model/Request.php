@@ -10,6 +10,10 @@ class Core_Model_Request
     public function __construct()
     {
         $uri = $this->getRequestUri();
+
+        if(strpos($uri, "?") !== false) {
+            $uri = explode("?", $uri)[0];
+        }
         $uri = str_replace($this->getBaseUrl(), "", $uri);
         $uri = array_filter(explode('/', $uri));
 
@@ -17,8 +21,6 @@ class Core_Model_Request
         $this->_controller = isset($uri[1]) ? $uri[1] : "index";
         $this->_action     = isset($uri[2]) ? $uri[2] : "index";
 
-        // echo "<pre>";
-        // print_r($uri);
     }
 
     public function getRequestUri()
@@ -35,7 +37,7 @@ class Core_Model_Request
 
     public function isPost()
     {
-        return $_SERVER['REQUEST_METHOD'] === 'POST';
+        return $_SERVER['REQUEST_METHOD'] == 'POST';
     }
 
     public function getQuery()

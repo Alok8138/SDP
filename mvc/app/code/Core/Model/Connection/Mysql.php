@@ -13,8 +13,6 @@ class Core_Model_Connection_Mysql
     {
         if (is_null($this->_connection)) {
 
-
-
             $this->_connection = new mysqli("localhost", "root", "", "mvc");
         }
 
@@ -24,23 +22,17 @@ class Core_Model_Connection_Mysql
     }
 
 
-    public function fetchOne()
+    public function fetchOne($query)
     {
 
-
-        // if ($conn->connect_error) {
-        //     die("Connection failed: " . $conn->connect_error);
-        // }
-
-        $sql = "SELECT * FROM catalog_product";
+        $sql = $query;
         $result = $this->_connection->query($sql);
 
         while ($row = $result->fetch_assoc()) {
-            // print_r($row);
+
             return $row;
         }
     }
-
 
     public function __destruct()
     {

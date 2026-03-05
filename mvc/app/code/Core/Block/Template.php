@@ -8,6 +8,10 @@ class Core_Block_Template
 
     public function __construct()
     {
+        // echo"<pre>";
+        // print_r($this);
+        // echo"</pre>";
+
         $this->_construct();
     }
 
@@ -18,7 +22,7 @@ class Core_Block_Template
 
     public function toHtml()
     {
-        include getcwd() . "/app/code/" . $this->_template;
+        include getcwd() ."/app/code/" . $this->_template;
     }
 
     public function addChild($name, $block)

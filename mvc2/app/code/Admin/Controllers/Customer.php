@@ -34,11 +34,5 @@ class Admin_Controllers_Customer extends Core_Controllers_Admin
         $root->toHtml();
     }
 
-    // public function viewAction()
-    // {
-    //     $root = Sdp::getBlock("page/root");
-    //     $view = Sdp::getBlock("catalog/product_View");
-    //     $root->getChild("content")->addChild("view", $view);   
-    //     $root->toHtml();
-    // }
+
 }

@@ -9,9 +9,11 @@ class Page_Block_Head extends Core_Block_Template
         $this->setTemplate("Page/View/head.phtml");
         $this->addJs("js/default.js")
             ->addJs("js/default1.js")
+            ->addJs("js/home.js")
             ->addCss("css/header.css")
             ->addCss("css/footer.css")
-            ->addCss("css/default1.css");
+            ->addCss("css/default1.css")
+            ->addCss("css/home.css");
     }
 
     public function addJs($file)

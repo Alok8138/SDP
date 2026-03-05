@@ -13,8 +13,16 @@ class Page_Block_Header extends Core_Block_Template
         $menu   = Sdp::getBlock("page/header_menu");
         $search = Sdp::getBlock("page/header_search");
 
+        // echo "<pre>";
+        // print_r($this);
+        // echo "</pre>";
+
         $this->addChild("icon",   $icon);
         $this->addChild("menu",   $menu);
         $this->addChild("search", $search);
+
+        // echo "<pre>";
+        // print_r($this);
+        // echo "</pre>";
     }
 }

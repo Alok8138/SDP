@@ -8,7 +8,7 @@ class Page_Block_Header_Icon extends Core_Block_Template
 
     public function getSiteName()
     {
-        return "MVC1 Store";
+        return "store";
     }
 
     public function getSiteUrl()

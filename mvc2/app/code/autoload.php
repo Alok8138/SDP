@@ -1,12 +1,10 @@
 <?php
 
-spl_autoload_register(function($class){
+spl_autoload_register(function ($class) {
 
-    $base = __DIR__.'/';
+    $base = __DIR__ . '/';
     $file = str_replace('_', '/', $class);
 
-    // echo $file;
     $file = sprintf('%s.php', $base . $file);
     require_once $file;
-
 });

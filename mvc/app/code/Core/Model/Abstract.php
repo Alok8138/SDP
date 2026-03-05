@@ -1,14 +1,18 @@
 <?php
-
-
 class Core_Model_Abstract
 {
+
+
     protected $_data = [];
+    protected $_resource = null;
 
-
+    public function _init($resource)
+    {
+        $this->_resource = Sdp::getResourceModel($resource);
+    }
     public function __call($method, $args)
     {
-        
+
         if (substr($method, 0, 3) == "set") {
             $property = strtolower(substr($method, 3));
             $this->$property = $args[0];
@@ -19,37 +23,35 @@ class Core_Model_Abstract
             $property = strtolower(substr($method, 3));
             return $this->$property ?? null;
         }
-
-        // echo "Method $method not found!";
     }
-
-
-    public function __get($key)
+    public function __construct() {}
+    public function __set($name, $value)
     {
-        return $this->_data[$key];
+        $this->_data[$name] = $value;
     }
-    public function __set($key, $value)
+    public function __get($name)
     {
-        $this->_data[$key] = $value;
-        return $this;
+        return $this->_data[$name];
     }
     public function addData($data = [])
     {
         $this->_data = $data;
-
         return $this;
     }
-    public function load($value,$field = null){
-        $query = "SELECT* FROM catalog_product";
-        // $this->fetchOne();
+    public function load($value, $field = null)
+    {
 
-        $mySql = Sdp::getModel("core/connection_mysql");
+        $data = $this->getResource()->load($this, $value, $field);
 
-        $data = $mySql->fetchOne();
         $this->_data = $data;
     }
+    public function getResource()
+    {
+        return $this->_resource;
+    }
 
-   
-
-
+    public function isEmpty()
+    {
+        return empty($this->_data);
+    }
 }

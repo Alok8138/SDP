@@ -8,7 +8,5 @@ class Catalog_Block_Product_List extends Core_Block_Template
         $this->setTemplate("Catalog/View/Product/list.phtml");
     }
 
-    public function _construct(){
-        
-    }
+    public function _construct() {}
 }

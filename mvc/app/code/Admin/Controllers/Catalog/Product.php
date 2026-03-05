@@ -37,11 +37,11 @@ class Admin_Controllers_Catalog_Product extends Core_Controllers_Admin
     public function saveAction()
     {
         $product = Sdp::getModel("catalog/product");
-        echo "<pre>";
+        // echo "<pre>";
         $product->load(1);
-        print_r($product);
-        print_r($product->getName());
-        echo "</pre>";
+        // print_r($product);
+        // print_r($product->getName());
+        // echo "</pre>";
     }
 
 }

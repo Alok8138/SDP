@@ -1,4 +1,12 @@
-<?php $product = $this->getProduct(); ?>
+<?php $product = $this->getProduct(); 
+    // echo"<pre>";
+    // print_r($product);
+
+?>
+
+<?php if($product->isEmpty()): ?>
+    <h1>Product Not Found </h1>
+<?php else:  ?>
 
 <div class="product-view-container">
     <div class="product-main-section">
@@ -16,3 +24,4 @@
     <!-- Long Description Section -->
     <?php echo $this->getChildHtml('description'); ?>
 </div>
+<?php endif; ?>
