@@ -1,0 +1,8 @@
+.env
+*.csv
+vendor/
+node_modules/
+.idea/
+.vscode/
+*.log
+docker-compose.override.yml
