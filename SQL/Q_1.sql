@@ -3,6 +3,11 @@
 
 -- use Q_1;
 
+-- created table employees with columns id, name, designation, manager_id and salary.
+-- here manager_id is a foreign key referencing the id of the employees table itself to establish the hierarchy.
+
+
+
 
 CREATE TABLE employees (
     id INT PRIMARY KEY,
@@ -36,9 +41,21 @@ select  * from employees;
 -- select * from employe_h;
 
 
+
+-- so here we are using a recursive common table expression (CTE) named org_hierarchy to traverse the employee hierarchy starting from the CEO (the employee with no manager or manager_id IS NULL). 
+-- The CTE consists of two parts: the base case, which selects the CEO, and the recursive case, which joins the employees with their managers to build the hierarchy. 
+-- The final SELECT statement retrieves all employees along with their depth in the hierarchy and the path from the CEO to each employee.
+
+
+--below comments explain how this query works:
+
+-- 1: The CTE starts with the base case, which selects the CEO (the employee with no manager). It initializes the depth to 0 and sets the path to the CEO's name.
+
+
 WITH RECURSIVE org_hierarchy AS (
     
     -- Base Case (CEO)
+    -- select an all employee whoes manager_id is null
     SELECT 
         id,
         name,
@@ -46,12 +63,13 @@ WITH RECURSIVE org_hierarchy AS (
         manager_id,
         0 AS depth,
         name as path
-        -- CAST(name AS CHAR(500)) AS path
     FROM employees
     WHERE manager_id IS NULL
     
     UNION ALL
-    
+
+
+
     -- Recursive Case
     SELECT 
         e.id,
@@ -67,6 +85,8 @@ WITH RECURSIVE org_hierarchy AS (
 
 SELECT * FROM org_hierarchy
 ORDER BY path;
+
+
 
 
 
